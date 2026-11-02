@@ -267,7 +267,7 @@ function ExplorePage() {
     }
     if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        return "Recoupa’s main purpose is to help traders recover part of their losses when a crypto team abandons its project through a rug pull. This support can give affected traders a starting point after a serious loss and help them trade with greater confidence.";
+        return "Recoupa’s main purpose is to help traders discover project tokens that have the potential of developing into a real future company, and also help recover part of their losses should a project team abandon their project through a rug pull scam. This support can give affected traders a starting point after a serious loss and help them trade with greater confidence.";
       }
       return "Recoupa is an Outdex and loss-prevention system created specifically for the crypto market.";
     }
