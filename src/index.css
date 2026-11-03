@@ -2983,6 +2983,7 @@ button:focus-visible, a:focus-visible {
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   margin-bottom: 40px;
+  scroll-margin-top: 96px;
 }
 .why-card button {
   padding: 24px;
