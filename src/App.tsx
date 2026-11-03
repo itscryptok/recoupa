@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { type CSSProperties, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
@@ -15,7 +15,7 @@ type Destination =
   | 'Discover'
   | 'Outdex'
   | 'Claim'
-  | 'Predict'
+  | 'Perps'
   | 'TCapital'
   | 'Resources';
 
@@ -32,7 +32,7 @@ const destinations: Destination[] = [
   'Discover',
   'Outdex',
   'Claim',
-  'Predict',
+  'Perps',
   'TCapital',
   'Resources',
 ];
@@ -41,9 +41,27 @@ const currentViewLabels: Record<Destination, string> = {
   Discover: 'Discover the mission',
   Outdex: 'The outsider dex',
   Claim: 'Your Claim portal',
-  Predict: '1-vs-1 predictions',
+  Perps: '1-vs-1 perps',
   TCapital: 'Thesis capital',
   Resources: 'Contacts and resources',
+};
+
+const pageAccents: Record<Destination, string> = {
+  Discover: '#047857',
+  Outdex: '#1D4ED8',
+  Claim: '#BE123C',
+  Perps: '#7C3AED',
+  TCapital: '#B45309',
+  Resources: '#0F766E',
+};
+
+const pageButtonLabels: Record<Destination, string> = {
+  Discover: 'The good, bad, ugly',
+  Outdex: 'Tokens to watch',
+  Claim: 'Recoup your losses',
+  Perps: 'New launch Perps',
+  TCapital: 'Thesis capital',
+  Resources: 'Find resources',
 };
 
 const tokenList: Token[] = [
@@ -306,12 +324,16 @@ function ExplorePage() {
     if (destination === 'Claim') {
       return "If you lost money on other crypto tokens and you hold the required $Recoupa tokens, you can file a claim here.";
     }
+    if (destination === 'Perps') {
+      return "Go long or go short on any new launch. Another finds your position and decides to counter it.";
+    }
     return `Explore ${destination} and learn what you need to trade with more confidence.`;
   };
 
   return (
     <main
-      className={`reference-explore ${nightMode ? 'night-mode' : 'day-mode'}`}
+      className={`reference-explore ${nightMode ? 'night-mode' : 'day-mode'} page-${destination.toLowerCase()}`}
+      style={{ '--page-accent': pageAccents[destination] } as CSSProperties}
       data-testid="page-explore"
     >
       <div className="explore-floating-nav-wrap">
@@ -395,6 +417,20 @@ function ExplorePage() {
           </div>
         </div>
 
+        <button
+          type="button"
+          className="page-cta-button"
+          onClick={() =>
+            document
+              .getElementById('page-content')
+              ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        >
+          {destination === 'Discover' && tab === 'About'
+            ? 'Read about Recoupa'
+            : pageButtonLabels[destination]}
+        </button>
+
         {!selectedToken && (
           <div className="workspace-tools">
             <div className="tools-top">
@@ -462,7 +498,7 @@ function ExplorePage() {
           </div>
         )}
 
-        <section className="markets-panel">
+        <section className="markets-panel" id="page-content">
           {selectedToken ? (
             <TokenDetail token={selectedToken} onBack={returnToOutdex} />
           ) : (
