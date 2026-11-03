@@ -3204,6 +3204,9 @@ button:focus-visible, a:focus-visible {
 .back-button:hover {
   color: var(--mode-ink);
 }
+.why-back-button {
+  margin-bottom: 16px;
+}
 .detail-header {
   display: flex;
   align-items: center;
