@@ -263,21 +263,21 @@ function ExplorePage() {
 
   const getHeroText = () => {
     if (selectedToken) {
-      return `Exploring outdex data and metrics for ${selectedToken.name}.`;
+      return `Here is the data and score for ${selectedToken.name}.`;
     }
     if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        return "Recoupa has a mission to help traders and investors discover project tokens that have the potential of developing into a real future company, and also help recover part of their losses should a project team abandon their project through a rug pull scam. This support can give affected traders a starting point after a serious loss and help them trade with greater confidence.";
+        return "Recoupa helps traders and investors find new crypto projects early — projects that could grow into real companies. If a project team runs away with your money in a scam, Recoupa can help you get part of your loss back, so you can start again with more confidence.";
       }
-      return "Recoupa is an Outdex and loss-prevention system created specifically for the crypto market.";
+      return "Recoupa is a list of selected crypto projects (the Outdex) and a safety system that helps prevent losses.";
     }
     if (destination === 'Outdex') {
-      return "Our Outdex highlights early-stage projects that we believe show strong potential for long-term growth.";
+      return "Our Outdex shows new projects that we think can grow well over a long time.";
     }
     if (destination === 'Claim') {
-      return "File a casualty claim if you have experienced a crypto loss and hold the required $Recoupa tokens.";
+      return "If you lost money on other crypto tokens and you hold the required $Recoupa tokens, you can file a claim here.";
     }
-    return `Explore the ${destination} ecosystem, discover insights, and find your footing in the market.`;
+    return `Explore ${destination} and learn what you need to trade with more confidence.`;
   };
 
   return (
