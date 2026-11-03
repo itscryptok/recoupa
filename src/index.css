@@ -2773,8 +2773,32 @@ button:focus-visible, a:focus-visible {
 .page-cta-button:hover {
   filter: brightness(1.1);
 }
-#page-content {
-  scroll-margin-top: 96px;
+.content-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  overflow-y: auto;
+  background: var(--mode-bg);
+}
+.content-overlay-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 24px 120px;
+}
+.overlay-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 999px;
+  background: var(--page-accent);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
 }
 .hero-status {
   display: flex;
