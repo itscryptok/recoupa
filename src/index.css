@@ -2736,6 +2736,46 @@ button:focus-visible, a:focus-visible {
 .night-mode .hero-card {
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
+.page-discover .hero-card {
+  background: color-mix(in srgb, #047857 22%, var(--aubergine-bg));
+}
+.page-outdex .hero-card {
+  background: color-mix(in srgb, #1D4ED8 22%, var(--aubergine-bg));
+}
+.page-claim .hero-card {
+  background: color-mix(in srgb, #BE123C 22%, var(--aubergine-bg));
+}
+.page-perps .hero-card {
+  background: color-mix(in srgb, #7C3AED 22%, var(--aubergine-bg));
+}
+.page-tcapital .hero-card {
+  background: color-mix(in srgb, #B45309 22%, var(--aubergine-bg));
+}
+.page-resources .hero-card {
+  background: color-mix(in srgb, #0F766E 22%, var(--aubergine-bg));
+}
+.page-cta-button {
+  display: block;
+  width: 100%;
+  margin: 0 0 24px;
+  padding: 18px 24px;
+  border: none;
+  border-radius: 16px;
+  background: var(--page-accent);
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.page-cta-button:hover {
+  filter: brightness(1.1);
+}
+#page-content {
+  scroll-margin-top: 96px;
+}
 .hero-status {
   display: flex;
   align-items: center;
