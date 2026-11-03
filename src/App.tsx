@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio } from 'lucide-react';
+import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
 import referenceImage from '@assets/IMG_1197_recoupa_car_clean_local.jpeg';
@@ -101,6 +101,22 @@ function Mark() {
 }
 
 function LandingPage() {
+  const [caCopied, setCaCopied] = useState(false);
+  const copyCa = async () => {
+    const contract = 'BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump';
+    try {
+      await navigator.clipboard.writeText(contract);
+    } catch {
+      const area = document.createElement('textarea');
+      area.value = contract;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
+    }
+    setCaCopied(true);
+    window.setTimeout(() => setCaCopied(false), 2000);
+  };
   return (
     <main className="reference-landing" data-testid="page-landing">
       <h1 className="sr-only">Recoupa crypto discovery and loss prevention</h1>
@@ -114,6 +130,19 @@ function LandingPage() {
           <span className="reference-pointer">☞</span>
           <span>or buck around and find out</span>
         </span>
+        <div className="reference-ca-copy">
+          <span>CA: BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump</span>
+          <button
+            type="button"
+            className="reference-ca-button"
+            onClick={copyCa}
+            aria-label="Copy contract address"
+            data-testid="button-copy-ca"
+          >
+            {caCopied ? <Check size={16} /> : <Copy size={16} />}
+            {caCopied ? 'Copied' : null}
+          </button>
+        </div>
         <Link
           href="/explore"
           className="reference-button"
