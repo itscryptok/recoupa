@@ -3206,16 +3206,21 @@ button:focus-visible, a:focus-visible {
   .mobile-menu-button {
     display: none !important;
   }
+  .explore-floating-nav-wrap {
+    padding: 0;
+  }
   .explore-nav-links {
     position: absolute;
-    top: calc(100% + 8px);
+    top: 100%;
     left: 0;
     right: 0;
     background: var(--mode-surface);
-    border-radius: 16px;
+    border-radius: 0;
     padding: 8px;
     border: 1px solid var(--mode-line);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
     opacity: 1;
     pointer-events: auto;
     transform: none;
@@ -3227,7 +3232,7 @@ button:focus-visible, a:focus-visible {
     display: none;
   }
   .night-mode .explore-nav-links {
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
   }
   .explore-nav-links.is-open {
     opacity: 1;
@@ -3248,7 +3253,7 @@ button:focus-visible, a:focus-visible {
     border-radius: 8px;
   }
   .explore-workspace {
-    padding: 16px 16px 80px;
+    padding: 148px 16px 80px;
   }
   .hero-card {
     padding: 20px;
