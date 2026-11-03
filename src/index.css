@@ -2652,6 +2652,28 @@ button:focus-visible, a:focus-visible {
   color: var(--mode-accent-fg);
   background: var(--mode-accent);
 }
+.hero-page-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 4px;
+}
+.hero-page-buttons button {
+  background: transparent;
+  border: 1px solid var(--mode-line, rgba(128, 128, 128, 0.35));
+  color: var(--mode-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.hero-page-buttons button:hover {
+  color: var(--mode-ink);
+  background: var(--mode-surface-hover);
+}
 .explore-nav-actions {
   display: flex;
   align-items: center;
