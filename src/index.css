@@ -2472,7 +2472,7 @@ button:focus-visible, a:focus-visible {
   border-radius: 8px;
   background: rgba(13, 17, 20, 0.86);
   color: var(--soft-white);
-  font-size: clamp(0.9rem, 2.2vw, 1.35rem);
+  font-size: clamp(0.7rem, 1.7vw, 1rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
