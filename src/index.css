@@ -2458,6 +2458,43 @@ button:focus-visible, a:focus-visible {
   line-height: 0.8;
   transform: translateY(-0.02em);
 }
+.reference-ca-copy {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  top: 86%;
+  left: 7%;
+  width: 86%;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(13, 17, 20, 0.86);
+  color: var(--soft-white);
+  font-size: clamp(0.9rem, 2.2vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  overflow-wrap: anywhere;
+}
+.reference-ca-button {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 4px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--soft-white);
+  cursor: pointer;
+}
+.reference-ca-button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
 .reference-button {
   position: absolute;
   z-index: 2;
