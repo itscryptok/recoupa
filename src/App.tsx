@@ -401,36 +401,38 @@ function ExplorePage() {
               <div className="tools-label">
                 <Flame size={18} /> <span>RECOUPA {destination.toUpperCase()}</span>
               </div>
-              <div className={`search-field-wrap ${matchingTokens.length ? 'has-results' : ''}`}>
-                <label className="search-field">
-                  <Search size={18} />
-                  <input
-                    type="search"
-                    value={searchQuery}
-                    onChange={(event) => setSearchQuery(event.target.value)}
-                    placeholder="Search tokens..."
-                    aria-label="Search tokens"
-                    autoComplete="off"
-                  />
-                  {!searchQuery && <kbd>Ctrl K</kbd>}
-                </label>
-                {matchingTokens.length > 0 && (
-                  <div className="autocomplete-results" role="listbox" aria-label="Matching tokens">
-                    {matchingTokens.map((token) => (
-                      <button
-                        key={token.symbol}
-                        type="button"
-                        role="option"
-                        onClick={() => selectToken(token)}
-                      >
-                        <span className="token-symbol font-mono">{token.symbol}</span>
-                        <span className="token-name">{token.name}</span>
-                        <span className="token-category">{token.category}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              {destination === 'Outdex' && (
+                <div className={`search-field-wrap ${matchingTokens.length ? 'has-results' : ''}`}>
+                  <label className="search-field">
+                    <Search size={18} />
+                    <input
+                      type="search"
+                      value={searchQuery}
+                      onChange={(event) => setSearchQuery(event.target.value)}
+                      placeholder="Search tokens..."
+                      aria-label="Search tokens"
+                      autoComplete="off"
+                    />
+                    {!searchQuery && <kbd>Ctrl K</kbd>}
+                  </label>
+                  {matchingTokens.length > 0 && (
+                    <div className="autocomplete-results" role="listbox" aria-label="Matching tokens">
+                      {matchingTokens.map((token) => (
+                        <button
+                          key={token.symbol}
+                          type="button"
+                          role="option"
+                          onClick={() => selectToken(token)}
+                        >
+                          <span className="token-symbol font-mono">{token.symbol}</span>
+                          <span className="token-name">{token.name}</span>
+                          <span className="token-category">{token.category}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {destination === 'Discover' && (
