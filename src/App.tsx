@@ -395,6 +395,16 @@ function ExplorePage() {
           </div>
         </div>
 
+        <nav className="hero-page-buttons" aria-label="Other pages">
+          {destinations
+            .filter((item) => item !== destination)
+            .map((item) => (
+              <button key={item} type="button" onClick={() => selectDestination(item)}>
+                {item}
+              </button>
+            ))}
+        </nav>
+
         {!selectedToken && (
           <div className="workspace-tools">
             <div className="tools-top">
