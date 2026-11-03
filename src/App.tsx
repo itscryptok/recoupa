@@ -479,7 +479,7 @@ function ExplorePage() {
 
               {destination === 'Discover' && tab === 'Thesis' && (
                 <>
-                  <div className="why-card">
+                  <div className="why-card" id="why-cards">
                     {whySections.map((section) => (
                       <button
                         key={section.id}
@@ -492,6 +492,22 @@ function ExplorePage() {
                       </button>
                     ))}
                   </div>
+
+                  {selectedWhyCard && (
+                    <button
+                      type="button"
+                      className="back-button why-back-button"
+                      onClick={() => {
+                        setSelectedWhyCard(null);
+                        document
+                          .getElementById('why-cards')
+                          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                    >
+                      <ArrowLeft size={16} />
+                      <span>BACK</span>
+                    </button>
+                  )}
 
                   <div className="why-sections">
                     {whySections.map((section) => (
