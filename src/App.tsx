@@ -238,6 +238,7 @@ function ExplorePage() {
   const [selectedWhyCard, setSelectedWhyCard] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroExpanded, setHeroExpanded] = useState(false);
+  const [contentOpen, setContentOpen] = useState(false);
   const [nightMode, setNightMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
@@ -261,6 +262,26 @@ function ExplorePage() {
   useEffect(() => {
     setHeroExpanded(false);
   }, [destination, tab, selectedToken]);
+
+  useEffect(() => {
+    if (!contentOpen) {
+      return;
+    }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setContentOpen(false);
+        setSelectedToken(null);
+        setSearchQuery('');
+      }
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [contentOpen]);
 
   const selectDestination = (next: Destination) => {
     setDestination(next);
@@ -296,6 +317,12 @@ function ExplorePage() {
     setSelectedToken(null);
     setSearchQuery('');
     setDestination('Outdex');
+  };
+
+  const closeContentOverlay = () => {
+    setContentOpen(false);
+    setSelectedToken(null);
+    setSearchQuery('');
   };
 
   const selectWhySection = (id: string) => {
@@ -420,16 +447,30 @@ function ExplorePage() {
         <button
           type="button"
           className="page-cta-button"
-          onClick={() =>
-            document
-              .getElementById('page-content')
-              ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
+          onClick={() => setContentOpen(true)}
         >
           {destination === 'Discover' && tab === 'About'
             ? 'Read about Recoupa'
             : pageButtonLabels[destination]}
         </button>
+      </section>
+
+      {contentOpen && (
+        <div
+          className="content-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${destination} content`}
+        >
+          <div className="content-overlay-inner">
+            <button
+              type="button"
+              className="overlay-back-button"
+              onClick={closeContentOverlay}
+            >
+              <ArrowLeft size={16} />
+              <span>BACK</span>
+            </button>
 
         {!selectedToken && (
           <div className="workspace-tools">
@@ -498,7 +539,7 @@ function ExplorePage() {
           </div>
         )}
 
-        <section className="markets-panel" id="page-content">
+        <section className="markets-panel">
           {selectedToken ? (
             <TokenDetail token={selectedToken} onBack={returnToOutdex} />
           ) : (
@@ -607,7 +648,9 @@ function ExplorePage() {
             </>
           )}
         </section>
-      </section>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
