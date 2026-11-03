@@ -3212,8 +3212,8 @@ button:focus-visible, a:focus-visible {
   .explore-nav-links {
     position: absolute;
     top: 100%;
-    left: 0;
-    right: 0;
+    left: 50%;
+    width: 100vw;
     background: var(--mode-surface);
     border-radius: 0;
     padding: 8px;
@@ -3223,7 +3223,7 @@ button:focus-visible, a:focus-visible {
     box-shadow: none;
     opacity: 1;
     pointer-events: auto;
-    transform: none;
+    transform: translateX(-50%);
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -3237,7 +3237,7 @@ button:focus-visible, a:focus-visible {
   .explore-nav-links.is-open {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateX(-50%);
   }
   .explore-nav-links-inner {
     flex-direction: row;
