@@ -519,7 +519,7 @@ function ExplorePage() {
                     className={tab === 'Thesis' ? 'active' : ''}
                     onClick={() => setTab('Thesis')}
                   >
-                    THESIS
+                    THE THESIS
                   </button>
                   <button
                     type="button"
@@ -528,7 +528,7 @@ function ExplorePage() {
                     className={tab === 'About' ? 'active' : ''}
                     onClick={() => setTab('About')}
                   >
-                    ABOUT
+                    ABOUT RECOUPA
                   </button>
                 </div>
               </div>
