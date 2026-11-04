@@ -86,7 +86,7 @@ const whySections = [
     title: 'The Bad Narrative',
     color: '#BE123C',
     paragraphs: [
-      'Participating in the buying of tokens in the fast markets would expose 99% of you to severe, life-altering losses, especially if you are not with the insider traders who find projects early and pump and dump them, or with the millions of rug-pull scam artists.',
+      'Let this be a clear warning: buying tokens in the fast markets exposes 99% of you to severe, life-altering losses. Unless you are with the insider traders who find projects early and pump and dump them, or with the millions of rug-pull scam artists, you are the one carrying the risk.',
       'That reputation is not unfounded. Too many outsiders encounter insider dealing, false promoters, and projects built solely for rapid profit. In fast-moving markets, weak safeguards and the pressure to act quickly leave ordinary participants exposed to pump-and-dump schemes, rug pulls, fear-driven buying, and trading that resembles gambling. It is little surprise that many careful people choose to stay away entirely.',
       'Yet that reputation does not describe every project. Some new ventures are built on genuine ideas and can develop into substantial companies with early support. The real challenge is distinguishing sound ideas from short-term hype and deception, and that is where Recoupa contributes: clear research, disciplined caution, and a better understanding of risk for outsiders.',
     ],
