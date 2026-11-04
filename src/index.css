@@ -2465,7 +2465,7 @@ button:focus-visible, a:focus-visible {
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  top: 86%;
+  top: 0;
   left: 7%;
   width: 86%;
   padding: 5px 10px;
