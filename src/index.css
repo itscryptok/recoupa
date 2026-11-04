@@ -2907,6 +2907,16 @@ button:focus-visible, a:focus-visible {
   font-weight: 500;
   color: var(--aubergine-text);
 }
+button.hero-metric-value {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+button.hero-metric-value:hover {
+  text-decoration: underline;
+}
 .workspace-tools {
   display: flex;
   flex-direction: column;
