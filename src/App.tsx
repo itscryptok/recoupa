@@ -86,7 +86,8 @@ const whySections = [
     title: 'The Bad Narrative',
     color: '#BE123C',
     paragraphs: [
-      'Crypto has a bad name for a real reason. Many outsiders see insiders, false promoters, and projects made only for fast profit. On fast platforms like pump.fun and Solana, bad actors take advantage of weak tools, weak protection, and pressure to act fast. The common dangers are pump-and-dump schemes, rug pulls, FOMO traps, and gambling-like trading. So many careful people simply stay away.',
+      'Participating in the buying of tokens from the fast markets would expose 99% of you to big life-ruining losses, especially if you are not with the insider traders who find projects early and pump to dump, or with millions of rug pull scam artists.',
+      'That is why crypto has a bad name for a real reason. Many outsiders see insiders, false promoters, and projects made only for fast profit. In these fast markets, bad actors take advantage of weak tools, weak protection, and pressure to act fast. The common dangers are pump-and-dump schemes, rug pulls, FOMO traps, and gambling-like trading. So many careful people simply stay away.',
       'But this bad name does not fit every project. Some new projects are built on real ideas, and they can grow like young companies that get early support. The hard part is telling real ideas apart from short-term hype and tricks. Recoupa helps outsiders do this with clear research, strong caution, and a better understanding of risk.',
     ],
   },
