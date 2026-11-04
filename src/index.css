@@ -3042,55 +3042,36 @@ button:focus-visible, a:focus-visible {
   background: var(--mode-ink);
   color: var(--mode-bg);
 }
-.why-card {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 40px;
-  scroll-margin-top: 96px;
+.why-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.why-card button {
-  padding: 24px;
-  text-align: left;
+.why-tab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
   font-family: 'Manrope', sans-serif;
   font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--mode-ink);
-  border: 1px solid var(--mode-line);
-  border-radius: 16px;
-  background: var(--mode-surface);
+  font-weight: 800;
+  text-align: left;
   cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
 }
-.why-card button::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--mode-ink);
-  transform: scaleX(0);
-  transform-origin: left;
+.why-tab-chevron {
+  flex-shrink: 0;
   transition: transform 0.2s ease;
 }
-.why-card button:hover {
-  background: var(--mode-surface-hover);
-  border-color: var(--mode-line);
-  transform: translateY(-2px);
+.why-tab-chevron.open {
+  transform: rotate(180deg);
 }
-.why-card button.active {
-  background: var(--mode-surface-hover);
-  border-color: var(--mode-ink);
-}
-.why-card button.active::after {
-  transform: scaleX(1);
-}
-.why-sections {
-  display: grid;
-  gap: 24px;
+.why-tab .why-section {
+  margin-top: 12px;
 }
 .why-section {
   scroll-margin-top: 96px;
@@ -3247,9 +3228,6 @@ button:focus-visible, a:focus-visible {
 }
 .back-button:hover {
   color: var(--mode-ink);
-}
-.why-back-button {
-  margin-bottom: 16px;
 }
 .detail-header {
   display: flex;
