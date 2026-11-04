@@ -437,9 +437,15 @@ function ExplorePage() {
           <div className="hero-metrics">
             <div className="hero-metric">
               <span className="hero-metric-label">CURRENT VIEW</span>
-              <span className="hero-metric-value font-mono">
+              <button
+                type="button"
+                className="hero-metric-value font-mono"
+                aria-expanded={heroExpanded}
+                aria-controls="hero-description"
+                onClick={() => setHeroExpanded((expanded) => !expanded)}
+              >
                 {currentViewLabels[destination]}
-              </span>
+              </button>
             </div>
           </div>
         </div>
