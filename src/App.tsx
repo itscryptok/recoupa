@@ -41,7 +41,7 @@ const currentViewLabels: Record<Destination, string> = {
   Discover: 'Discover the mission',
   Outdex: 'The outsider dex',
   Claim: 'Your Claim portal',
-  Perps: '1-vs-1 perps',
+  Perps: 'PvP Perps',
   TCapital: 'Thesis capital',
   Resources: 'Contacts and resources',
 };
