@@ -1,5 +1,5 @@
 import { type CSSProperties, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check, Home } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
 import referenceImage from '@assets/IMG_1197_recoupa_car_clean_local.jpeg';
@@ -238,7 +238,7 @@ function Seo() {
 function ExplorePage() {
   const [destination, setDestination] = useState<Destination>('Discover');
   const [tab, setTab] = useState<DiscoverTab>('Thesis');
-  const [selectedWhyCard, setSelectedWhyCard] = useState<string | null>(null);
+  const [selectedWhyCard, setSelectedWhyCard] = useState<string | null>('market-risks');
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroExpanded, setHeroExpanded] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
@@ -328,8 +328,8 @@ function ExplorePage() {
     setSearchQuery('');
   };
 
-  const toggleWhySection = (id: string) => {
-    setSelectedWhyCard((current) => (current === id ? null : id));
+  const selectWhySection = (id: string) => {
+    setSelectedWhyCard(id);
   };
 
   const getHeroText = () => {
@@ -383,6 +383,9 @@ function ExplorePage() {
           </div>
 
           <div className="explore-nav-actions">
+            <Link href="/" className="home-button" aria-label="Home" title="Home">
+              <Home size={18} />
+            </Link>
             <button
               className="mode-button"
               type="button"
@@ -429,7 +432,7 @@ function ExplorePage() {
             onClick={() => setHeroExpanded((expanded) => !expanded)}
             data-testid="button-toggle-hero-description"
           >
-            {heroExpanded ? 'Less' : 'More >'}
+            {heroExpanded ? 'Less' : 'Read more'}
           </button>
           <div className="hero-metrics">
             <div className="hero-metric">
@@ -464,9 +467,9 @@ function ExplorePage() {
               type="button"
               className="overlay-back-button"
               onClick={closeContentOverlay}
+              aria-label="Back"
             >
-              <ArrowLeft size={16} />
-              <span>BACK</span>
+              <ArrowLeft size={22} />
             </button>
 
         {!selectedToken && (
@@ -545,36 +548,45 @@ function ExplorePage() {
 
               {destination === 'Discover' && tab === 'Thesis' && (
                 <>
-                  <div className="why-tabs">
-                    {whySections.map((section) => {
-                      const isOpen = selectedWhyCard === section.id;
-                      return (
-                        <div key={section.id} className="why-tab">
-                          <button
-                            type="button"
-                            className="why-tab-header"
-                            style={{ backgroundColor: section.color }}
-                            aria-expanded={isOpen}
-                            onClick={() => toggleWhySection(section.id)}
-                          >
-                            <span>{section.title}</span>
-                            <ChevronDown
-                              size={20}
-                              className={
-                                isOpen ? 'why-tab-chevron open' : 'why-tab-chevron'
-                              }
-                            />
-                          </button>
-                          {isOpen && (
-                            <article className="why-section">
-                              {section.paragraphs.map((paragraph) => (
-                                <p key={paragraph}>{paragraph}</p>
-                              ))}
-                            </article>
-                          )}
-                        </div>
-                      );
-                    })}
+                  <div className="why-tabs" role="tablist" aria-label="Thesis sections">
+                    {[...whySections]
+                      .sort((a, b) => {
+                        if (a.id === selectedWhyCard) return 1;
+                        if (b.id === selectedWhyCard) return -1;
+                        return 0;
+                      })
+                      .map((section) => {
+                        const isActive = selectedWhyCard === section.id;
+                        return (
+                          <div key={section.id} className="why-tab">
+                            <button
+                              type="button"
+                              role="tab"
+                              aria-selected={isActive}
+                              className={`why-tab-header${isActive ? ' active' : ''}`}
+                              style={{
+                                background: `linear-gradient(135deg, ${section.color}, color-mix(in srgb, ${section.color} 68%, #000000))`,
+                              }}
+                              onClick={() => selectWhySection(section.id)}
+                            >
+                              <span>{section.title}</span>
+                            </button>
+                            {isActive && (
+                              <article
+                                className="why-section"
+                                style={{
+                                  border: `2px solid ${section.color}`,
+                                  background: `color-mix(in srgb, ${section.color} 10%, var(--mode-surface))`,
+                                }}
+                              >
+                                {section.paragraphs.map((paragraph) => (
+                                  <p key={paragraph}>{paragraph}</p>
+                                ))}
+                              </article>
+                            )}
+                          </div>
+                        );
+                      })}
                   </div>
                 </>
               )}
