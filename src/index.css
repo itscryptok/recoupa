@@ -2914,9 +2914,6 @@ button.hero-metric-value {
   text-align: left;
   cursor: pointer;
 }
-button.hero-metric-value:hover {
-  text-decoration: underline;
-}
 .workspace-tools {
   display: flex;
   flex-direction: column;
