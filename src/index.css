@@ -3082,8 +3082,13 @@ button:focus-visible, a:focus-visible {
   transform: translateY(-1px);
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
 }
+.why-tab-header.active {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 .why-tab .why-section {
-  margin-top: 12px;
+  margin-top: 0;
+  border-radius: 0 0 16px 16px;
 }
 .why-section {
   scroll-margin-top: 96px;
