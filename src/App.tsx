@@ -246,6 +246,7 @@ function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const navRef = useRef<HTMLElement>(null);
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -408,7 +409,28 @@ function ExplorePage() {
         </nav>
       </div>
 
-      <section className="explore-workspace">
+      <section
+        className="explore-workspace"
+        onTouchStart={(e) => {
+          const touch = e.touches[0];
+          swipeStart.current = { x: touch.clientX, y: touch.clientY };
+        }}
+        onTouchEnd={(e) => {
+          const start = swipeStart.current;
+          swipeStart.current = null;
+          if (!start) return;
+          const touch = e.changedTouches[0];
+          if (
+            touch.clientY - start.y < -70 &&
+            Math.abs(touch.clientX - start.x) < 80
+          ) {
+            const currentIndex = destinations.indexOf(destination);
+            selectDestination(
+              destinations[(currentIndex + 1) % destinations.length],
+            );
+          }
+        }}
+      >
         <div className="hero-card">
           <div className="hero-status">
             <span className="hero-status-indicator">
