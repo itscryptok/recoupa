@@ -87,8 +87,8 @@ const whySections = [
     color: '#BE123C',
     paragraphs: [
       'Participating in the buying of tokens from the fast markets would expose 99% of you to big life-ruining losses, especially if you are not with the insider traders who find projects early and pump to dump, or with millions of rug pull scam artists.',
-      'That is why crypto has a bad name for a real reason. Many outsiders see insiders, false promoters, and projects made only for fast profit. In these fast markets, bad actors take advantage of weak tools, weak protection, and pressure to act fast. The common dangers are pump-and-dump schemes, rug pulls, FOMO traps, and gambling-like trading. So many careful people simply stay away.',
-      'But this bad name does not fit every project. Some new projects are built on real ideas, and they can grow like young companies that get early support. The hard part is telling real ideas apart from short-term hype and tricks. Recoupa helps outsiders do this with clear research, strong caution, and a better understanding of risk.',
+      'That reputation is not unfounded. Too many outsiders encounter insider dealing, false promoters, and projects built solely for rapid profit. In fast-moving markets, weak safeguards and the pressure to act quickly leave ordinary participants exposed to pump-and-dump schemes, rug pulls, fear-driven buying, and trading that resembles gambling. It is little surprise that many careful people choose to stay away entirely.',
+      'Yet that reputation does not describe every project. Some new ventures are built on genuine ideas and can develop into substantial companies with early support. The real challenge is distinguishing sound ideas from short-term hype and deception, and that is where Recoupa contributes: clear research, disciplined caution, and a better understanding of risk for outsiders.',
     ],
   },
   {
@@ -96,8 +96,8 @@ const whySections = [
     title: 'The Good Onboarding',
     color: '#047857',
     paragraphs: [
-      'Good onboarding means helping people enter crypto through learning, not excitement or pressure. More outsiders and young people will join crypto over time. The key question is not only if they join, but if their first experience is safe and well informed. Without guidance, a new user can start in the riskiest and least safe parts of the market. A better start is clear information, careful research, and real risk awareness.',
-      'Recoupa gives you simple tools for this journey, made for people without insider knowledge. The Outdex shows selected early-stage projects, so you can explore good chances from a well-informed start. The claim tool lets eligible $Recoupa token holders file a claim for review after a crypto loss. Together, these tools mix finding chances with loss awareness and a possible path to partial recovery. So you can start on solid ground, learn, and act on informed interest — not careless FOMO.',
+      'Professional onboarding means bringing people into crypto through education rather than excitement or pressure. More newcomers will enter the market over time, and the decisive question is not whether they join, but whether their first experience is safe and well informed. Without guidance, a new participant can easily begin in the riskiest corners of the market. A sound start rests on clear information, careful research, and genuine risk awareness.',
+      'Recoupa provides structured tools for that journey, designed for people without insider connections. The Outdex presents selected early-stage projects, so opportunities can be explored from an informed starting point. The claim tool allows eligible $Recoupa token holders to submit a claim for review following a loss on other tokens. Together, these tools combine opportunity discovery with loss awareness and a possible path to partial recovery, so participants can proceed on informed interest rather than impulsive speculation.',
     ],
   },
   {
@@ -105,8 +105,8 @@ const whySections = [
     title: 'The Ugly Fear',
     color: '#B45309',
     paragraphs: [
-      'The Ugly Fear is simple: fear can protect you from bad projects, but it can also keep you away from great ones. The most painful result is finding a good project only after its biggest growth has passed. Joining early can offer more than joining after a project is already famous and costly. Many outsiders wait because the risks are confusing and good information is hard to find. Their caution makes sense — but waiting without a trusted research process can mean missing important chances.',
-      'The answer is not to rush into every new project or follow market excitement without proof. A responsible way is to study the project, understand its purpose, check the warning signs, and ask if the reward is worth the risk. Recoupa makes this easier for people without insider contacts or special knowledge. We highlight selected early chances while keeping caution and loss prevention at the center. The goal: do not arrive too late, and do not act carelessly.',
+      'The Ugly Fear is straightforward: caution can protect you from poor projects, yet it can also exclude you from exceptional ones. The most costly outcome is discovering a strong project only after its greatest growth has passed. Early participation generally offers more than entering once a project is already prominent and expensive. Many outsiders hesitate because the risks are unclear and reliable information is scarce. That caution is understandable, but waiting without a trusted research process means forfeiting meaningful opportunities.',
+      'The response is neither rushing into every new project nor following market enthusiasm without evidence. A disciplined approach examines the project, understands its purpose, checks the warning signs, and weighs whether the potential reward justifies the risk. Recoupa makes that process accessible to people without insider contacts or specialist knowledge, highlighting selected early opportunities while keeping caution and loss prevention at the center. The objective is clear: neither arrive too late nor act carelessly.',
     ],
   },
 ] as const;
