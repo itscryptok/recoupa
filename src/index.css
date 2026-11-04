@@ -2675,6 +2675,20 @@ button:focus-visible, a:focus-visible {
   background: var(--mode-surface-hover);
   color: var(--mode-ink);
 }
+.explore-nav-actions a.home-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--mode-muted);
+  transition: all 0.2s ease;
+}
+.explore-nav-actions a.home-button:hover {
+  background: var(--mode-surface-hover);
+  color: var(--mode-ink);
+}
 .mobile-menu-button {
   display: none !important;
 }
@@ -2788,17 +2802,16 @@ button:focus-visible, a:focus-visible {
 .overlay-back-button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   margin-bottom: 24px;
-  padding: 12px 22px;
+  padding: 8px;
   border: none;
-  border-radius: 999px;
-  background: var(--page-accent);
-  color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--mode-ink);
   cursor: pointer;
+}
+.overlay-back-button:hover {
+  opacity: 0.7;
 }
 .hero-status {
   display: flex;
@@ -3050,25 +3063,24 @@ button:focus-visible, a:focus-visible {
 .why-tab-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   width: 100%;
-  padding: 16px 20px;
+  padding: 18px 22px;
   border: none;
-  border-radius: 12px;
+  border-radius: 18px;
   color: #ffffff;
   font-family: 'Manrope', sans-serif;
-  font-size: 1.05rem;
+  font-size: clamp(1.05rem, 4.5vw, 1.3rem);
   font-weight: 800;
+  letter-spacing: -0.01em;
   text-align: left;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.why-tab-chevron {
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-}
-.why-tab-chevron.open {
-  transform: rotate(180deg);
+.why-tab-header:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22);
 }
 .why-tab .why-section {
   margin-top: 12px;
