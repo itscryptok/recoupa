@@ -1,5 +1,5 @@
 import { type CSSProperties, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check, ChevronDown } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
 import referenceImage from '@assets/IMG_1197_recoupa_car_clean_local.jpeg';
@@ -84,6 +84,7 @@ const whySections = [
   {
     id: 'market-risks',
     title: 'The Bad Narrative',
+    color: '#BE123C',
     paragraphs: [
       'The bad narrative around crypto is understandable because it is based on real experiences. For many outsiders, the market appears to be controlled by insiders, misleading promoters, and projects created mainly for quick profit. In fast-moving ecosystems such as Pimpfun and Stolana, harmful actors can take advantage of limited research tools, weak protections, and the pressure to act quickly. Common dangers include pump-and-dump schemes, rug pulls, emotional FOMO traps, and gambling-like trading. After seeing these problems, responsible people may decide that avoiding crypto completely is the safest choice.',
       'This narrative is written from the perspective of an outsider with more than seven years of experience in the crypto space. That experience shows that the market’s bad reputation does not represent every project or opportunity. Some early-stage projects are built around legitimate ideas and may develop in the same way that promising young companies grow after receiving early support. The real challenge is separating credible innovation from short-term speculation and manipulation. Recoupa aims to help outsiders make that distinction through clearer research, stronger caution, and a better understanding of risk.',
@@ -92,6 +93,7 @@ const whySections = [
   {
     id: 'opportunity-ahead',
     title: 'The Good Onboarding',
+    color: '#047857',
     paragraphs: [
       'Good onboarding means helping people enter crypto through education rather than excitement or pressure. Adoption is likely to continue as more outsiders and younger generations become comfortable with digital assets. The important question is not only whether they will participate, but whether their first experience will be responsible and well informed. Without guidance, a new user may begin in the most speculative and unsafe parts of the market. A better starting point combines clear information, careful research, and practical risk awareness.',
       'Recoupa supports this journey with practical tools created for onboarders and outsiders without insider knowledge. Our Outdex presents selected early-stage projects so users can explore promising opportunities from a more informed starting point. Our casualty-claim tool also allows eligible $Recoupa token holders to file a claim for review if they experience a crypto loss. Together, these tools combine opportunity discovery with loss awareness and a possible path toward partial recovery. This approach helps users enter with the right footing, build knowledge they can share with future generations, and act on informed interest rather than careless FOMO.',
@@ -100,6 +102,7 @@ const whySections = [
   {
     id: 'cost-of-waiting',
     title: 'The Ugly Fear',
+    color: '#B45309',
     paragraphs: [
       'The Ugly Fear is simple: fear can protect people from bad projects, but it can also keep them away from exceptional ones. One of the most painful outcomes is discovering a credible project only after its largest period of growth has passed. Early participation may offer greater potential than entering after a project becomes widely known and highly valued. Many outsiders wait because the risks are confusing and reliable information is difficult to find. Their caution is reasonable, but waiting without a trusted research process may cause important opportunities to be missed.',
       'The solution is not to rush into every new project or follow market excitement without evidence. A responsible approach is to study the project, understand its purpose, examine the warning signs, and decide whether the possible reward justifies the risk. Recoupa aims to make this process more accessible to people without insider connections or specialized knowledge. We highlight selected early opportunities while keeping caution and loss prevention at the center of the experience. The goal is to help users avoid the ugly result of arriving too late without exposing them to the equally dangerous cost of acting carelessly.',
@@ -325,14 +328,8 @@ function ExplorePage() {
     setSearchQuery('');
   };
 
-  const selectWhySection = (id: string) => {
-    setSelectedWhyCard(id);
-    window.requestAnimationFrame(() => {
-      document.getElementById(id)?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    });
+  const toggleWhySection = (id: string) => {
+    setSelectedWhyCard((current) => (current === id ? null : id));
   };
 
   const getHeroText = () => {
@@ -548,51 +545,36 @@ function ExplorePage() {
 
               {destination === 'Discover' && tab === 'Thesis' && (
                 <>
-                  <div className="why-card" id="why-cards">
-                    {whySections.map((section) => (
-                      <button
-                        key={section.id}
-                        type="button"
-                        aria-pressed={selectedWhyCard === section.id}
-                        className={selectedWhyCard === section.id ? 'active' : ''}
-                        onClick={() => selectWhySection(section.id)}
-                      >
-                        {section.title}
-                      </button>
-                    ))}
-                  </div>
-
-                  {selectedWhyCard && (
-                    <button
-                      type="button"
-                      className="back-button why-back-button"
-                      onClick={() => {
-                        setSelectedWhyCard(null);
-                        document
-                          .getElementById('why-cards')
-                          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }}
-                    >
-                      <ArrowLeft size={16} />
-                      <span>BACK</span>
-                    </button>
-                  )}
-
-                  <div className="why-sections">
-                    {whySections.map((section) => (
-                      <article
-                        key={section.id}
-                        id={section.id}
-                        className={`why-section ${
-                          selectedWhyCard === section.id ? 'active' : ''
-                        }`}
-                      >
-                        <h2>{section.title}</h2>
-                        {section.paragraphs.map((paragraph) => (
-                          <p key={paragraph}>{paragraph}</p>
-                        ))}
-                      </article>
-                    ))}
+                  <div className="why-tabs">
+                    {whySections.map((section) => {
+                      const isOpen = selectedWhyCard === section.id;
+                      return (
+                        <div key={section.id} className="why-tab">
+                          <button
+                            type="button"
+                            className="why-tab-header"
+                            style={{ backgroundColor: section.color }}
+                            aria-expanded={isOpen}
+                            onClick={() => toggleWhySection(section.id)}
+                          >
+                            <span>{section.title}</span>
+                            <ChevronDown
+                              size={20}
+                              className={
+                                isOpen ? 'why-tab-chevron open' : 'why-tab-chevron'
+                              }
+                            />
+                          </button>
+                          {isOpen && (
+                            <article className="why-section">
+                              {section.paragraphs.map((paragraph) => (
+                                <p key={paragraph}>{paragraph}</p>
+                              ))}
+                            </article>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </>
               )}
