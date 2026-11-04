@@ -575,8 +575,11 @@ function ExplorePage() {
                               <article
                                 className="why-section"
                                 style={{
-                                  border: `2px solid ${section.color}`,
-                                  background: `color-mix(in srgb, ${section.color} 10%, var(--mode-surface))`,
+                                  borderTop: 'none',
+                                  borderLeft: `2px solid ${section.color}`,
+                                  borderRight: `2px solid ${section.color}`,
+                                  borderBottom: `2px solid ${section.color}`,
+                                  background: `color-mix(in srgb, ${section.color} 16%, var(--mode-surface))`,
                                 }}
                               >
                                 {section.paragraphs.map((paragraph) => (
