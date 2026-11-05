@@ -421,14 +421,26 @@ function ExplorePage() {
           swipeStart.current = null;
           if (!start) return;
           const touch = e.changedTouches[0];
-          if (
-            touch.clientY - start.y < -70 &&
-            Math.abs(touch.clientX - start.x) < 80
-          ) {
-            const currentIndex = destinations.indexOf(destination);
+          const dx = touch.clientX - start.x;
+          const dy = touch.clientY - start.y;
+          const currentIndex = destinations.indexOf(destination);
+          if (dy < -70 && Math.abs(dx) < 80) {
             selectDestination(
               destinations[(currentIndex + 1) % destinations.length],
             );
+          } else if (Math.abs(dx) > 70 && Math.abs(dy) < 80) {
+            if (dx < 0) {
+              selectDestination(
+                destinations[(currentIndex + 1) % destinations.length],
+              );
+            } else {
+              selectDestination(
+                destinations[
+                  (currentIndex - 1 + destinations.length) %
+                    destinations.length
+                ],
+              );
+            }
           }
         }}
       >
