@@ -340,20 +340,20 @@ function ExplorePage() {
     }
     if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        return "Recoupa helps traders and investors find new crypto projects early — projects that could grow into real companies. If a project team runs away with your money in a scam, Recoupa can help you get part of your loss back, so you can start again with more confidence.";
+        return "Find new projects to invest in early — projects that can grow into real companies. Also, if a team runs off with your money, Recoupa helps you get part of your loss back.";
       }
-      return "Recoupa is a list of selected crypto projects (the Outdex) and a safety system that helps prevent losses.";
+      return "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
     }
     if (destination === 'Outdex') {
-      return "Our Outdex shows new projects that we think can grow well over a long time.";
+      return "Find new projects built to grow over the long term.";
     }
     if (destination === 'Claim') {
-      return "If you lost money on other crypto tokens and you hold the required $Recoupa tokens, you can file a claim here.";
+      return "Lost money on other crypto tokens? Hold the required $Recoupa tokens and file a claim.";
     }
     if (destination === 'Perps') {
       return "Go long or go short on any new launch. Another finds your position and decides to counter it.";
     }
-    return `Explore ${destination} and learn what you need to trade with more confidence.`;
+    return `Learn what you need to trade with more confidence.`;
   };
 
   return (
