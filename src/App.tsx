@@ -340,7 +340,7 @@ function ExplorePage() {
     }
     if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        return "Find new projects to invest in early — projects that can grow into real companies. Also, if a team runs off with your money, Recoupa helps you get part of your loss back.";
+        return "Find new projects that you can invest early in — projects that can grow into real companies. Also, if a project team runs off with your money, Recoupa helps you get part of your loss back.";
       }
       return "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
     }
