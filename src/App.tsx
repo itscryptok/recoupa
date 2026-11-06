@@ -345,7 +345,7 @@ function ExplorePage() {
       return "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
     }
     if (destination === 'Outdex') {
-      return "Find new projects built to grow over the long term.";
+      return "Find promising projects early, before the wider market catches on. Watch them grow into long-term companies with substantial market capitalization.";
     }
     if (destination === 'Claim') {
       return "Lost money on other crypto tokens? Hold the required $Recoupa tokens and file a claim.";
