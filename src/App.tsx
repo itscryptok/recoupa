@@ -340,7 +340,7 @@ function ExplorePage() {
     }
     if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        return "Some crypto markets move so quickly and with so little oversight that they resemble the Wild West — environments best avoided if you want to protect yourself and your family from life-ruining losses. Yet within that same volatility are quality projects capable of delivering substantial returns to those who enter early, before they mature into large, long-term companies. We will show you both. This is not financial advice. And if a project we list fails, we can help you recoup your losses — provided you hold the Recoupa token.";
+        return "Crypto is actually good, but most crypto are bad. The good ones are quality projects capable of delivering substantial returns to those who enter early, before they mature into large, long-term companies. We will show you both. This is not financial advice. And if a project we list fails, we can help you recoup your losses — provided you hold the Recoupa token.";
       }
       return "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
     }
