@@ -341,7 +341,7 @@ function ExplorePage() {
     }
     if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        return "Does money dictate when you wake up and how you live? Crypto might actually be your tool to financial freedom. But crypto is bad and dangerous. So how? Just follow our Outsider Dex (Outdex). If you suffer a loss through the Outdex, read more under Outdex and Claim page.\n\nCrypto is actually good, but most crypto are bad. The good ones are quality projects capable of delivering substantial returns to those who enter early, before they mature into large, long-term companies. We will show you both. This is not financial advice. And if a project we list fails, we can help you recoup your losses — provided you hold the Recoupa token.";
+        return "Does money dictate when you wake up and how you live? Crypto might actually be your tool to financial freedom. But crypto is bad and dangerous. So how to get around that? Just follow our Outsider Dex (Outdex) listing and loss Claim tool that are built to protect you. This is not financial advice. Please consult with your financial advisor first.\n\nCrypto is actually good, but most crypto are bad. The good ones are quality projects capable of delivering substantial returns to those who enter early, before they mature into large, long-term companies. We will show you both. This is not financial advice. And if a project we list fails, we can help you recoup your losses — provided you hold the Recoupa token.";
       }
       return "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
     }
