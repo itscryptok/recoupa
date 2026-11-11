@@ -2747,6 +2747,28 @@ button:focus-visible, a:focus-visible {
   margin-bottom: 40px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.04);
 }
+.hero-page-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.hero-page-arrow {
+  background: transparent;
+  border: 0;
+  padding: 4px 12px;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--aubergine-text);
+  cursor: pointer;
+}
+.hero-paragraph {
+  margin: 0;
+}
+.hero-paragraph + .hero-paragraph {
+  margin-top: 1em;
+}
 .night-mode .hero-card {
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
