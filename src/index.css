@@ -2734,7 +2734,7 @@ button:focus-visible, a:focus-visible {
 .explore-workspace {
   max-width: 860px;
   margin: 0 auto;
-  padding: 24px 24px 120px;
+  padding: 4px 24px 120px;
 }
 .hero-card {
   background: var(--aubergine-bg);
@@ -2870,8 +2870,8 @@ button:focus-visible, a:focus-visible {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
 }
 .hero-text.is-expanded {
   display: block;
@@ -3383,7 +3383,7 @@ button.hero-metric-value {
     border-radius: 8px;
   }
   .explore-workspace {
-    padding: 148px 16px 80px;
+    padding: 128px 16px 80px;
   }
   .hero-card {
     padding: 20px;
