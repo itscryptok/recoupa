@@ -2760,7 +2760,7 @@ button:focus-visible, a:focus-visible {
   font-size: 2rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--aubergine-text);
+  color: var(--mode-ink);
   cursor: pointer;
 }
 .hero-paragraph {
