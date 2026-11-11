@@ -247,7 +247,6 @@ function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const navRef = useRef<HTMLElement>(null);
-  const swipeStart = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -296,6 +295,8 @@ function ExplorePage() {
     }
   };
 
+  const currentIndex = destinations.indexOf(destination);
+
   const matchingTokens = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query || selectedToken) {
@@ -340,7 +341,7 @@ function ExplorePage() {
     }
     if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        return "Does money dictate when you wake up and sleep? Crypto might actually be your tool to financial freedom. But crypto is bad and dangerous. So how? Crypto is actually good, but most crypto are bad. The good ones are quality projects capable of delivering substantial returns to those who enter early, before they mature into large, long-term companies. We will show you both. This is not financial advice. And if a project we list fails, we can help you recoup your losses — provided you hold the Recoupa token.";
+        return "Does money dictate when you wake up and how you live? Crypto might actually be your tool to financial freedom. But crypto is bad and dangerous. So how? Just follow our Outsider Dex (Outdex).\n\nCrypto is actually good, but most crypto are bad. The good ones are quality projects capable of delivering substantial returns to those who enter early, before they mature into large, long-term companies. We will show you both. This is not financial advice. And if a project we list fails, we can help you recoup your losses — provided you hold the Recoupa token.";
       }
       return "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
     }
@@ -410,40 +411,36 @@ function ExplorePage() {
         </nav>
       </div>
 
-      <section
-        className="explore-workspace"
-        onTouchStart={(e) => {
-          const touch = e.touches[0];
-          swipeStart.current = { x: touch.clientX, y: touch.clientY };
-        }}
-        onTouchEnd={(e) => {
-          const start = swipeStart.current;
-          swipeStart.current = null;
-          if (!start) return;
-          const touch = e.changedTouches[0];
-          const dx = touch.clientX - start.x;
-          const dy = touch.clientY - start.y;
-          const currentIndex = destinations.indexOf(destination);
-          if (dy < -70 && Math.abs(dx) < 80) {
-            selectDestination(
-              destinations[(currentIndex + 1) % destinations.length],
-            );
-          } else if (Math.abs(dx) > 70 && Math.abs(dy) < 80) {
-            if (dx < 0) {
-              selectDestination(
-                destinations[(currentIndex + 1) % destinations.length],
-              );
-            } else {
+      <section className="explore-workspace">
+        <div className="hero-page-nav">
+          <button
+            type="button"
+            className="hero-page-arrow"
+            aria-label="Previous page"
+            onClick={() =>
               selectDestination(
                 destinations[
                   (currentIndex - 1 + destinations.length) %
                     destinations.length
                 ],
-              );
+              )
             }
-          }
-        }}
-      >
+          >
+            {'<'}
+          </button>
+          <button
+            type="button"
+            className="hero-page-arrow"
+            aria-label="Next page"
+            onClick={() =>
+              selectDestination(
+                destinations[(currentIndex + 1) % destinations.length],
+              )
+            }
+          >
+            {'>'}
+          </button>
+        </div>
         <div className="hero-card">
           <div className="hero-status">
             <span className="hero-status-indicator">
@@ -457,7 +454,13 @@ function ExplorePage() {
             id="hero-description"
             className={`hero-text ${heroExpanded ? 'is-expanded' : ''}`}
           >
-            {getHeroText()}
+            {getHeroText()
+              .split('\n\n')
+              .map((paragraph, index) => (
+                <p key={index} className="hero-paragraph">
+                  {paragraph}
+                </p>
+              ))}
           </div>
           <button
             type="button"
