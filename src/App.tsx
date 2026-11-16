@@ -2,6 +2,7 @@ import { type CSSProperties, type ReactNode, useEffect, useMemo, useRef, useStat
 import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check, Home } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
+import { outdexListings, LISTING_UPDATED, type OutdexListing } from './outdex-listings';
 import referenceImage from '@assets/IMG_1197_recoupa_car_clean_local.jpeg';
 import {
   Link,
@@ -21,12 +22,7 @@ type Destination =
 
 type DiscoverTab = 'Thesis' | 'About';
 
-type Token = {
-  symbol: string;
-  name: string;
-  score: string;
-  category: string;
-};
+type Token = OutdexListing;
 
 const destinations: Destination[] = [
   'Discover',
@@ -64,16 +60,27 @@ const pageButtonLabels: Record<Destination, string> = {
   Resources: 'Find resources',
 };
 
-const tokenList: Token[] = [
-  { symbol: 'ARB', name: 'Arbitrum', score: 'A', category: 'Layer 2' },
-  { symbol: 'AVAX', name: 'Avalanche', score: 'A-', category: 'Layer 1' },
-  { symbol: 'BASE', name: 'Base', score: 'B+', category: 'Layer 2' },
-  { symbol: 'BTC', name: 'Bitcoin', score: 'A+', category: 'Store of value' },
-  { symbol: 'ETH', name: 'Ethereum', score: 'A+', category: 'Layer 1' },
-  { symbol: 'LINK', name: 'Chainlink', score: 'A', category: 'Oracle' },
-  { symbol: 'SOL', name: 'Solana', score: 'A', category: 'Layer 1' },
-  { symbol: 'TIA', name: 'Celestia', score: 'B+', category: 'Modular blockchain' },
-];
+const tokenList: Token[] = outdexListings;
+
+function formatMcap(value: number) {
+  return `$${(value / 1000).toFixed(1)}K`;
+}
+
+function formatUsd(value: number) {
+  return `$${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+}
+
+function formatAge(days: number) {
+  return `${days.toFixed(1)}d`;
+}
+
+function formatChain(chain: string) {
+  return chain.charAt(0).toUpperCase() + chain.slice(1);
+}
+
+function truncateMint(mint: string) {
+  return `${mint.slice(0, 6)}…${mint.slice(-4)}`;
+}
 
 const aboutParagraphs = [
   'Recoupa is an Outdex and loss-prevention system created specifically for the crypto market. Our Outdex is a selected index for outsiders, cautious traders, and newcomers who do not have insider access. It highlights early-stage projects that we believe show strong potential for long-term growth. Some of these projects may have the ability to reach a billion-dollar market value over time. Our goal is to help users discover promising opportunities earlier while entering the market with better information, stronger awareness, and less avoidable risk.',
@@ -347,7 +354,7 @@ function ExplorePage() {
 
   const getHeroText = () => {
     if (selectedToken) {
-      return `Here is the data and score for ${selectedToken.name}.`;
+      return `Here is the data for ${selectedToken.name}.`;
     }
     if (destination === 'Discover') {
       if (tab === 'Thesis') {
@@ -557,7 +564,7 @@ function ExplorePage() {
                         >
                           <span className="token-symbol font-mono">{token.symbol}</span>
                           <span className="token-name">{token.name}</span>
-                          <span className="token-category">{token.category}</span>
+                          <span className="token-category">{formatMcap(token.mcap)}</span>
                         </button>
                       ))}
                     </div>
@@ -667,11 +674,14 @@ function ExplorePage() {
 
               {destination === 'Outdex' && (
                 <div className="structured-list-card">
+                  <div className="list-freshness">
+                    Updated {LISTING_UPDATED} · from the latest recoupa44 scan
+                  </div>
                   <div className="list-header">
                     <div className="col-id">#</div>
                     <div className="col-name">TOKEN</div>
-                    <div className="col-metric hidden-mobile">CATEGORY</div>
-                    <div className="col-metric">SCORE</div>
+                    <div className="col-metric">MCAP</div>
+                    <div className="col-metric hidden-mobile">AGE</div>
                   </div>
                   <div className="list-body">
                     {tokenList.map((token, i) => (
@@ -688,13 +698,13 @@ function ExplorePage() {
                             <span className="token-subtitle">@{token.symbol.toLowerCase()}</span>
                           </div>
                         </div>
-                        <div className="col-metric hidden-mobile">
-                          <span className="micro-label">CATEGORY</span>
-                          <span className="metric-val">{token.category}</span>
-                        </div>
                         <div className="col-metric">
-                          <span className="micro-label">SCORE</span>
-                          <span className="metric-val font-mono">{token.score}</span>
+                          <span className="micro-label">MCAP</span>
+                          <span className="metric-val font-mono">{formatMcap(token.mcap)}</span>
+                        </div>
+                        <div className="col-metric hidden-mobile">
+                          <span className="micro-label">AGE</span>
+                          <span className="metric-val font-mono">{formatAge(token.ageDays)}</span>
                         </div>
                       </button>
                     ))}
@@ -716,35 +726,89 @@ function ExplorePage() {
 }
 
 function TokenDetail({ token, onBack }: { token: Token; onBack: () => void }) {
+  const [caCopied, setCaCopied] = useState(false);
+  const copyCa = async () => {
+    try {
+      await navigator.clipboard.writeText(token.mint);
+    } catch {
+      const area = document.createElement('textarea');
+      area.value = token.mint;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
+    }
+    setCaCopied(true);
+    window.setTimeout(() => setCaCopied(false), 2000);
+  };
   return (
     <div className="token-detail-card">
       <button type="button" className="back-button" onClick={onBack}>
         <ArrowLeft size={16} />
         <span>BACK TO OUTDEX</span>
       </button>
-      
+
       <div className="detail-header">
         <div className="detail-avatar-large">{token.symbol.slice(0, 1)}</div>
         <div className="detail-title-group">
           <h1>{token.name}</h1>
           <span>@{token.symbol.toLowerCase()}</span>
         </div>
-        <div className="detail-score font-mono">{token.score}</div>
+        <div className="detail-mcap font-mono">{formatMcap(token.mcap)}</div>
       </div>
 
       <div className="detail-metrics">
         <div className="metric-box">
-          <span className="micro-label">CATEGORY</span>
-          <span className="metric-val">{token.category}</span>
+          <span className="micro-label">MARKET CAP</span>
+          <span className="metric-val font-mono">{formatMcap(token.mcap)}</span>
         </div>
         <div className="metric-box">
-          <span className="micro-label">LISTING STATUS</span>
-          <span className="metric-val">Selected</span>
+          <span className="micro-label">AGE</span>
+          <span className="metric-val font-mono">{formatAge(token.ageDays)}</span>
         </div>
         <div className="metric-box">
-          <span className="micro-label">OUTDEX RATING</span>
-          <span className="metric-val font-mono">{token.score}</span>
+          <span className="micro-label">24H TRANSACTIONS</span>
+          <span className="metric-val font-mono">{token.txns24.toLocaleString('en-US')}</span>
         </div>
+        <div className="metric-box">
+          <span className="micro-label">24H VOLUME</span>
+          <span className="metric-val font-mono">{formatUsd(token.vol24)}</span>
+        </div>
+        <div className="metric-box">
+          <span className="micro-label">LIQUIDITY</span>
+          <span className="metric-val font-mono">{formatUsd(token.liqUsd)}</span>
+        </div>
+        <div className="metric-box">
+          <span className="micro-label">CHAIN / DEX</span>
+          <span className="metric-val">{formatChain(token.chain)} / {token.dex}</span>
+        </div>
+      </div>
+
+      <p className="detail-description">{token.description}</p>
+
+      <div className="detail-actions">
+        <a
+          className="detail-pumpfun-link"
+          href={`https://pump.fun/coin/${token.mint}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View on Pump.fun
+        </a>
+      </div>
+
+      <div className="detail-ca-row">
+        <span className="micro-label">CONTRACT</span>
+        <span className="detail-ca-address font-mono">{truncateMint(token.mint)}</span>
+        <button
+          type="button"
+          className="detail-ca-button"
+          onClick={copyCa}
+          aria-label="Copy contract address"
+        >
+          {caCopied ? <Check size={16} /> : <Copy size={16} />}
+          {caCopied ? 'Copied' : null}
+        </button>
       </div>
     </div>
   );
