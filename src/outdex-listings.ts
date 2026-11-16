@@ -66,7 +66,7 @@ export const outdexListings: OutdexListing[] = [
     dex: "pumpfun",
     priceUsd: 0.000002026852,
     priceChange24: 0,
-    description: "The Recoupa token. Hold 500,000 $Recoupa for at least 5 days before a rug pull to qualify for a share of fee rewards when you file a claim.",
+    description: "The Recoupa token. Hold 500,000 $Recoupa for more than 24 hours before a rug pull to qualify for a share of fee rewards when you file a claim.",
   },
   {
     symbol: "XFee",
