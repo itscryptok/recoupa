@@ -53,7 +53,7 @@ const pageAccents: Record<Destination, string> = {
 
 const pageButtonLabels: Record<Destination, string> = {
   Discover: 'Read the Thesis',
-  Outdex: 'See promising projects',
+  Outdex: 'Review the Outdex',
   Claim: 'Recoup losses',
   Perps: 'New launch Perps',
   TCapital: 'Thesis capital',
