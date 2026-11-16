@@ -455,7 +455,7 @@ function ExplorePage() {
       return "This is where you can find promising projects early, before the wider market catches on. Watch them grow into long-term companies with substantial market capitalization. And if any of the projects that we recommend on the Outdex500 page fails (a rug pull), we will refund some of your losses. But you must hold 500,000 $Recoupa tokens for at least 5 days before the rug pull happens. You will then qualify for a share of the fee rewards earned from $Recoupa's trading activity. When you submit a claim, we will review the activity on the wallet you submit to determine your eligibility and how much to send you. All filed claims and completed payout transaction hashes will be public on this webapp.";
     }
     if (destination === 'Claim') {
-      return "Lost money on other crypto tokens? Hold the required $Recoupa tokens and file a claim.";
+      return "Lost money on other crypto tokens? Only holders of 1,000,000 $Recoupa tokens and up can receive a paid claim, and the token you lost money on must have lost 95% of its value and be irredeemable. File a claim below.";
     }
     if (destination === 'Perps') {
       return "Go long or go short on any new launch. Another finds your position and decides to counter it.";
@@ -971,7 +971,7 @@ function ClaimSection() {
         </form>
         <p className="claim-note">
           Claims cover losses on other tokens, not on $Recoupa itself. To
-          qualify, you must hold 500,000 $Recoupa tokens for at least 5 days
+          qualify, you must hold 1,000,000 $Recoupa tokens for at least 5 days
           before the rug pull happens.
         </p>
       </div>
