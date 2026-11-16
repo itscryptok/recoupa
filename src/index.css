@@ -3809,6 +3809,28 @@ button.hero-metric-value {
   outline: 2px solid var(--page-accent);
   outline-offset: 1px;
 }
+.claim-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+.claim-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--mode-ink);
+  cursor: pointer;
+}
+.claim-check input[type='checkbox'] {
+  margin-top: 2px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--page-accent);
+}
 .claim-error {
   margin: 0 0 16px;
   color: #dc2626;
