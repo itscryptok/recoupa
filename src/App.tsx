@@ -442,25 +442,30 @@ function ExplorePage() {
   };
 
   const getHeroText = () => {
+    // Every hero ends with the financial-advice disclaimer (Yemi's order
+    // Nov 16, 2026). The old Discover wording ("This is not financial
+    // advice. Please consult with your financial advisor first.") was
+    // removed as a duplicate of this line.
+    const DISCLAIMER = "None of this represents financial advice. Talk to your financial advisor.";
+    let text: string;
     if (selectedToken) {
-      return `Here is the data for ${selectedToken.name}.`;
-    }
-    if (destination === 'Discover') {
+      text = `Here is the data for ${selectedToken.name}.`;
+    } else if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        return "Does money dictate when you wake up and how you live? Crypto might actually be your tool to financial freedom. But crypto is bad and dangerous. So how to get around that? Just follow our Outsider Dex (Outdex) listing and loss Claim tool that are built to protect you. This is not financial advice. Please consult with your financial advisor first.";
+        text = "Does money dictate when you wake up and how you live? Crypto might actually be your tool to financial freedom. But crypto is bad and dangerous. So how to get around that? Just follow our Outsider Dex (Outdex) listing and loss Claim tool that are built to protect you.";
+      } else {
+        text = "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
       }
-      return "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
+    } else if (destination === 'Outdex') {
+      text = "This is where you can find promising projects early, before the wider market catches on. Watch them grow into long-term companies with substantial market capitalization. And if any of the projects that we recommend on the Outdex500 page fails (a rug pull), we will refund some of your losses. But you must hold 500,000 $Recoupa tokens for at least 5 days before the rug pull happens. You will then qualify for a share of the fee rewards earned from $Recoupa's trading activity. When you submit a claim, we will review the activity on the wallet you submit to determine your eligibility and how much to send you. All filed claims and completed payout transaction hashes will be public on this webapp.";
+    } else if (destination === 'Claim') {
+      text = "Lost money on other crypto tokens? Only holders of 1,000,000 $Recoupa tokens and up can receive a paid claim, and the token you lost money on must be one of the tokens on our Outdex list, have lost 95% of its value and be irredeemable. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
+    } else if (destination === 'Perps') {
+      text = "Go long or go short on any new launch. Another finds your position and decides to counter it.";
+    } else {
+      text = "Learn what you need to trade with more confidence.";
     }
-    if (destination === 'Outdex') {
-      return "This is where you can find promising projects early, before the wider market catches on. Watch them grow into long-term companies with substantial market capitalization. And if any of the projects that we recommend on the Outdex500 page fails (a rug pull), we will refund some of your losses. But you must hold 500,000 $Recoupa tokens for at least 5 days before the rug pull happens. You will then qualify for a share of the fee rewards earned from $Recoupa's trading activity. When you submit a claim, we will review the activity on the wallet you submit to determine your eligibility and how much to send you. All filed claims and completed payout transaction hashes will be public on this webapp.";
-    }
-    if (destination === 'Claim') {
-      return "Lost money on other crypto tokens? Only holders of 1,000,000 $Recoupa tokens and up can receive a paid claim, and the token you lost money on must be one of the tokens on our Outdex list, have lost 95% of its value and be irredeemable. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
-    }
-    if (destination === 'Perps') {
-      return "Go long or go short on any new launch. Another finds your position and decides to counter it.";
-    }
-    return `Learn what you need to trade with more confidence.`;
+    return `${text} ${DISCLAIMER}`;
   };
 
   return (
