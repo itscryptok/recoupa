@@ -2480,6 +2480,10 @@ button:focus-visible, a:focus-visible {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   overflow-wrap: anywhere;
 }
+.reference-ca-link {
+  color: inherit;
+  text-decoration: underline;
+}
 .reference-ca-button {
   flex: 0 0 auto;
   display: inline-flex;
