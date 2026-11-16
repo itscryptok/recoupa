@@ -452,7 +452,7 @@ function ExplorePage() {
       text = `Here is the data for ${selectedToken.name}.`;
     } else if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        text = "Does money dictate how you live your life - when you wake up, when you sleep and more? Crypto might actually be your answer to financial freedom. But crypto is bad and dangerous. So how to get around that? Just follow our Outsider Dex (Outdex) listing and loss Claim tool that are built to protect you.";
+        text = "Does money dictate how you live your life - when you wake up, when you sleep and more? Crypto might actually be your answer to financial freedom. But crypto is bad and dangerous. How we have gotten around that is by following two things: our own Outdex list (built for Outsider trading) and the loss Claim tool that is built to protect against bad projects.";
       } else {
         text = "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
       }
