@@ -63,6 +63,8 @@ const pageButtonLabels: Record<Destination, string> = {
 const tokenList: Token[] = outdexListings;
 
 function formatMcap(value: number) {
+  if (value < 1000)
+    return `$${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
   return `$${(value / 1000).toFixed(1)}K`;
 }
 
