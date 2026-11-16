@@ -74,8 +74,24 @@ function formatAge(days: number) {
   return `${days.toFixed(1)}d`;
 }
 
+function formatPrice(value: number) {
+  return `$${value.toFixed(8)}`;
+}
+
+function formatChange(value: number) {
+  return `${value > 0 ? '+' : ''}${value.toFixed(2)}%`;
+}
+
+const chainLabels: Record<string, string> = {
+  bnb: 'BNB',
+  bsc: 'BNB',
+  solana: 'Solana',
+  base: 'Base',
+  ethereum: 'Ethereum',
+};
+
 function formatChain(chain: string) {
-  return chain.charAt(0).toUpperCase() + chain.slice(1);
+  return chainLabels[chain.toLowerCase()] ?? (chain.charAt(0).toUpperCase() + chain.slice(1));
 }
 
 function truncateMint(mint: string) {
@@ -675,39 +691,72 @@ function ExplorePage() {
               {destination === 'Outdex' && (
                 <div className="structured-list-card">
                   <div className="list-freshness">
-                    Updated {LISTING_UPDATED} · from the latest recoupa44 scan
+                    Updated {LISTING_UPDATED}
                   </div>
-                  <div className="list-header">
-                    <div className="col-id">#</div>
-                    <div className="col-name">TOKEN</div>
-                    <div className="col-metric">MCAP</div>
-                    <div className="col-metric hidden-mobile">AGE</div>
-                  </div>
-                  <div className="list-body">
-                    {tokenList.map((token, i) => (
-                      <button
-                        key={token.symbol}
-                        className="list-row"
-                        onClick={() => selectToken(token)}
-                      >
-                        <div className="col-id font-mono">{(i + 1).toString().padStart(2, '0')}</div>
-                        <div className="col-name">
-                          <div className="token-avatar">{token.symbol.slice(0, 1)}</div>
-                          <div className="token-info">
-                            <span className="token-title">{token.name}</span>
-                            <span className="token-subtitle">@{token.symbol.toLowerCase()}</span>
+                  <div className="list-scroll">
+                    <div className="list-header">
+                      <div className="col-id">#</div>
+                      <div className="col-name">TOKEN</div>
+                      <div className="col-metric">CHAIN</div>
+                      <div className="col-metric">MCAP</div>
+                      <div className="col-metric">AGE</div>
+                      <div className="col-metric">24H VOL</div>
+                      <div className="col-metric">LIQ</div>
+                    </div>
+                    <div className="list-body">
+                      {tokenList.map((token, i) => (
+                        <div
+                          key={token.symbol}
+                          role="button"
+                          tabIndex={0}
+                          className="list-row"
+                          onClick={() => selectToken(token)}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault();
+                              selectToken(token);
+                            }
+                          }}
+                        >
+                          <div className="col-id font-mono">{(i + 1).toString().padStart(2, '0')}</div>
+                          <div className="col-name">
+                            <div className="token-avatar">{token.symbol.slice(0, 1)}</div>
+                            <div className="token-info">
+                              <a
+                                className="token-title-link"
+                                href={`https://pump.fun/coin/${token.mint}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(event) => event.stopPropagation()}
+                              >
+                                {token.name}
+                              </a>
+                              <span className="token-subtitle">@{token.symbol.toLowerCase()}</span>
+                            </div>
+                          </div>
+                          <div className="col-metric">
+                            <span className="micro-label">CHAIN</span>
+                            <span className="metric-val">{formatChain(token.chain)}</span>
+                          </div>
+                          <div className="col-metric">
+                            <span className="micro-label">MCAP</span>
+                            <span className="metric-val font-mono">{formatMcap(token.mcap)}</span>
+                          </div>
+                          <div className="col-metric">
+                            <span className="micro-label">AGE</span>
+                            <span className="metric-val font-mono">{formatAge(token.ageDays)}</span>
+                          </div>
+                          <div className="col-metric">
+                            <span className="micro-label">24H VOL</span>
+                            <span className="metric-val font-mono">{formatMcap(token.vol24)}</span>
+                          </div>
+                          <div className="col-metric">
+                            <span className="micro-label">LIQ</span>
+                            <span className="metric-val font-mono">{formatMcap(token.liqUsd)}</span>
                           </div>
                         </div>
-                        <div className="col-metric">
-                          <span className="micro-label">MCAP</span>
-                          <span className="metric-val font-mono">{formatMcap(token.mcap)}</span>
-                        </div>
-                        <div className="col-metric hidden-mobile">
-                          <span className="micro-label">AGE</span>
-                          <span className="metric-val font-mono">{formatAge(token.ageDays)}</span>
-                        </div>
-                      </button>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -761,6 +810,14 @@ function TokenDetail({ token, onBack }: { token: Token; onBack: () => void }) {
         <div className="metric-box">
           <span className="micro-label">MARKET CAP</span>
           <span className="metric-val font-mono">{formatMcap(token.mcap)}</span>
+        </div>
+        <div className="metric-box">
+          <span className="micro-label">PRICE</span>
+          <span className="metric-val font-mono">{formatPrice(token.priceUsd)}</span>
+        </div>
+        <div className="metric-box">
+          <span className="micro-label">24H CHANGE</span>
+          <span className="metric-val font-mono">{formatChange(token.priceChange24)}</span>
         </div>
         <div className="metric-box">
           <span className="micro-label">AGE</span>
