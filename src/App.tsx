@@ -459,7 +459,7 @@ function ExplorePage() {
     } else if (destination === 'Outdex') {
       text = "This is where you can find promising projects early, before the wider market catches on. Watch them grow into long-term companies with substantial market capitalization. And if any of the projects that we recommend on the Outdex500 page fails (a rug pull), we will refund some of your losses. But you must hold 500,000 $Recoupa tokens for at least 5 days before the rug pull happens. You will then qualify for a share of the fee rewards earned from $Recoupa's trading activity. When you submit a claim, we will review the activity on the wallet you submit to determine your eligibility and how much to send you. All filed claims and completed payout transaction hashes will be public on this webapp.";
     } else if (destination === 'Claim') {
-      text = "Lost money on other crypto tokens? Only holders of 1,000,000 $Recoupa tokens and up can receive a paid claim, and the token you lost money on must be one of the tokens on our Outdex list, have lost 95% of its value and be irredeemable. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
+      text = "Lost money on other crypto tokens? To receive a paid claim, you must have held 500,000 $Recoupa tokens for more than 24 hours before the loss token crash, the token you lost money on must be one of the tokens on our Outdex list, and you must have held that loss token for more than 24 hours before the crash. The loss token must also have lost 95% of its value and be irredeemable. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
     } else if (destination === 'Perps') {
       text = "Go long or go short on any new launch. Another finds your position and decides to counter it.";
     } else {
@@ -886,6 +886,12 @@ function CopyButton({ value, label }: { value: string; label: string }) {
 function ClaimSection() {
   const [walletAddress, setWalletAddress] = useState('');
   const [lossTokenCa, setLossTokenCa] = useState('');
+  const [confirmations, setConfirmations] = useState([false, false, false]);
+  const confirmationLabels = [
+    'Have you held 500,000 $Recoupa tokens for more than 24 hours before the loss token crash?',
+    'Can you confirm that the loss token is one of those listed on our Outdex list?',
+    'Can you confirm that you have held the loss token for more than 24 hours before the crash?',
+  ];
   const [claims, setClaims] = useState<SubmittedClaim[]>(() =>
     loadSubmittedClaims(),
   );
@@ -898,6 +904,10 @@ function ClaimSection() {
     const lossCa = lossTokenCa.trim();
     if (!wallet || !lossCa) {
       setFormError('Enter both your wallet address and the loss token CA.');
+      return;
+    }
+    if (!confirmations.every(Boolean)) {
+      setFormError('Please confirm all three statements to file your claim.');
       return;
     }
     const existing = new Set(claims.map((claim) => claim.claimNumber));
@@ -920,6 +930,7 @@ function ClaimSection() {
     }
     setWalletAddress('');
     setLossTokenCa('');
+    setConfirmations([false, false, false]);
     setFormError('');
     setJustFiled(claimNumber);
   };
@@ -965,6 +976,22 @@ function ClaimSection() {
               aria-label="Loss token contract address"
             />
           </label>
+          <div className="claim-checks">
+            {confirmationLabels.map((label, index) => (
+              <label key={label} className="claim-check">
+                <input
+                  type="checkbox"
+                  checked={confirmations[index]}
+                  onChange={(event) => {
+                    const next = [...confirmations];
+                    next[index] = event.target.checked;
+                    setConfirmations(next);
+                  }}
+                />
+                <span>{label}</span>
+              </label>
+            ))}
+          </div>
           {formError && (
             <p className="claim-error" role="alert">
               {formError}
@@ -976,8 +1003,9 @@ function ClaimSection() {
         </form>
         <p className="claim-note">
           Claims cover losses on other tokens, not on $Recoupa itself. To
-          qualify, you must hold 1,000,000 $Recoupa tokens for at least 5 days
-          before the rug pull happens.
+          qualify, you must have held 500,000 $Recoupa tokens for more than 24
+          hours before the loss token crash, and have held the loss token for
+          more than 24 hours before the crash.
         </p>
       </div>
 
