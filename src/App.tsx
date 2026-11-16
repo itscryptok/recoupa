@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { type CSSProperties, type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check, Home } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
@@ -54,13 +54,83 @@ const pageAccents: Record<Destination, string> = {
 const pageButtonLabels: Record<Destination, string> = {
   Discover: 'Read the Thesis',
   Outdex: 'See promising projects',
-  Claim: 'Recoup your losses',
+  Claim: 'Recoup losses',
   Perps: 'New launch Perps',
   TCapital: 'Thesis capital',
   Resources: 'Find resources',
 };
 
 const tokenList: Token[] = outdexListings;
+
+type SubmittedClaim = {
+  claimNumber: string;
+  walletAddress: string;
+  lossTokenCa: string;
+  dateFiled: string;
+};
+
+type PaidClaim = {
+  claimNumber: string;
+  txHash: string;
+};
+
+// Paid claims are updated by hand: when a claim is paid, its claim number and
+// payout transaction hash are added here.
+const paidClaims: PaidClaim[] = [];
+
+const SUBMITTED_CLAIMS_KEY = 'recoupa_claims_submitted';
+
+function loadSubmittedClaims(): SubmittedClaim[] {
+  try {
+    const raw = localStorage.getItem(SUBMITTED_CLAIMS_KEY);
+    if (!raw) {
+      return [];
+    }
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+    return parsed.filter(
+      (claim): claim is SubmittedClaim =>
+        typeof claim === 'object' &&
+        claim !== null &&
+        typeof (claim as SubmittedClaim).claimNumber === 'string' &&
+        typeof (claim as SubmittedClaim).walletAddress === 'string' &&
+        typeof (claim as SubmittedClaim).lossTokenCa === 'string' &&
+        typeof (claim as SubmittedClaim).dateFiled === 'string',
+    );
+  } catch {
+    return [];
+  }
+}
+
+function generateClaimNumber() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let claimNumber = '';
+  for (let i = 0; i < 6; i++) {
+    claimNumber += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return claimNumber;
+}
+
+function localTodayIso() {
+  const now = new Date();
+  const month = `${now.getMonth() + 1}`.padStart(2, '0');
+  const day = `${now.getDate()}`.padStart(2, '0');
+  return `${now.getFullYear()}-${month}-${day}`;
+}
+
+function formatClaimDate(iso: string) {
+  const [year, month, day] = iso.split('-').map(Number);
+  if (!year || !month || !day) {
+    return iso;
+  }
+  return new Date(year, month - 1, day).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
 
 function formatMcap(value: number) {
   if (value < 1000)
@@ -764,9 +834,11 @@ function ExplorePage() {
                 </div>
               )}
 
-              {destination !== 'Discover' && destination !== 'Outdex' && (
-                <div className="empty-card" />
-              )}
+              {destination === 'Claim' && <ClaimSection />}
+
+              {destination !== 'Discover' &&
+                destination !== 'Outdex' &&
+                destination !== 'Claim' && <div className="empty-card" />}
             </>
           )}
         </section>
@@ -774,6 +846,222 @@ function ExplorePage() {
         </div>
       )}
     </main>
+  );
+}
+
+function CopyButton({ value, label }: { value: string; label: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      const area = document.createElement('textarea');
+      area.value = value;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
+    }
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button
+      type="button"
+      className="claim-copy-button"
+      onClick={copy}
+      aria-label={label}
+    >
+      {copied ? <Check size={14} /> : <Copy size={14} />}
+      {copied ? 'Copied' : null}
+    </button>
+  );
+}
+
+function ClaimSection() {
+  const [walletAddress, setWalletAddress] = useState('');
+  const [lossTokenCa, setLossTokenCa] = useState('');
+  const [claims, setClaims] = useState<SubmittedClaim[]>(() =>
+    loadSubmittedClaims(),
+  );
+  const [justFiled, setJustFiled] = useState<string | null>(null);
+  const [formError, setFormError] = useState('');
+
+  const submitClaim = (event: FormEvent) => {
+    event.preventDefault();
+    const wallet = walletAddress.trim();
+    const lossCa = lossTokenCa.trim();
+    if (!wallet || !lossCa) {
+      setFormError('Enter both your wallet address and the loss token CA.');
+      return;
+    }
+    const existing = new Set(claims.map((claim) => claim.claimNumber));
+    let claimNumber = generateClaimNumber();
+    while (existing.has(claimNumber)) {
+      claimNumber = generateClaimNumber();
+    }
+    const claim: SubmittedClaim = {
+      claimNumber,
+      walletAddress: wallet,
+      lossTokenCa: lossCa,
+      dateFiled: localTodayIso(),
+    };
+    const next = [claim, ...claims];
+    setClaims(next);
+    try {
+      localStorage.setItem(SUBMITTED_CLAIMS_KEY, JSON.stringify(next));
+    } catch {
+      // Storage unavailable — the claim still shows for this visit.
+    }
+    setWalletAddress('');
+    setLossTokenCa('');
+    setFormError('');
+    setJustFiled(claimNumber);
+  };
+
+  return (
+    <div className="claim-section">
+      <div className="claim-form-card">
+        <h2>File a claim</h2>
+        <p className="claim-intro">
+          Lost money on another token? File a claim for review. We will check
+          the activity on the wallet you submit to determine your eligibility
+          and how much to send you.
+        </p>
+        {justFiled && (
+          <p className="claim-success" role="status">
+            Claim submitted. Your claim number is{' '}
+            <strong className="font-mono">{justFiled}</strong> — keep it safe,
+            you will need it to check your payout.
+          </p>
+        )}
+        <form onSubmit={submitClaim} noValidate>
+          <label className="claim-field">
+            <span className="claim-field-label">Wallet address</span>
+            <input
+              type="text"
+              value={walletAddress}
+              onChange={(event) => setWalletAddress(event.target.value)}
+              placeholder="Your Solana or EVM wallet address"
+              autoComplete="off"
+              spellCheck={false}
+              aria-label="Wallet address"
+            />
+          </label>
+          <label className="claim-field">
+            <span className="claim-field-label">Loss token CA</span>
+            <input
+              type="text"
+              value={lossTokenCa}
+              onChange={(event) => setLossTokenCa(event.target.value)}
+              placeholder="Contract address of the token you lost money on"
+              autoComplete="off"
+              spellCheck={false}
+              aria-label="Loss token contract address"
+            />
+          </label>
+          {formError && (
+            <p className="claim-error" role="alert">
+              {formError}
+            </p>
+          )}
+          <button type="submit" className="claim-submit-button">
+            Submit claim
+          </button>
+        </form>
+        <p className="claim-note">
+          Claims cover losses on other tokens, not on $Recoupa itself. To
+          qualify, you must hold 500,000 $Recoupa tokens for at least 5 days
+          before the rug pull happens.
+        </p>
+      </div>
+
+      <div className="claims-block">
+        <h2>Submitted claims</h2>
+        {claims.length === 0 ? (
+          <p className="claim-empty">
+            No claims submitted yet. Claims you file here will appear below.
+          </p>
+        ) : (
+          <ul className="claims-list">
+            {claims.map((claim) => (
+              <li key={claim.claimNumber} className="claim-card">
+                <div className="claim-card-head">
+                  <span className="claim-number font-mono">
+                    #{claim.claimNumber}
+                  </span>
+                  <span className="claim-status-badge">Submitted</span>
+                </div>
+                <div className="claim-row">
+                  <span className="micro-label">WALLET</span>
+                  <span className="claim-value font-mono">
+                    {truncateMint(claim.walletAddress)}
+                  </span>
+                  <CopyButton
+                    value={claim.walletAddress}
+                    label="Copy wallet address"
+                  />
+                </div>
+                <div className="claim-row">
+                  <span className="micro-label">LOSS TOKEN CA</span>
+                  <a
+                    className="claim-value-link font-mono"
+                    href={`https://pump.fun/coin/${claim.lossTokenCa}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {truncateMint(claim.lossTokenCa)}
+                  </a>
+                  <CopyButton
+                    value={claim.lossTokenCa}
+                    label="Copy loss token contract address"
+                  />
+                </div>
+                <div className="claim-row">
+                  <span className="micro-label">DATE FILED</span>
+                  <span className="claim-value">
+                    {formatClaimDate(claim.dateFiled)}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div className="claims-block">
+        <h2>Paid claims</h2>
+        {paidClaims.length === 0 ? (
+          <p className="claim-empty">
+            No paid claims yet. When a claim is paid, its claim number and
+            payout transaction hash will appear here.
+          </p>
+        ) : (
+          <ul className="claims-list">
+            {paidClaims.map((paid) => (
+              <li key={paid.claimNumber} className="claim-card">
+                <div className="claim-card-head">
+                  <span className="claim-number font-mono">
+                    #{paid.claimNumber}
+                  </span>
+                  <span className="claim-status-badge is-paid">Paid</span>
+                </div>
+                <div className="claim-row">
+                  <span className="micro-label">TX HASH</span>
+                  <span className="claim-value font-mono">
+                    {truncateMint(paid.txHash)}
+                  </span>
+                  <CopyButton
+                    value={paid.txHash}
+                    label="Copy transaction hash"
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
   );
 }
 
