@@ -78,7 +78,8 @@ function formatPrice(value: number) {
   return `$${value.toFixed(8)}`;
 }
 
-function formatChange(value: number) {
+function formatChange(value: number | null) {
+  if (value === null) return '—';
   return `${value > 0 ? '+' : ''}${value.toFixed(2)}%`;
 }
 
@@ -752,7 +753,7 @@ function ExplorePage() {
                           </div>
                           <div className="col-metric">
                             <span className="micro-label">LIQ</span>
-                            <span className="metric-val font-mono">{formatMcap(token.liqUsd)}</span>
+                            <span className="metric-val font-mono">{token.liqUsd === 0 ? '—' : formatMcap(token.liqUsd)}</span>
                           </div>
                         </div>
                       ))}
@@ -833,7 +834,7 @@ function TokenDetail({ token, onBack }: { token: Token; onBack: () => void }) {
         </div>
         <div className="metric-box">
           <span className="micro-label">LIQUIDITY</span>
-          <span className="metric-val font-mono">{formatUsd(token.liqUsd)}</span>
+          <span className="metric-val font-mono">{token.liqUsd === 0 ? '—' : formatUsd(token.liqUsd)}</span>
         </div>
         <div className="metric-box">
           <span className="micro-label">CHAIN / DEX</span>
