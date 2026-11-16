@@ -57,7 +57,7 @@ const pageAccents: Record<Destination, string> = {
 
 const pageButtonLabels: Record<Destination, string> = {
   Discover: 'Read the Thesis',
-  Outdex: 'See Promising projects',
+  Outdex: 'See promising projects',
   Claim: 'Recoup your losses',
   Perps: 'New launch Perps',
   TCapital: 'Thesis capital',
@@ -153,7 +153,17 @@ function LandingPage() {
           <span>or buck around and find out</span>
         </span>
         <div className="reference-ca-copy">
-          <span>CA: BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump</span>
+          <span>
+            CA:{' '}
+            <a
+              className="reference-ca-link"
+              href="https://pump.fun/coin/BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump
+            </a>
+          </span>
           <button
             type="button"
             className="reference-ca-button"
