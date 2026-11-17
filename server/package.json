@@ -1,0 +1,1 @@
+{"dependencies":{"bcryptjs":"^2.4.3","express":"^4.21.2","pg":"^8.13.1"},"name":"recoupa-api","private":true,"type":"module"}
