@@ -3,6 +3,15 @@ import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check, Home } 
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
 import { outdexListings, LISTING_UPDATED, type OutdexListing } from './outdex-listings';
+import AddyPage from '@/pages/addy';
+import {
+  ApiError,
+  fetchClaims,
+  submitClaim as submitClaimApi,
+  migrateClaim,
+  type Claim,
+  type TxChain,
+} from './api';
 import referenceImage from '@assets/IMG_1197_recoupa_car_clean_local.jpeg';
 import {
   Link,
@@ -69,15 +78,6 @@ type SubmittedClaim = {
   dateFiled: string;
 };
 
-type PaidClaim = {
-  claimNumber: string;
-  txHash: string;
-};
-
-// Paid claims are updated by hand: when a claim is paid, its claim number and
-// payout transaction hash are added here.
-const paidClaims: PaidClaim[] = [];
-
 const SUBMITTED_CLAIMS_KEY = 'recoupa_claims_submitted';
 
 function loadSubmittedClaims(): SubmittedClaim[] {
@@ -104,22 +104,6 @@ function loadSubmittedClaims(): SubmittedClaim[] {
   }
 }
 
-function generateClaimNumber() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let claimNumber = '';
-  for (let i = 0; i < 6; i++) {
-    claimNumber += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return claimNumber;
-}
-
-function localTodayIso() {
-  const now = new Date();
-  const month = `${now.getMonth() + 1}`.padStart(2, '0');
-  const day = `${now.getDate()}`.padStart(2, '0');
-  return `${now.getFullYear()}-${month}-${day}`;
-}
-
 function formatClaimDate(iso: string) {
   const [year, month, day] = iso.split('-').map(Number);
   if (!year || !month || !day) {
@@ -130,6 +114,28 @@ function formatClaimDate(iso: string) {
     day: 'numeric',
     year: 'numeric',
   });
+}
+
+const TX_EXPLORERS: Record<TxChain, string> = {
+  solana: 'https://explorer.solana.com/tx/',
+  base: 'https://basescan.org/tx/',
+  bsc: 'https://bscscan.com/tx/',
+  robinhood: 'https://robinhoodchain.blockscout.com/tx/',
+};
+
+function txExplorerUrl(chain: TxChain | null, txHash: string) {
+  return `${TX_EXPLORERS[chain ?? 'solana']}${txHash}`;
+}
+
+type ClaimTab = 'new' | 'open' | 'rejected' | 'paid';
+
+const NEW_CLAIM_AGE_MS = 48 * 60 * 60 * 1000;
+
+function claimTabOf(claim: Claim): ClaimTab {
+  if (claim.status === 'rejected') return 'rejected';
+  if (claim.status === 'paid') return 'paid';
+  const ageMs = Date.now() - new Date(claim.created_at).getTime();
+  return ageMs < NEW_CLAIM_AGE_MS ? 'new' : 'open';
 }
 
 function formatMcap(value: number) {
@@ -892,13 +898,90 @@ function ClaimSection() {
     'Can you confirm that the loss token is one of those listed on our Outdex list?',
     'Can you confirm that you have held the loss token for more than 24 hours before the crash?',
   ];
-  const [claims, setClaims] = useState<SubmittedClaim[]>(() =>
-    loadSubmittedClaims(),
-  );
+  const [boardClaims, setBoardClaims] = useState<Claim[]>([]);
+  const [boardLoading, setBoardLoading] = useState(true);
+  const [boardError, setBoardError] = useState('');
+  const [activeTab, setActiveTab] = useState<ClaimTab>('new');
   const [justFiled, setJustFiled] = useState<string | null>(null);
   const [formError, setFormError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const submitClaim = (event: FormEvent) => {
+  const loadBoard = async () => {
+    setBoardLoading(true);
+    setBoardError('');
+    try {
+      const data = await fetchClaims();
+      setBoardClaims(data);
+    } catch (err) {
+      setBoardError(
+        err instanceof Error ? err.message : 'Could not load claims.',
+      );
+    } finally {
+      setBoardLoading(false);
+    }
+  };
+
+  // One-time migration of claims filed into localStorage before the claims
+  // board moved to the API. Silent; never blocks the UI. The local key is
+  // removed only once every stored claim is accepted or already present
+  // server-side (409) — on any other failure it stays for a later visit.
+  useEffect(() => {
+    let cancelled = false;
+    const migrateAndLoad = async () => {
+      const stored = loadSubmittedClaims();
+      if (stored.length > 0) {
+        const results = await Promise.allSettled(
+          stored.map((claim) =>
+            migrateClaim(
+              claim.claimNumber,
+              claim.walletAddress,
+              claim.lossTokenCa,
+              claim.dateFiled,
+            ),
+          ),
+        );
+        const allSettled = results.every(
+          (result) =>
+            result.status === 'fulfilled' ||
+            (result.reason instanceof ApiError && result.reason.status === 409),
+        );
+        if (allSettled) {
+          try {
+            localStorage.removeItem(SUBMITTED_CLAIMS_KEY);
+          } catch {
+            // Storage unavailable — nothing to clean up.
+          }
+        }
+      }
+      if (!cancelled) {
+        await loadBoard();
+      }
+    };
+    migrateAndLoad();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const tabCounts = useMemo(() => {
+    const counts: Record<ClaimTab, number> = {
+      new: 0,
+      open: 0,
+      rejected: 0,
+      paid: 0,
+    };
+    for (const claim of boardClaims) {
+      counts[claimTabOf(claim)] += 1;
+    }
+    return counts;
+  }, [boardClaims]);
+
+  const visibleClaims = boardClaims.filter(
+    (claim) => claimTabOf(claim) === activeTab,
+  );
+
+  const submitClaim = async (event: FormEvent) => {
     event.preventDefault();
     const wallet = walletAddress.trim();
     const lossCa = lossTokenCa.trim();
@@ -910,29 +993,25 @@ function ClaimSection() {
       setFormError('Please confirm all three statements to file your claim.');
       return;
     }
-    const existing = new Set(claims.map((claim) => claim.claimNumber));
-    let claimNumber = generateClaimNumber();
-    while (existing.has(claimNumber)) {
-      claimNumber = generateClaimNumber();
-    }
-    const claim: SubmittedClaim = {
-      claimNumber,
-      walletAddress: wallet,
-      lossTokenCa: lossCa,
-      dateFiled: localTodayIso(),
-    };
-    const next = [claim, ...claims];
-    setClaims(next);
-    try {
-      localStorage.setItem(SUBMITTED_CLAIMS_KEY, JSON.stringify(next));
-    } catch {
-      // Storage unavailable — the claim still shows for this visit.
-    }
-    setWalletAddress('');
-    setLossTokenCa('');
-    setConfirmations([false, false, false]);
+    setSubmitting(true);
     setFormError('');
-    setJustFiled(claimNumber);
+    try {
+      const filed = await submitClaimApi(wallet, lossCa);
+      setWalletAddress('');
+      setLossTokenCa('');
+      setConfirmations([false, false, false]);
+      setJustFiled(filed.claim_number);
+      setActiveTab('new');
+      await loadBoard();
+    } catch (err) {
+      setFormError(
+        err instanceof Error
+          ? err.message
+          : 'Could not file the claim. Please try again.',
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -997,8 +1076,12 @@ function ClaimSection() {
               {formError}
             </p>
           )}
-          <button type="submit" className="claim-submit-button">
-            Submit claim
+          <button
+            type="submit"
+            className="claim-submit-button"
+            disabled={submitting}
+          >
+            {submitting ? 'Submitting…' : 'Submit claim'}
           </button>
         </form>
         <p className="claim-note">
@@ -1010,28 +1093,72 @@ function ClaimSection() {
       </div>
 
       <div className="claims-block">
-        <h2>Submitted claims</h2>
-        {claims.length === 0 ? (
+        <h2>Claims</h2>
+        <div className="claims-tabs" role="tablist" aria-label="Claim status">
+          {(
+            [
+              ['new', 'New'],
+              ['open', 'Open'],
+              ['rejected', 'Rejected'],
+              ['paid', 'Paid'],
+            ] as [ClaimTab, string][]
+          ).map(([tab, label]) => (
+            <button
+              key={tab}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab}
+              className={`claims-tab${activeTab === tab ? ' is-active' : ''}`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {label}
+              <span className="claims-tab-count">{tabCounts[tab]}</span>
+            </button>
+          ))}
+        </div>
+        {boardLoading ? (
+          <p className="claim-empty">Loading claims…</p>
+        ) : boardError ? (
+          <p className="claim-empty" role="alert">
+            {boardError}
+          </p>
+        ) : visibleClaims.length === 0 ? (
           <p className="claim-empty">
-            No claims submitted yet. Claims you file here will appear below.
+            {activeTab === 'new' && 'No new claims yet.'}
+            {activeTab === 'open' && 'No open claims yet.'}
+            {activeTab === 'rejected' && 'No rejected claims yet.'}
+            {activeTab === 'paid' &&
+              'No paid claims yet. When a claim is paid, its claim number and payout transaction hash will appear here.'}
           </p>
         ) : (
           <ul className="claims-list">
-            {claims.map((claim) => (
-              <li key={claim.claimNumber} className="claim-card">
+            {visibleClaims.map((claim) => (
+              <li key={claim.id} className="claim-card">
                 <div className="claim-card-head">
                   <span className="claim-number font-mono">
-                    #{claim.claimNumber}
+                    #{claim.claim_number}
                   </span>
-                  <span className="claim-status-badge">Submitted</span>
+                  <span
+                    className={`claim-status-badge${
+                      claim.status === 'paid' ? ' is-paid' : ''
+                    }${claim.status === 'rejected' ? ' is-rejected' : ''}`}
+                  >
+                    {claim.status === 'paid'
+                      ? 'Paid'
+                      : claim.status === 'rejected'
+                        ? 'Rejected'
+                        : claimTabOf(claim) === 'new'
+                          ? 'New'
+                          : 'Open'}
+                  </span>
                 </div>
                 <div className="claim-row">
                   <span className="micro-label">WALLET</span>
                   <span className="claim-value font-mono">
-                    {truncateMint(claim.walletAddress)}
+                    {truncateMint(claim.wallet_address)}
                   </span>
                   <CopyButton
-                    value={claim.walletAddress}
+                    value={claim.wallet_address}
                     label="Copy wallet address"
                   />
                 </div>
@@ -1039,56 +1166,48 @@ function ClaimSection() {
                   <span className="micro-label">LOSS TOKEN CA</span>
                   <a
                     className="claim-value-link font-mono"
-                    href={`https://pump.fun/coin/${claim.lossTokenCa}`}
+                    href={`https://pump.fun/coin/${claim.loss_token_ca}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {truncateMint(claim.lossTokenCa)}
+                    {truncateMint(claim.loss_token_ca)}
                   </a>
                   <CopyButton
-                    value={claim.lossTokenCa}
+                    value={claim.loss_token_ca}
                     label="Copy loss token contract address"
                   />
                 </div>
                 <div className="claim-row">
                   <span className="micro-label">DATE FILED</span>
                   <span className="claim-value">
-                    {formatClaimDate(claim.dateFiled)}
+                    {formatClaimDate(claim.created_at.slice(0, 10))}
                   </span>
                 </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div className="claims-block">
-        <h2>Paid claims</h2>
-        {paidClaims.length === 0 ? (
-          <p className="claim-empty">
-            No paid claims yet. When a claim is paid, its claim number and
-            payout transaction hash will appear here.
-          </p>
-        ) : (
-          <ul className="claims-list">
-            {paidClaims.map((paid) => (
-              <li key={paid.claimNumber} className="claim-card">
-                <div className="claim-card-head">
-                  <span className="claim-number font-mono">
-                    #{paid.claimNumber}
-                  </span>
-                  <span className="claim-status-badge is-paid">Paid</span>
-                </div>
-                <div className="claim-row">
-                  <span className="micro-label">TX HASH</span>
-                  <span className="claim-value font-mono">
-                    {truncateMint(paid.txHash)}
-                  </span>
-                  <CopyButton
-                    value={paid.txHash}
-                    label="Copy transaction hash"
-                  />
-                </div>
+                {claim.status === 'rejected' && claim.rejection_reason && (
+                  <div className="claim-row">
+                    <span className="micro-label">REASON</span>
+                    <span className="claim-value">
+                      {claim.rejection_reason}
+                    </span>
+                  </div>
+                )}
+                {claim.status === 'paid' && claim.tx_hash && (
+                  <div className="claim-row">
+                    <span className="micro-label">TX HASH</span>
+                    <a
+                      className="claim-value-link font-mono"
+                      href={txExplorerUrl(claim.tx_chain, claim.tx_hash)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {truncateMint(claim.tx_hash)}
+                    </a>
+                    <CopyButton
+                      value={claim.tx_hash}
+                      label="Copy transaction hash"
+                    />
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -1202,6 +1321,7 @@ function Router() {
       <Switch>
         <Route path="/" component={LandingPage} />
         <Route path="/explore" component={ExplorePage} />
+        <Route path="/addy" component={AddyPage} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
