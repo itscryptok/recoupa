@@ -452,7 +452,7 @@ function ExplorePage() {
       text = `Here is the data for ${selectedToken.name}.`;
     } else if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        text = "Does money dictate how you live your life - when you wake up, when you sleep and more? Crypto might actually be your answer to financial freedom. But crypto is bad and dangerous. How we have gotten around that is by following two things: our own Outdex list (built for Outsider trading) and the loss Claim tool that is built to protect against bad projects.";
+        text = "Does money dictate how you live your life - when you wake up, when you sleep and more? Crypto might actually be your answer to financial freedom. But crypto is bad and dangerous. How we have gotten around that is by following two things: our own Outdex list (built for Outsider trading) and the loss Claim tool that is built to protect against bad projects.\n\nStop buying new launches. If you don't have insider information about a project token launch, then do not buy its new launch. Don't be deceived by the possibility to make big gains from new launches because 99% of the time you're going to end up being scammed or being dumped on. Let all the projects cool down for about 4 days or better still, follow the Outdex 500 listing on this platform to find the most promising projects after they have cooled down.";
       } else {
         text = "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
       }
