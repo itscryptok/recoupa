@@ -3939,3 +3939,163 @@ button.hero-metric-value {
   background: var(--mode-surface-hover);
   color: var(--mode-ink);
 }
+.claim-status-badge.is-rejected {
+  background: color-mix(in srgb, #dc2626 15%, transparent);
+  color: #dc2626;
+}
+.claim-submit-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.claim-field textarea,
+.claim-field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--mode-line);
+  border-radius: 10px;
+  background: var(--mode-bg);
+  color: var(--mode-ink);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+.claim-field textarea:focus,
+.claim-field select:focus {
+  outline: 2px solid var(--page-accent);
+  outline-offset: 1px;
+}
+
+/* Claims board tabs (New / Open / Rejected / Paid) — same pill language
+   as the Discover tabs. */
+.claims-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  margin: 0 0 16px;
+  border: 1px solid var(--mode-line);
+  border-radius: 999px;
+  background: transparent;
+  width: fit-content;
+  max-width: 100%;
+}
+.claims-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mode-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.claims-tab:hover {
+  color: var(--mode-ink);
+}
+.claims-tab.is-active {
+  background: var(--mode-ink);
+  color: var(--mode-bg);
+}
+.claims-tab-count {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 18%, transparent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* /addy admin portal — plain, readable, in the claim-section language. */
+.addy-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px 64px;
+}
+.addy-home-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--page-accent);
+  text-decoration: none;
+}
+.addy-home-link:hover {
+  text-decoration: underline;
+}
+.addy-title {
+  margin: 0 0 24px;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--mode-ink);
+}
+.addy-card {
+  max-width: 480px;
+}
+.addy-board {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.addy-board-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.addy-board-head h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--mode-ink);
+}
+.addy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.addy-action-button {
+  padding: 8px 16px;
+  border: 1px solid var(--mode-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mode-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.addy-action-button:hover {
+  background: var(--mode-surface-hover);
+}
+.addy-action-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.addy-action-button.is-reject {
+  border-color: color-mix(in srgb, #dc2626 50%, transparent);
+  color: #dc2626;
+}
+.addy-action-button.is-paid {
+  border-color: color-mix(in srgb, #047857 50%, transparent);
+  color: #047857;
+}
+.addy-inline-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-top: 4px;
+  border-top: 1px dashed var(--mode-line);
+}
+.addy-inline-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
