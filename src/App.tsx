@@ -173,6 +173,18 @@ function formatChain(chain: string) {
   return chainLabels[chain.toLowerCase()] ?? (chain.charAt(0).toUpperCase() + chain.slice(1));
 }
 
+const dexLabels: Record<string, string> = {
+  pancakeswap: 'PancakeSwap',
+  meteora: 'Meteora',
+  pumpfun: 'pump.fun',
+  raydium: 'Raydium',
+  'pons-v2-dex': 'Pons V2',
+};
+
+function formatDex(dex: string) {
+  return dexLabels[dex.toLowerCase()] ?? (dex.charAt(0).toUpperCase() + dex.slice(1));
+}
+
 function truncateMint(mint: string) {
   return `${mint.slice(0, 6)}…${mint.slice(-4)}`;
 }
@@ -773,75 +785,98 @@ function ExplorePage() {
               )}
 
               {destination === 'Outdex' && (
-                <div className="structured-list-card">
+                <div className="outdex-list">
                   <div className="list-freshness">
-                    Updated {LISTING_UPDATED}
+                    Updated {LISTING_UPDATED} · {tokenList.length} listings
                   </div>
-                  <div className="list-scroll">
-                    <div className="list-header">
-                      <div className="col-id">#</div>
-                      <div className="col-name">TOKEN</div>
-                      <div className="col-metric">CHAIN</div>
-                      <div className="col-metric">MCAP</div>
-                      <div className="col-metric">AGE</div>
-                      <div className="col-metric">24H VOL</div>
-                      <div className="col-metric">LIQ</div>
-                    </div>
-                    <div className="list-body">
-                      {tokenList.map((token, i) => (
-                        <div
-                          key={token.symbol}
-                          role="button"
-                          tabIndex={0}
-                          className="list-row"
-                          onClick={() => selectToken(token)}
-                          onKeyDown={(event) => {
-                            if (event.key === 'Enter' || event.key === ' ') {
-                              event.preventDefault();
-                              selectToken(token);
-                            }
-                          }}
-                        >
-                          <div className="col-id font-mono">{(i + 1).toString().padStart(2, '0')}</div>
-                          <div className="col-name">
-                            <div className="token-avatar">{token.symbol.slice(0, 1)}</div>
-                            <div className="token-info">
-                              <a
-                                className="token-title-link"
-                                href={`https://pump.fun/coin/${token.mint}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(event) => event.stopPropagation()}
-                              >
-                                {token.name}
-                              </a>
-                              <span className="token-subtitle">@{token.symbol.toLowerCase()}</span>
-                            </div>
-                          </div>
-                          <div className="col-metric">
-                            <span className="micro-label">CHAIN</span>
-                            <span className="metric-val">{formatChain(token.chain)}</span>
-                          </div>
-                          <div className="col-metric">
-                            <span className="micro-label">MCAP</span>
-                            <span className="metric-val font-mono">{formatMcap(token.mcap)}</span>
-                          </div>
-                          <div className="col-metric">
-                            <span className="micro-label">AGE</span>
-                            <span className="metric-val font-mono">{formatAge(token.ageDays)}</span>
-                          </div>
-                          <div className="col-metric">
-                            <span className="micro-label">24H VOL</span>
-                            <span className="metric-val font-mono">{formatMcap(token.vol24)}</span>
-                          </div>
-                          <div className="col-metric">
-                            <span className="micro-label">LIQ</span>
-                            <span className="metric-val font-mono">{token.liqUsd === 0 ? '—' : formatMcap(token.liqUsd)}</span>
-                          </div>
+                  {tokenList.map((token, i) => (
+                    <article
+                      key={token.symbol}
+                      role="button"
+                      tabIndex={0}
+                      className="outdex-card"
+                      onClick={() => selectToken(token)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          selectToken(token);
+                        }
+                      }}
+                    >
+                      <div className="outdex-card-top">
+                        <span className="outdex-rank font-mono">{(i + 1).toString().padStart(2, '0')}</span>
+                        <div className="token-avatar">{token.symbol.slice(0, 1)}</div>
+                        <div className="token-info">
+                          <a
+                            className="token-title-link"
+                            href={`https://pump.fun/coin/${token.mint}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(event) => event.stopPropagation()}
+                          >
+                            {token.name}
+                          </a>
+                          <span className="token-subtitle">@{token.symbol.toLowerCase()}</span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
+                        <span className="chain-pill" data-chain={token.chain.toLowerCase()}>
+                          <span className="chain-dot" />
+                          {formatChain(token.chain)}
+                        </span>
+                      </div>
+                      <p className="outdex-desc">{token.description}</p>
+                      <div
+                        className="outdex-ca-row"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        <span className="micro-label">CA</span>
+                        <span className="outdex-ca font-mono">{truncateMint(token.mint)}</span>
+                        <CopyButton
+                          value={token.mint}
+                          label={`Copy ${token.symbol} contract address`}
+                        />
+                      </div>
+                      <div className="outdex-stats">
+                        <div className="outdex-stat">
+                          <span className="micro-label">MCAP</span>
+                          <span className="metric-val font-mono">{formatMcap(token.mcap)}</span>
+                        </div>
+                        <div className="outdex-stat">
+                          <span className="micro-label">24H</span>
+                          <span
+                            className={`metric-val font-mono${
+                              token.priceChange24 === null || token.priceChange24 === 0
+                                ? ''
+                                : token.priceChange24 > 0
+                                  ? ' change-pos'
+                                  : ' change-neg'
+                            }`}
+                          >
+                            {formatChange(token.priceChange24)}
+                          </span>
+                        </div>
+                        <div className="outdex-stat">
+                          <span className="micro-label">AGE</span>
+                          <span className="metric-val font-mono">{formatAge(token.ageDays)}</span>
+                        </div>
+                        <div className="outdex-stat">
+                          <span className="micro-label">24H VOL</span>
+                          <span className="metric-val font-mono">{formatMcap(token.vol24)}</span>
+                        </div>
+                        <div className="outdex-stat">
+                          <span className="micro-label">TXNS</span>
+                          <span className="metric-val font-mono">{token.txns24.toLocaleString('en-US')}</span>
+                        </div>
+                        <div className="outdex-stat">
+                          <span className="micro-label">LIQ</span>
+                          <span className="metric-val font-mono">{token.liqUsd === 0 ? '—' : formatMcap(token.liqUsd)}</span>
+                        </div>
+                        <div className="outdex-stat">
+                          <span className="micro-label">DEX</span>
+                          <span className="metric-val">{formatDex(token.dex)}</span>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
                 </div>
               )}
 
