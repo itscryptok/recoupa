@@ -23,7 +23,7 @@ import {
 
 type Destination =
   | 'Discover'
-  | 'Outdex'
+  | 'Outdex500'
   | 'Claim'
   | 'Perps'
   | 'TCapital'
@@ -35,7 +35,7 @@ type Token = OutdexListing;
 
 const destinations: Destination[] = [
   'Discover',
-  'Outdex',
+  'Outdex500',
   'Claim',
   'Perps',
   'TCapital',
@@ -44,7 +44,7 @@ const destinations: Destination[] = [
 
 const currentViewLabels: Record<Destination, string> = {
   Discover: 'Discover the mission',
-  Outdex: 'The outsider dex',
+  Outdex500: 'The outsider dex',
   Claim: 'Your Claim portal',
   Perps: 'PvP Perps',
   TCapital: 'Thesis capital',
@@ -53,7 +53,7 @@ const currentViewLabels: Record<Destination, string> = {
 
 const pageAccents: Record<Destination, string> = {
   Discover: '#047857',
-  Outdex: '#1D4ED8',
+  Outdex500: '#1D4ED8',
   Claim: '#BE123C',
   Perps: '#7C3AED',
   TCapital: '#B45309',
@@ -62,7 +62,7 @@ const pageAccents: Record<Destination, string> = {
 
 const pageButtonLabels: Record<Destination, string> = {
   Discover: 'Read the Thesis',
-  Outdex: 'The Outdex list',
+  Outdex500: 'The Outdex list',
   Claim: 'Recoup losses',
   Perps: 'New launch Perps',
   TCapital: 'Thesis capital',
@@ -414,7 +414,7 @@ function ExplorePage() {
   const selectDestination = (next: Destination) => {
     setDestination(next);
     setMenuOpen(false);
-    if (next !== 'Outdex') {
+    if (next !== 'Outdex500') {
       setSelectedToken(null);
     }
   };
@@ -438,7 +438,7 @@ function ExplorePage() {
 
   const selectToken = (token: Token) => {
     setSelectedToken(token);
-    setDestination('Outdex');
+    setDestination('Outdex500');
     setSearchQuery(`${token.name} (${token.symbol})`);
     setMenuOpen(false);
   };
@@ -446,7 +446,7 @@ function ExplorePage() {
   const returnToOutdex = () => {
     setSelectedToken(null);
     setSearchQuery('');
-    setDestination('Outdex');
+    setDestination('Outdex500');
   };
 
   const closeContentOverlay = () => {
@@ -474,7 +474,7 @@ function ExplorePage() {
       } else {
         text = "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
       }
-    } else if (destination === 'Outdex') {
+    } else if (destination === 'Outdex500') {
       text = "This is where you can find promising projects early, before the wider market catches on. Watch them grow into long-term companies with substantial market capitalization. And if any of the projects that we recommend on the Outdex500 page fails (a rug pull), we will refund some of your losses. But you must hold 500,000 $Recoupa tokens for more than 24 hours before the rug pull happens. You will then qualify for a share of the fee rewards earned from $Recoupa's trading activity. When you submit a claim, we will review the activity on the wallet you submit to determine your eligibility and how much to send you. All filed claims and completed payout transaction hashes will be public on this webapp.";
     } else if (destination === 'Claim') {
       text = "Lost money on other crypto tokens? To receive a paid claim, you must have held 500,000 $Recoupa tokens for more than 24 hours before the loss token crash, the token you lost money on must be one of the tokens on our Outdex list, and you must have held that loss token for more than 24 hours before the crash. The loss token must also have lost 95% of its value and be irredeemable. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
@@ -651,7 +651,7 @@ function ExplorePage() {
               <div className="tools-label">
                 <Flame size={18} /> <span>RECOUPA {destination.toUpperCase()}</span>
               </div>
-              {destination === 'Outdex' && (
+              {destination === 'Outdex500' && (
                 <div className={`search-field-wrap ${matchingTokens.length ? 'has-results' : ''}`}>
                   <label className="search-field">
                     <Search size={18} />
@@ -784,7 +784,7 @@ function ExplorePage() {
                 </div>
               )}
 
-              {destination === 'Outdex' && (
+              {destination === 'Outdex500' && (
                 <div className="outdex-list">
                   <div className="list-freshness">
                     Updated {LISTING_UPDATED} · {tokenList.length} listings
@@ -883,7 +883,7 @@ function ExplorePage() {
               {destination === 'Claim' && <ClaimSection />}
 
               {destination !== 'Discover' &&
-                destination !== 'Outdex' &&
+                destination !== 'Outdex500' &&
                 destination !== 'Claim' && <div className="empty-card" />}
             </>
           )}
