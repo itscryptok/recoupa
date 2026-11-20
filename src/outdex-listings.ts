@@ -20,7 +20,7 @@ export type OutdexListing = {
   description: string;
 };
 
-export const LISTING_UPDATED = "Nov 19, 2026, 9:22 AM CST";
+export const LISTING_UPDATED = "Nov 20, 2026, 9:22 AM CST";
 
 export const outdexListings: OutdexListing[] = [
   {
@@ -28,14 +28,14 @@ export const outdexListings: OutdexListing[] = [
     name: "Relay",
     mint: "0x50c5fd46F8E8D56f35c358D99b33E67D8F547777",
     chain: "bnb",
-    mcap: 8409,
-    ageDays: 13.1,
-    txns24: 63,
-    vol24: 1996.8,
-    liqUsd: 8884.65,
+    mcap: 7093,
+    ageDays: 14.1,
+    txns24: 29,
+    vol24: 948.01,
+    liqUsd: 7967.69,
     dex: "pancakeswap",
-    priceUsd: 0.000008408,
-    priceChange24: -11.57,
+    priceUsd: 0.000007092,
+    priceChange24: -15.3,
     description: "Relay is the token of relaybnb.xyz, an on-chain OTC desk for BNB Chain tokens. Sellers post an ask and buyers post a bid in BNB, and trades settle atomically wallet to wallet in a single transaction minus a 0.30% fee. Tokens stay in the seller's wallet until settlement — no liquidity pool, no slippage.",
   },
   {
@@ -43,14 +43,14 @@ export const outdexListings: OutdexListing[] = [
     name: "Shade",
     mint: "12bTtDLSegj1rw2oxXWYm63Rxw5QxkVSXDHCEvRShaDe",
     chain: "solana",
-    mcap: 17497,
-    ageDays: 6.8,
-    txns24: 222,
-    vol24: 13382.67,
-    liqUsd: 9803.07,
+    mcap: 16893,
+    ageDays: 7.8,
+    txns24: 478,
+    vol24: 31312.76,
+    liqUsd: 9261.56,
     dex: "meteora",
-    priceUsd: 0.00001751,
-    priceChange24: -3.42,
+    priceUsd: 0.00001691,
+    priceChange24: 1.34,
     description: "The official token of Shade, the private token launchpad on Solana. Launch from a stealth deployer no wallet ever funded. Built on Helius Privacy Rings.",
   },
   {
@@ -59,7 +59,7 @@ export const outdexListings: OutdexListing[] = [
     mint: "BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump",
     chain: "solana",
     mcap: 2014.54,
-    ageDays: 16.4,
+    ageDays: 17.4,
     txns24: 0,
     vol24: 0,
     liqUsd: 0,
@@ -73,14 +73,14 @@ export const outdexListings: OutdexListing[] = [
     name: "XFee",
     mint: "7DicoaDnuUPJKVCMLg8h2CLPqt4Xjcy6ZNHJYgFApump",
     chain: "solana",
-    mcap: 3418.1,
-    ageDays: 4.5,
-    txns24: 10,
-    vol24: 192.1,
+    mcap: 3618.7,
+    ageDays: 5.5,
+    txns24: 4,
+    vol24: 4.42,
     liqUsd: 0,
     dex: "pumpfun",
-    priceUsd: 0.000003418,
-    priceChange24: -8.99,
+    priceUsd: 0.000003618,
+    priceChange24: 9.35,
     description: "Launch a coin connected to any X account. When it replies to you, you get paid, straight to your X account.",
   },
 ];
