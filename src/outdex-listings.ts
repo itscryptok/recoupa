@@ -1,6 +1,7 @@
 // Outdex listings feed — hand-picked listings (Nov 15, 2026).
 // NOT generated from the recoupa44 scan: Yemi replaced the 16 scanned
 // listings with RELAY, then added SHADE, RCFI (Recoupa itself) and XFee.
+// XFee removed Nov 20, 2026 at Yemi's order ("Not crew" — he meant XFee).
 // Order is the order of his picks. The recoupa44 set is preserved in git
 // history and in ~/workspace/token-scans/runs/recoupa44-20261115-final.json.
 
@@ -67,20 +68,5 @@ export const outdexListings: OutdexListing[] = [
     priceUsd: 0.000002014543,
     priceChange24: 0,
     description: "The Recoupa token. Hold 500,000 $Recoupa for more than 24 hours before a rug pull to qualify for a share of fee rewards when you file a claim.",
-  },
-  {
-    symbol: "XFee",
-    name: "XFee",
-    mint: "7DicoaDnuUPJKVCMLg8h2CLPqt4Xjcy6ZNHJYgFApump",
-    chain: "solana",
-    mcap: 3618.7,
-    ageDays: 5.5,
-    txns24: 4,
-    vol24: 4.42,
-    liqUsd: 0,
-    dex: "pumpfun",
-    priceUsd: 0.000003618,
-    priceChange24: 9.35,
-    description: "Launch a coin connected to any X account. When it replies to you, you get paid, straight to your X account.",
   },
 ];
