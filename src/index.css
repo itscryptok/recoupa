@@ -2741,6 +2741,7 @@ button:focus-visible, a:focus-visible {
   padding: 4px 24px 120px;
 }
 .hero-card {
+  position: relative;
   background: var(--aubergine-bg);
   border-radius: 20px;
   padding: 32px;
@@ -2883,26 +2884,36 @@ button:focus-visible, a:focus-visible {
   -webkit-line-clamp: unset;
   line-clamp: unset;
 }
-.hero-description-toggle {
-  align-self: flex-start;
-  margin-top: -22px;
-  padding: 0;
+/* Hero expand/collapse: small chevron in the top-right corner. Points
+   down when collapsed, flips up when expanded. */
+.hero-toggle-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px;
   border: 0;
+  border-radius: 8px;
   background: transparent;
   color: var(--aubergine-accent);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   cursor: pointer;
+  line-height: 0;
 }
-.hero-description-toggle:hover {
-  color: var(--aubergine-text);
+.hero-toggle-button:hover {
+  background: color-mix(in srgb, var(--aubergine-accent) 12%, transparent);
 }
-.hero-description-toggle:focus-visible {
+.hero-toggle-button svg {
+  transition: transform 0.2s ease;
+}
+.hero-toggle-button.is-expanded svg {
+  transform: rotate(180deg);
+}
+/* Keep the hero text clear of the corner chevron. */
+.hero-text {
+  padding-right: 32px;
+}
+.hero-toggle-button:focus-visible {
   outline: 2px solid var(--aubergine-accent);
-  outline-offset: 5px;
+  outline-offset: 2px;
 }
 .hero-metrics {
   display: grid;
