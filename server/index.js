@@ -317,11 +317,43 @@ app.get('/api/admin/messages', async (req, res) => {
       topic: row.topic,
       project: row.project,
       message: row.message,
+      status: row.status,
       created_at: row.created_at,
     })));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Could not load messages.' });
+  }
+});
+
+const MESSAGE_STATUSES = ['unread', 'read', 'responded', 'archived'];
+
+app.patch('/api/admin/messages/:id', async (req, res) => {
+  if (!adminAuthed(req)) return res.status(401).json({ error: 'Admin login required.' });
+  try {
+    const { status } = req.body || {};
+    if (!MESSAGE_STATUSES.includes(status)) {
+      return res.status(400).json({ error: 'Status must be unread, read, responded, or archived.' });
+    }
+    const { rows } = await pool.query(
+      `UPDATE contact_messages SET status = $1 WHERE id = $2 RETURNING *`,
+      [status, req.params.id]
+    );
+    if (!rows.length) return res.status(404).json({ error: 'Message not found.' });
+    const row = rows[0];
+    res.json({
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      topic: row.topic,
+      project: row.project,
+      message: row.message,
+      status: row.status,
+      created_at: row.created_at,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Could not update the message.' });
   }
 });
 
