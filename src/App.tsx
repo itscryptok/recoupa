@@ -605,7 +605,7 @@ function ExplorePage() {
     } else if (destination === 'Perps') {
       text = "Really don't like waiting patiently for gains? Instead of throwing money away to insider traders when hunting new launches, you could go head to head with another trader. All you have to do is open a position in our app (Go long or go short on any new launch), let another find your position in the open market and counter it with an opposite position. App coming soon";
     } else if (destination === 'Resources') {
-      text = "Spreading your buys small over time through DCA (Dollar Cost Average) is one of the most profitable ways to trade and much better than buying all at once. Find more resources to help you become smarter and reduce risk. Do not consider any of these as financial advice because we are no experts. It is always better to seek advice from your financial advisor.";
+      text = "Spreading your trades in small buys over time through DCA (Dollar Cost Average) is one of the most profitable ways to trade and much better than buying all at once. Find more resources to help you become smarter and reduce risk. Do not consider any of these as financial advice because we are no experts. It is always better to seek advice from your financial advisor.";
     } else {
       text = "Find out the thesis you need to trade with more confidence.\n\nComing soon";
     }
