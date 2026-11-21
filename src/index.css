@@ -4233,6 +4233,7 @@ button.hero-metric-value {
 .legal-article ul {
   margin: 0 0 12px;
   padding-left: 22px;
+  list-style: disc;
 }
 .legal-article li {
   margin-bottom: 6px;
@@ -4281,6 +4282,7 @@ button.hero-metric-value {
 .buy-steps {
   margin: 0;
   padding-left: 22px;
+  list-style: decimal;
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--mode-muted);
