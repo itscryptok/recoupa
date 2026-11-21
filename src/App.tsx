@@ -956,7 +956,180 @@ function CopyButton({ value, label }: { value: string; label: string }) {
   );
 }
 
+type ChainTab = 'overview' | 'robinhood' | 'bnb' | 'base';
+
+const chainTabs: { id: ChainTab; label: string }[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'robinhood', label: 'Robinhood' },
+  { id: 'bnb', label: 'BNB' },
+  { id: 'base', label: 'Base' },
+];
+
+function ChainsTabContent({ tab }: { tab: ChainTab }) {
+  if (tab === 'overview') {
+    return (
+      <div className="chains-overview">
+        <h3>What a decentralized wallet is</h3>
+        <p>
+          A decentralized wallet — also called a self-custody wallet — is an
+          app that holds your crypto, and only you hold the keys. There is no
+          company that can freeze it, reset your password, or recover it for
+          you. Your 12-word secret recovery phrase is your wallet: anyone with
+          those words owns everything in it, and if you lose them, nobody can
+          get your funds back.
+        </p>
+        <h3>How wallets differ from chain to chain</h3>
+        <p>
+          Every blockchain is its own network, with its own addresses and its
+          own coin for fees. Solana addresses are long strings of letters and
+          numbers, and fees are paid in SOL. Ethereum-style chains — Robinhood
+          Chain, BNB Chain, and Base — use addresses that start with 0x, and
+          fees are paid in ETH or BNB. One wallet app can hold several chains
+          at once, but each chain is a separate account: a token on one chain
+          does not automatically show up on another.
+        </p>
+        <h3>Wallets are not exchanges</h3>
+        <p>
+          A wallet stores your crypto. A DEX (decentralized exchange) is where
+          you trade it: you connect your wallet, swap one token for another,
+          and the tokens go straight back to your wallet. The DEX never holds
+          your money. Popular DEXs include pump.fun and Raydium on Solana,
+          Uniswap on Base, and PancakeSwap on BNB Chain.
+        </p>
+        <h3>Some wallets have swaps built in</h3>
+        <p>
+          Phantom, MetaMask, and Trust Wallet can swap tokens without you
+          visiting a DEX website. Behind the scenes the wallet is still routing
+          your trade through a DEX — it just saves you the extra step.
+        </p>
+        <h3>Never send a token to the wrong wallet</h3>
+        <p>
+          Crypto sent to the wrong network is usually lost forever. There is
+          no undo button and no support desk to call it back. Before every
+          transfer, check that the chain matches on both sides, check that the
+          address format looks right, and send a small test amount first.
+        </p>
+      </div>
+    );
+  }
+  if (tab === 'robinhood') {
+    return (
+      <div>
+        <p className="chains-tab-intro">
+          Robinhood Chain is an Ethereum-style chain, so it uses the same
+          wallets as Ethereum. Its gas token is ETH.
+        </p>
+        <ol className="buy-steps">
+          <li>
+            <strong>Install MetaMask</strong> from metamask.io — as a browser
+            extension or a phone app. Only use the official links.
+          </li>
+          <li>
+            <strong>Create a new wallet.</strong> Write down your 12-word
+            secret recovery phrase on paper and keep it somewhere private and
+            offline. Never share it with anyone.
+          </li>
+          <li>
+            <strong>Add the Robinhood Chain network</strong> in MetaMask:
+            network name Robinhood Chain, RPC URL
+            https://rpc.mainnet.chain.robinhood.com, chain ID 4663, currency
+            ETH, explorer https://robinhoodchain.blockscout.com.
+          </li>
+          <li>
+            <strong>Fund it with ETH on Robinhood Chain</strong> — bridge ETH
+            from Ethereum, or withdraw from an exchange that supports
+            Robinhood Chain.
+          </li>
+          <li>
+            <strong>You are ready to buy.</strong> Find a token&apos;s
+            contract address on the Outdex list, then swap ETH for it on a
+            Robinhood Chain DEX.
+          </li>
+        </ol>
+      </div>
+    );
+  }
+  if (tab === 'bnb') {
+    return (
+      <div>
+        <p className="chains-tab-intro">
+          BNB Chain is an Ethereum-style chain. Its gas token is BNB.
+        </p>
+        <ol className="buy-steps">
+          <li>
+            <strong>Install MetaMask</strong> from metamask.io, or Trust
+            Wallet from trustwallet.com. Only use the official links.
+          </li>
+          <li>
+            <strong>Create a new wallet.</strong> Write down your 12-word
+            secret recovery phrase on paper and keep it somewhere private and
+            offline. Never share it with anyone.
+          </li>
+          <li>
+            <strong>Add the BNB Smart Chain network</strong> (chain ID 56).
+            Many wallets list it by default; if not, add it from
+            chainlist.org.
+          </li>
+          <li>
+            <strong>Add BNB for fees.</strong> Buy BNB on an exchange and
+            withdraw it to your wallet on the BNB Chain network (BEP-20).
+          </li>
+          <li>
+            <strong>You are ready to buy.</strong> Swap BNB for a token on
+            PancakeSwap using the token&apos;s contract address — always paste
+            the address from a trusted source, never from a random chat.
+          </li>
+        </ol>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <p className="chains-tab-intro">
+        Base is Coinbase&apos;s Ethereum Layer 2 network. Its gas token is
+        ETH.
+      </p>
+      <ol className="buy-steps">
+        <li>
+          <strong>Install MetaMask</strong> from metamask.io, or Coinbase
+          Wallet. Only use the official links.
+        </li>
+        <li>
+          <strong>Create a new wallet.</strong> Write down your 12-word secret
+          recovery phrase on paper and keep it somewhere private and offline.
+          Never share it with anyone.
+        </li>
+        <li>
+          <strong>Add the Base network</strong> (chain ID 8453). It is built
+          into most wallets now; if not, add it from chainlist.org.
+        </li>
+        <li>
+          <strong>Add ETH on Base.</strong> Bridge ETH from Ethereum, or
+          withdraw from Coinbase or another exchange that supports Base.
+        </li>
+        <li>
+          <strong>You are ready to buy.</strong> Swap ETH for a token on
+          Uniswap using the token&apos;s contract address — always paste the
+          address from a trusted source, never from a random chat.
+        </li>
+      </ol>
+    </div>
+  );
+}
+
 function BuySection() {
+  const [chainsOpen, setChainsOpen] = useState(false);
+  const [activeChainTab, setActiveChainTab] = useState<ChainTab>('overview');
+
+  useEffect(() => {
+    if (!chainsOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setChainsOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [chainsOpen]);
+
   return (
     <div className="buy-section">
       <h2 className="buy-heading">Set up a Solana wallet</h2>
@@ -993,6 +1166,61 @@ function BuySection() {
           Watch the video (YouTube)
         </a>
       </div>
+      <button
+        type="button"
+        className="buy-chains-button"
+        onClick={() => {
+          setActiveChainTab('overview');
+          setChainsOpen(true);
+        }}
+      >
+        Buy on other chains
+      </button>
+      {chainsOpen && (
+        <div
+          className="chains-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Buy on other chains"
+          onClick={() => setChainsOpen(false)}
+        >
+          <div
+            className="chains-modal-panel"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="chains-modal-close"
+              aria-label="Close"
+              onClick={() => setChainsOpen(false)}
+            >
+              <X size={20} />
+            </button>
+            <h2 className="chains-modal-heading">Buy on other chains</h2>
+            <div className="chains-tabs" role="tablist">
+              {chainTabs.map((chainTab) => (
+                <button
+                  key={chainTab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeChainTab === chainTab.id}
+                  className={
+                    activeChainTab === chainTab.id
+                      ? 'chains-tab active'
+                      : 'chains-tab'
+                  }
+                  onClick={() => setActiveChainTab(chainTab.id)}
+                >
+                  {chainTab.label}
+                </button>
+              ))}
+            </div>
+            <div className="chains-tab-content">
+              <ChainsTabContent tab={activeChainTab} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
