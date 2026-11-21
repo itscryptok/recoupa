@@ -4233,9 +4233,12 @@ button.hero-metric-value {
 .legal-article ul {
   margin: 0 0 12px;
   padding-left: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+}
+.legal-article li {
+  margin-bottom: 6px;
+}
+.legal-article li:last-child {
+  margin-bottom: 0;
 }
 
 /* Buy destination: hero links (dark hero card) + overlay section. */
@@ -4278,12 +4281,15 @@ button.hero-metric-value {
 .buy-steps {
   margin: 0;
   padding-left: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--mode-muted);
+}
+.buy-steps li {
+  margin-bottom: 14px;
+}
+.buy-steps li:last-child {
+  margin-bottom: 0;
 }
 .buy-steps li::marker {
   font-weight: 700;
