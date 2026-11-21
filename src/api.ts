@@ -3,7 +3,31 @@
 // exists. There is intentionally no hardcoded fallback URL.
 export const API_BASE_URL = import.meta.env.VITE_API_URL as string | undefined;
 
-export type ClaimStatus = 'pending' | 'rejected' | 'paid';
+export type ClaimStatus = 'pending' | 'rejected' | 'paid' | 'hidden';
+
+export type ContactTopic =
+  | 'project-listing'
+  | 'claim-help'
+  | 'general'
+  | 'feedback';
+
+export type ContactMessage = {
+  id: number;
+  name: string;
+  email: string;
+  topic: ContactTopic;
+  project: string | null;
+  message: string;
+  created_at: string;
+};
+
+export type ContactFormData = {
+  name: string;
+  email: string;
+  topic: ContactTopic;
+  project: string;
+  message: string;
+};
 
 export type TxChain = 'solana' | 'base' | 'bsc' | 'robinhood';
 
@@ -88,6 +112,23 @@ export async function migrateClaim(
   return request<Claim>('/api/claims', {
     method: 'POST',
     body: JSON.stringify({ walletAddress: wallet, lossTokenCa: ca, claimNumber, dateFiled }),
+  });
+}
+
+export async function submitContactMessage(
+  data: ContactFormData,
+): Promise<{ ok: boolean }> {
+  return request<{ ok: boolean }>('/api/contact', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function adminFetchMessages(
+  token: string,
+): Promise<ContactMessage[]> {
+  return request<ContactMessage[]>('/api/admin/messages', {
+    headers: { Authorization: `Bearer ${token}` },
   });
 }
 
