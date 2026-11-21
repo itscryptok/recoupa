@@ -1,5 +1,5 @@
 import { type CSSProperties, type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Radio, Copy, Check, Home } from 'lucide-react';
+import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Copy, Check, Home } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
 import { outdexListings, LISTING_UPDATED, type OutdexListing } from './outdex-listings';
@@ -490,7 +490,7 @@ function ExplorePage() {
       text = `Here is the data for ${selectedToken.name}.`;
     } else if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        text = "Does money dictate how you live your life - when you wake up, when you sleep and more? Crypto might actually be your answer to financial freedom. But crypto is bad and dangerous. How we have gotten around that is by following two things: our own Outdex list (built for Outsider trading) and the loss Claim tool that is built to protect against bad projects.\n\nStop buying new launches. If you don't have insider information about a project token launch, then do not buy its new launch. Don't be deceived by the possibility to make big gains from new launches because 99% of the time you're going to end up being scammed or being dumped on. Let all the projects cool down for about 4 days or better still, follow the Outdex 500 listing on this platform to find the most promising projects after they have cooled down.";
+        text = "Does money dictate how you live your life - when you wake up, when you sleep and more? Crypto might actually be your answer to financial freedom. But crypto is bad and risky. How we have gotten around that is by following two things: our own Outdex list (built for Outsider trading) and the loss Claim tool that is built to protect against bad projects.\n\nStop buying new launches. If you don't have insider information about a project token launch, then do not buy its new launch. Don't be deceived by the possibility to make big gains from new launches because 99% of the time you're going to end up being scammed or being dumped on. Let all the projects cool down for about 4 days or better still, follow the Outdex 500 listing on this platform to find the most promising projects after they have cooled down.";
       } else {
         text = "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
       }
@@ -593,14 +593,6 @@ function ExplorePage() {
           </button>
         </div>
         <div className="hero-card">
-          <div className="hero-status">
-            <span className="hero-status-indicator">
-              <Radio size={16} />
-            </span>
-            <span className="hero-status-text">
-              SYSTEM ACTIVE / {tokenList.length} PROJECTS INDEXED
-            </span>
-          </div>
           <div
             id="hero-description"
             className={`hero-text ${heroExpanded ? 'is-expanded' : ''}`}
