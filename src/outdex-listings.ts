@@ -4,7 +4,8 @@
 // XFee removed Nov 20, 2026 at Yemi's order ("Not crew" — he meant XFee).
 // FOOD, OPEQ, PAYDAY, $CHIMP, ZENI added Nov 20, 2026 at his order,
 // picked from the Recoupa44 lists (latest data per token at add time).
-// Order is the order of his picks. The recoupa44 set is preserved in git
+// Order is the order of his picks. RELAY and RCFI (Recoupa) moved to the
+// bottom Nov 20, 2026 at his order. The recoupa44 set is preserved in git
 // history and in ~/workspace/token-scans/runs/recoupa44-20261115-final.json.
 
 export type OutdexListing = {
@@ -27,21 +28,6 @@ export const LISTING_UPDATED = "Nov 20, 2026, 5:01 PM CST";
 
 export const outdexListings: OutdexListing[] = [
   {
-    symbol: "RELAY",
-    name: "Relay",
-    mint: "0x50c5fd46F8E8D56f35c358D99b33E67D8F547777",
-    chain: "bnb",
-    mcap: 6849,
-    ageDays: 14.4,
-    txns24: 21,
-    vol24: 771.14,
-    liqUsd: 7674.48,
-    dex: "pancakeswap",
-    priceUsd: 0.000006849,
-    priceChange24: -11.98,
-    description: "Relay is the token of relaybnb.xyz, an on-chain OTC desk for BNB Chain tokens. Sellers post an ask and buyers post a bid in BNB, and trades settle atomically wallet to wallet in a single transaction minus a 0.30% fee. Tokens stay in the seller's wallet until settlement — no liquidity pool, no slippage.",
-  },
-  {
     symbol: "SHADE",
     name: "Shade",
     mint: "12bTtDLSegj1rw2oxXWYm63Rxw5QxkVSXDHCEvRShaDe",
@@ -55,21 +41,6 @@ export const outdexListings: OutdexListing[] = [
     priceUsd: 0.00003089,
     priceChange24: 50.17,
     description: "The official token of Shade, the private token launchpad on Solana. Launch from a stealth deployer no wallet ever funded. Built on Helius Privacy Rings.",
-  },
-  {
-    symbol: "RCFI",
-    name: "Recoupa",
-    mint: "BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump",
-    chain: "solana",
-    mcap: 2014.54,
-    ageDays: 17.7,
-    txns24: 0,
-    vol24: 0,
-    liqUsd: 0,
-    dex: "pumpfun",
-    priceUsd: 0.000002014543,
-    priceChange24: 0,
-    description: "The Recoupa token. Hold 500,000 $Recoupa for more than 24 hours before a rug pull to qualify for a share of fee rewards when you file a claim.",
   },
   {
     symbol: "FOOD",
@@ -145,5 +116,35 @@ export const outdexListings: OutdexListing[] = [
     priceUsd: 0.0000926,
     priceChange24: -11.25,
     description: "Tokyo Futuro is an on-chain city game and economy on Robinhood Chain, an EVM blockchain. Players and AI agents live in the same world: they take jobs from a public job board, join crews, bet on Fight Club matches, buy items and compete for rewards. ZENI is the game's token and is used for job rewards, job bonds, bets, entries and in-game purchases. The AI agents, called citizens, each have an ERC-8004 identity and their own wallet. When a citizen delivers a job, the poster approves it and the job board contract pays the reward. Every job, bond and payment is a public on-chain record that can be checked on the block explorer, and the project publishes a proof page that re-reads these records directly from the chain.",
+  },
+  {
+    symbol: "RELAY",
+    name: "Relay",
+    mint: "0x50c5fd46F8E8D56f35c358D99b33E67D8F547777",
+    chain: "bnb",
+    mcap: 6849,
+    ageDays: 14.4,
+    txns24: 21,
+    vol24: 771.14,
+    liqUsd: 7674.48,
+    dex: "pancakeswap",
+    priceUsd: 0.000006849,
+    priceChange24: -11.98,
+    description: "Relay is the token of relaybnb.xyz, an on-chain OTC desk for BNB Chain tokens. Sellers post an ask and buyers post a bid in BNB, and trades settle atomically wallet to wallet in a single transaction minus a 0.30% fee. Tokens stay in the seller's wallet until settlement — no liquidity pool, no slippage.",
+  },
+  {
+    symbol: "RCFI",
+    name: "Recoupa",
+    mint: "BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump",
+    chain: "solana",
+    mcap: 2014.54,
+    ageDays: 17.7,
+    txns24: 0,
+    vol24: 0,
+    liqUsd: 0,
+    dex: "pumpfun",
+    priceUsd: 0.000002014543,
+    priceChange24: 0,
+    description: "The Recoupa token. Hold 500,000 $Recoupa for more than 24 hours before a rug pull to qualify for a share of fee rewards when you file a claim.",
   },
 ];
