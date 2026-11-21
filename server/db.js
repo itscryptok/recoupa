@@ -28,7 +28,7 @@ async function createTables(client) {
       claim_number CHAR(6) UNIQUE NOT NULL,
       wallet_address TEXT NOT NULL,
       loss_token_ca TEXT NOT NULL,
-      status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'rejected', 'paid')),
+      status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'rejected', 'paid', 'hidden')),
       rejection_reason TEXT,
       tx_hash TEXT,
       tx_chain TEXT,
@@ -37,6 +37,22 @@ async function createTables(client) {
     );
     CREATE INDEX IF NOT EXISTS idx_claims_created ON claims(created_at DESC, id DESC);
     CREATE INDEX IF NOT EXISTS idx_claims_status ON claims(status);
+    -- Migration (Nov 2026): 'hidden' claim status. CREATE TABLE IF NOT
+    -- EXISTS never alters the live table, so the CHECK is replaced here
+    -- on every boot (idempotent).
+    ALTER TABLE claims DROP CONSTRAINT IF EXISTS claims_status_check;
+    ALTER TABLE claims ADD CONSTRAINT claims_status_check
+      CHECK (status IN ('pending', 'rejected', 'paid', 'hidden'));
+    CREATE TABLE IF NOT EXISTS contact_messages (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      topic TEXT NOT NULL,
+      project TEXT,
+      message TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+    CREATE INDEX IF NOT EXISTS idx_contact_created ON contact_messages(created_at DESC, id DESC);
     CREATE TABLE IF NOT EXISTS app_settings (
       key TEXT PRIMARY KEY,
       value JSONB NOT NULL,
