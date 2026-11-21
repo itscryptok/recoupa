@@ -153,7 +153,7 @@ function txExplorerUrl(chain: TxChain | null, txHash: string) {
   return `${TX_EXPLORERS[chain ?? 'solana']}${txHash}`;
 }
 
-type ClaimTab = 'new' | 'open' | 'rejected' | 'paid';
+type ClaimTab = 'all' | 'new' | 'open' | 'rejected' | 'paid';
 
 const NEW_CLAIM_AGE_MS = 48 * 60 * 60 * 1000;
 
@@ -520,11 +520,9 @@ function ExplorePage() {
   };
 
   const getHeroText = () => {
-    // Every hero ends with the financial-advice disclaimer (Yemi's order
-    // Nov 16, 2026). The old Discover wording ("This is not financial
-    // advice. Please consult with your financial advisor first.") was
-    // removed as a duplicate of this line.
-    const DISCLAIMER = "None of this represents financial advice. Talk to your financial advisor.";
+    // No auto-appended disclaimer: Yemi ordered the automatic
+    // "None of this represents financial advice" line removed from all
+    // pages on Nov 21, 2026. Heroes now show only their own text.
     let text: string;
     if (selectedToken) {
       text = `Here is the data for ${selectedToken.name}.`;
@@ -549,7 +547,7 @@ function ExplorePage() {
     } else {
       text = "Find out the thesis you need to trade with more confidence.\n\nComing soon";
     }
-    return `${text} ${DISCLAIMER}`;
+    return text;
   };
 
   return (
@@ -1557,12 +1555,14 @@ function ClaimSection() {
 
   const tabCounts = useMemo(() => {
     const counts: Record<ClaimTab, number> = {
+      all: 0,
       new: 0,
       open: 0,
       rejected: 0,
       paid: 0,
     };
     for (const claim of boardClaims) {
+      counts.all += 1;
       counts[claimTabOf(claim)] += 1;
     }
     return counts;
@@ -1573,9 +1573,10 @@ function ClaimSection() {
   // Search spans every status ("any claim"); without a query the active
   // tab filters. Every listing is newest-first.
   const filteredClaims = useMemo(() => {
-    const base = searching
-      ? boardClaims
-      : boardClaims.filter((claim) => claimTabOf(claim) === activeTab);
+    const base =
+      searching || activeTab === 'all'
+        ? boardClaims
+        : boardClaims.filter((claim) => claimTabOf(claim) === activeTab);
     return [...base]
       .filter((claim) => claimMatchesSearch(claim, searchQuery))
       .sort((a, b) => {
@@ -1674,6 +1675,7 @@ function ClaimSection() {
             <div className="claims-tabs" role="tablist" aria-label="Claim status">
               {(
                 [
+                  ['all', 'All'],
                   ['new', 'New'],
                   ['open', 'Open'],
                   ['rejected', 'Rejected'],
@@ -1714,6 +1716,7 @@ function ClaimSection() {
                   </>
                 ) : (
                   <>
+                    {activeTab === 'all' && 'No claims yet.'}
                     {activeTab === 'new' && 'No new claims yet.'}
                     {activeTab === 'open' && 'No open claims yet.'}
                     {activeTab === 'rejected' && 'No rejected claims yet.'}
