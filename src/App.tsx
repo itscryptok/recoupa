@@ -545,7 +545,7 @@ function ExplorePage() {
     } else if (destination === 'Contact') {
       text = "Questions about a claim, a project listing, or anything else on Recoupa? You can reach us about getting your project vetted for the Outdex500, help with a loss claim, feedback on the site, or any general question. Send a message through the form below and we will reply to your email, or write to us directly at support@recoupafi.com or itscryptok@gmail.com.";
     } else if (destination === 'Perps') {
-      text = "Go long or go short on any new launch. Another finds your position and decides to counter it.";
+      text = "Really don't like waiting patiently for gains? Instead of throwing money away to insider traders when hunting new launches, you could go head to head with another trader. All you have to do is open a position in our app (Go long or go short on any new launch), let another find your position in the open market and counter it with an opposite position. App coming soon";
     } else {
       text = "Learn what you need to trade with more confidence.";
     }
