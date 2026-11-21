@@ -325,14 +325,24 @@ function Seo() {
 
   useEffect(() => {
     const isExplore = location === '/explore' || location.startsWith('/explore/');
+    const isPrivacy = location === '/privacy';
+    const isTerms = location === '/terms';
     const title = isExplore
       ? 'Recoupa Explore | Crypto Discovery & Loss Prevention'
-      : 'Recoupa | Crypto Discovery & Loss Prevention';
+      : isPrivacy
+        ? 'Privacy Policy | Recoupa'
+        : isTerms
+          ? 'Terms of Service | Recoupa'
+          : 'Recoupa | Crypto Discovery & Loss Prevention';
     const description = isExplore
       ? 'Explore Recoupa’s curated crypto Outdex, compare promising projects, and find early opportunities with a clearer, lower-risk lens.'
-      : 'Recoupa helps non-insider crypto traders discover promising projects early while reducing risk and recouping losses from the crypto market.';
+      : isPrivacy
+        ? 'How Recoupa handles your information: what we collect when you file a claim, what stays on your device, and what we never ask for.'
+        : isTerms
+          ? 'The terms for using Recoupa: the Outdex, the claim rules, and what Recoupa does and does not promise.'
+          : 'Recoupa helps non-insider crypto traders discover promising projects early while reducing risk and recouping losses from the crypto market.';
     const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
-    const canonicalPath = `${basePath}${isExplore ? '/explore' : '/'}` || '/';
+    const canonicalPath = `${basePath}${isExplore ? '/explore' : isPrivacy ? '/privacy' : isTerms ? '/terms' : '/'}` || '/';
     const canonicalUrl = new URL(canonicalPath, window.location.origin).href;
 
     document.title = title;
@@ -790,11 +800,7 @@ function ExplorePage() {
                     Updated {LISTING_UPDATED} · {tokenList.length} listings
                   </div>
                   {tokenList.map((token, i) => (
-                    <article
-                      key={token.symbol}
-                      className="outdex-card"
-                      data-token={token.symbol}
-                    >
+                    <article key={token.symbol} className="outdex-card">
                       <div className="outdex-card-top">
                         <span className="outdex-rank font-mono">{(i + 1).toString().padStart(2, '0')}</span>
                         <div className="token-avatar">{token.symbol.slice(0, 1)}</div>
@@ -883,6 +889,7 @@ function ExplorePage() {
           </div>
         </div>
       )}
+      <SiteFooter />
     </main>
   );
 }
@@ -1341,6 +1348,218 @@ function TokenDetail({ token, onBack }: { token: Token; onBack: () => void }) {
   );
 }
 
+function SiteFooter() {
+  return (
+    <footer className="site-footer">
+      <span className="site-footer-copy">© 2026 Recoupa</span>
+      <nav className="site-footer-links" aria-label="Legal">
+        <Link href="/privacy">Privacy Policy</Link>
+        <Link href="/terms">Terms of Service</Link>
+      </nav>
+    </footer>
+  );
+}
+
+function PrivacyContent() {
+  return (
+    <>
+      <p>
+        Recoupa is a crypto discovery and loss-recovery webapp. This policy
+        explains what information we collect when you use it, and what we do
+        with it. We keep it short on purpose.
+      </p>
+
+      <h2>What we collect when you file a claim</h2>
+      <p>
+        When you file a claim, you give us your wallet address, the contract
+        address of the token you lost money on, and your answers to the
+        confirmation checkboxes. We store that filing on our server, and it
+        appears on the public claims board with your claim number, wallet
+        address, token, filing date, status, and payout transaction hash once
+        a claim is paid.
+      </p>
+      <p>
+        Your wallet address is already public on the blockchain, and anything
+        you put in a claim is public on this site. Do not add anything to a
+        claim that the form does not ask for.
+      </p>
+
+      <h2>What stays on your device</h2>
+      <p>
+        When you file a claim, a copy of your own submitted claims is saved in
+        your browser&apos;s local storage so you can see them again later. That
+        copy never leaves your device. You can clear it at any time in your
+        browser settings.
+      </p>
+
+      <h2>What we do not collect</h2>
+      <p>
+        We do not ask for your name, email address, or phone number. We do
+        not run analytics or advertising trackers on this site. We never ask
+        for your seed phrase or private keys — anyone who does is not us.
+      </p>
+
+      <h2>Admin access</h2>
+      <p>
+        The admin area is protected by a password. The password is stored as
+        a one-way hash, never as plain text.
+      </p>
+
+      <h2>Server logs</h2>
+      <p>
+        Our hosting provider keeps standard server logs, such as IP addresses
+        and request times, to keep the service running and secure. We do not
+        use those logs to identify you, and we do not sell data.
+      </p>
+
+      <h2>Other websites</h2>
+      <p>
+        Token prices and market data shown on the site come from public
+        market-data services. Links on the site, such as pump.fun and block
+        explorers, take you to other websites. Their privacy practices are
+        their own.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        We may update this policy. The date at the top shows the latest
+        version.
+      </p>
+    </>
+  );
+}
+
+function TermsContent() {
+  return (
+    <>
+      <p>
+        These terms govern your use of the Recoupa webapp. By using the site,
+        you agree to them.
+      </p>
+
+      <h2>The service</h2>
+      <p>
+        Recoupa helps you discover crypto projects early through the Outdex
+        list, and helps you file claims to recoup part of your losses when a
+        listed project fails. Some features shown in the menu are still being
+        built.
+      </p>
+
+      <h2>Not financial advice</h2>
+      <p>
+        Nothing on this site is financial advice. Token listings,
+        descriptions, and market data are information only. Do your own
+        research before buying anything. None of this represents financial
+        advice. Talk to your financial advisor.
+      </p>
+
+      <h2>No endorsement, no guarantee</h2>
+      <p>
+        A token appearing on the Outdex is not a recommendation, and it is
+        not a promise that the token will gain value or stay safe. Crypto
+        projects can lose value quickly or fail completely.
+      </p>
+
+      <h2>Claims</h2>
+      <p>To receive a paid claim, all of the following must be true:</p>
+      <ul>
+        <li>
+          You held 500,000 $Recoupa tokens for more than 24 hours before the
+          loss token crash.
+        </li>
+        <li>The token you lost money on is on the Outdex list.</li>
+        <li>
+          You held that loss token for more than 24 hours before the crash.
+        </li>
+        <li>
+          The loss token lost 95% or more of its value and is irredeemable.
+        </li>
+      </ul>
+      <p>
+        Payouts come from the fees earned from $Recoupa trading. Your share
+        is worked out pro-rata among all claims filed for the same token,
+        after 40% of the fees is set aside for marketing and development.
+        Eligibility and payout amounts are decided by a review of your
+        wallet. All filed claims and payout transaction hashes are public on
+        this site.
+      </p>
+      <p>
+        A claim is not a guarantee of payment. Payouts depend on the fees
+        available, and Recoupa may reject a claim that does not meet these
+        terms.
+      </p>
+
+      <h2>Your wallet</h2>
+      <p>
+        You are responsible for your own wallet, keys, and transactions.
+        Never share your seed phrase or private keys with anyone. Recoupa
+        will never ask for them.
+      </p>
+
+      <h2>Fair use</h2>
+      <p>
+        File honest claims only. Do not file false claims, do not try to
+        break or abuse the service, and do not use the site for anything
+        unlawful. We may refuse service to anyone who abuses it.
+      </p>
+
+      <h2>Availability</h2>
+      <p>
+        The site and the claims service may be unavailable at times, and
+        features may change or be removed.
+      </p>
+
+      <h2>Liability</h2>
+      <p>
+        The service is provided as is. Crypto trading is risky. Recoupa is
+        not responsible for losses from tokens you buy, from market
+        movements, or from claims that are rejected or unpaid.
+      </p>
+
+      <h2>Age</h2>
+      <p>You must be at least 18 years old to file a claim.</p>
+
+      <h2>Changes to these terms</h2>
+      <p>
+        We may update these terms. Continued use of the site after a change
+        means you accept the new terms.
+      </p>
+    </>
+  );
+}
+
+function LegalPage({ kind }: { kind: 'privacy' | 'terms' }) {
+  const isPrivacy = kind === 'privacy';
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <main className="reference-explore legal-page">
+      <div className="legal-top">
+        <Link href="/explore" className="legal-back">
+          <ArrowLeft size={18} /> Back to Explore
+        </Link>
+      </div>
+      <article className="legal-article">
+        <h1>{isPrivacy ? 'Privacy Policy' : 'Terms of Service'}</h1>
+        <p className="legal-updated">Last updated: November 21, 2026</p>
+        {isPrivacy ? <PrivacyContent /> : <TermsContent />}
+      </article>
+      <SiteFooter />
+    </main>
+  );
+}
+
+function PrivacyPage() {
+  return <LegalPage kind="privacy" />;
+}
+
+function TermsPage() {
+  return <LegalPage kind="terms" />;
+}
+
 function Router() {
   return (
     <RoutedErrorBoundary>
@@ -1348,6 +1567,8 @@ function Router() {
       <Switch>
         <Route path="/" component={LandingPage} />
         <Route path="/explore" component={ExplorePage} />
+        <Route path="/privacy" component={PrivacyPage} />
+        <Route path="/terms" component={TermsPage} />
         <Route path="/addy" component={AddyPage} />
         <Route component={NotFound} />
       </Switch>
