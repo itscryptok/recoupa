@@ -45,9 +45,9 @@ const destinations: Destination[] = [
   'Buy',
   'Projects',
   'Contact',
+  'Resources',
   'Perps',
   'TCapital',
-  'Resources',
 ];
 
 const currentViewLabels: Record<Destination, string> = {
@@ -59,7 +59,7 @@ const currentViewLabels: Record<Destination, string> = {
   Contact: 'Contact us',
   Perps: 'PvP Perps',
   TCapital: 'Thesis capital',
-  Resources: 'Contacts and resources',
+  Resources: 'Resources',
 };
 
 const pageAccents: Record<Destination, string> = {
@@ -92,6 +92,66 @@ const tokenList: Token[] = outdexListings;
 const PHANTOM_GUIDE_URL =
   'https://www.coingecko.com/learn/ultimate-guide-to-solana-phantom-wallet';
 const PHANTOM_VIDEO_URL = 'https://www.youtube.com/watch?v=xMQpQ6wa7Q8';
+
+// Resources destination: crypto education links shown behind the
+// "Find resources" button (Yemi's order, Nov 21, 2026). All links
+// verified live on Nov 21, 2026.
+const RESOURCE_ARTICLES: { title: string; source: string; url: string }[] = [
+  {
+    title: 'Dollar-Cost Averaging (DCA) Explained',
+    source: 'Binance Academy',
+    url: 'https://academy.binance.com/en/articles/dollar-cost-averaging-dca-explained',
+  },
+  {
+    title: 'Dollar-cost averaging: A complete guide to DCA crypto',
+    source: 'Kraken Learn',
+    url: 'https://www.kraken.com/learn/dollar-cost-averaging',
+  },
+  {
+    title: 'What Is Dollar-Cost Averaging (DCA) in Crypto?',
+    source: 'CoinGecko',
+    url: 'https://www.coingecko.com/learn/what-is-dollar-cost-averaging-dca-in-crypto',
+  },
+  {
+    title: 'When is the best time to invest in crypto?',
+    source: 'Coinbase Learn',
+    url: 'https://www.coinbase.com/learn/tips-and-tutorials/dollar-cost-averaging',
+  },
+  {
+    title: "A Beginner's Guide to Risk Management",
+    source: 'Binance Academy',
+    url: 'https://academy.binance.com/en/articles/a-beginners-guide-to-understanding-risk-management',
+  },
+];
+
+const RESOURCE_VIDEOS: { title: string; source: string; url: string }[] = [
+  {
+    title: 'Starting Your Crypto Portfolio in 2026, in 3 Simple Steps',
+    source: 'Binance',
+    url: 'https://www.youtube.com/watch?v=nn3OWfRDNCk',
+  },
+  {
+    title:
+      'Dollar-cost averaging: How it works, why people use it and getting started',
+    source: 'Kraken',
+    url: 'https://www.youtube.com/watch?v=4q9Hs12E620',
+  },
+  {
+    title: 'Why Is Crypto So Volatile? Making Sense of Price Swings',
+    source: 'Kraken',
+    url: 'https://www.youtube.com/watch?v=7RCFZ3bd4aw',
+  },
+  {
+    title: 'Must-know crypto phrases: 5 things every investor should consider',
+    source: 'Kraken',
+    url: 'https://www.youtube.com/watch?v=R_CzW21C7V8',
+  },
+  {
+    title: 'Dollar-Cost Averaging Explained for Crypto (3 Ways It Helps)',
+    source: 'Apathia',
+    url: 'https://www.youtube.com/watch?v=4Ee-NGJBRck',
+  },
+];
 
 // Public contact emails (Yemi's order, Nov 21, 2026).
 const SUPPORT_EMAIL = 'support@recoupafi.com';
@@ -528,7 +588,7 @@ function ExplorePage() {
       text = `Here is the data for ${selectedToken.name}.`;
     } else if (destination === 'Discover') {
       if (tab === 'Thesis') {
-        text = "Does money dictate how you live your life - when you wake up, when you sleep and more? Crypto might actually be your answer to financial freedom. But crypto is bad and risky. So how did we get around that bad and risky side? We simply started following two things: Our own Outdex list (built for Outsider trading) and the loss Claim tool that is built to help anyone recover some of their losses in case something goes wrong with any of our recommended projects on the Outdex500. With this, we hope anyone can onboard and buy tokens of promising projects that are listed on our Outdex500 with confidence. But you will need to buy and hold our Recoupa token in order to qualify for a loss claim. See more under the claim section.\n\nAnd if you have been in the trenches trading crypto before now, we think you should stop buying those new launches because they are like money drainers if you don't have insider information about a project like the folks who are taking advantage. Cure yourself of the desire of being deceived into thinking you could make big gains from new launches, 99% of you outsiders will never make it that way. Let all the projects cool down for about 4 days or better still, follow the Outdex 500 listing on this platform to find the most promising projects after they have cooled down.";
+        text = "Does money dictate how you live your life - when you wake up, when you sleep and more? Crypto might actually be the answer to the financial freedom you deserve and always desire. But crypto is bad and risky. So how did we at Recoupa get around the bad and risky side? We simply started following two things: Our own Outdex list (built for Outsider trading) and the loss Claim tool that is built to help anyone recover some of their losses in case something goes wrong with any of our recommended projects on the Outdex500. With this, we hope anyone can onboard and buy tokens of promising projects that are listed on our Outdex500 with confidence. But you will need to buy and hold our Recoupa token in order to qualify for a loss claim. See more under the claim section.\n\nAnd if you have been in the trenches trading crypto before now, we think you should stop buying those new launches because they are like money drainers if you don't have insider information about a project like the folks who are taking advantage. Cure yourself of the desire of being deceived into thinking you could make big gains from new launches, 99% of you outsiders will never make it that way. Let all the projects cool down for about 4 days or better still, follow the Outdex 500 listing on this platform to find the most promising projects after they have cooled down.";
       } else {
         text = "Selected crypto projects in the Outdex. A safety system that helps prevent losses.";
       }
@@ -544,6 +604,8 @@ function ExplorePage() {
       text = "Questions about a claim, a project listing, or anything else on Recoupa? You can reach us about getting your project vetted for the Outdex500, help with a loss claim, feedback on the site, or any general question. Send a message through the form below and we will reply to your email, or write to us directly at support@recoupafi.com or itscryptok@gmail.com.";
     } else if (destination === 'Perps') {
       text = "Really don't like waiting patiently for gains? Instead of throwing money away to insider traders when hunting new launches, you could go head to head with another trader. All you have to do is open a position in our app (Go long or go short on any new launch), let another find your position in the open market and counter it with an opposite position. App coming soon";
+    } else if (destination === 'Resources') {
+      text = "Spreading your buys small over time through DCA (Dollar Cost Average) is one of the most profitable ways to trade and much better than buying all at once. Find more resources to help you become smarter and reduce risk. Do not consider any of these as financial advice because we are no experts. It is always better to seek advice from your financial advisor.";
     } else {
       text = "Find out the thesis you need to trade with more confidence.\n\nComing soon";
     }
@@ -955,12 +1017,15 @@ function ExplorePage() {
 
               {destination === 'Contact' && <ContactSection />}
 
+              {destination === 'Resources' && <ResourcesSection />}
+
               {destination !== 'Discover' &&
                 destination !== 'Outdex500' &&
                 destination !== 'Claim' &&
                 destination !== 'Buy' &&
                 destination !== 'Projects' &&
-                destination !== 'Contact' && <div className="empty-card" />}
+                destination !== 'Contact' &&
+                destination !== 'Resources' && <div className="empty-card" />}
             </>
           )}
         </section>
@@ -1323,6 +1388,42 @@ const CONTACT_TOPICS: [ContactTopic, string][] = [
   ['general', 'General question'],
   ['feedback', 'Feedback'],
 ];
+
+function ResourcesSection() {
+  return (
+    <div className="resources-section">
+      <h2 className="resources-heading">Learn before you trade</h2>
+      <p className="resources-intro">
+        Spreading your buys over time through DCA is one of the smartest ways
+        to trade. These articles and videos explain how it works and how to
+        make better trading decisions — from straight educational sources, no
+        hype.
+      </p>
+      <h3 className="resources-subheading">Articles to read</h3>
+      <ul className="resources-list">
+        {RESOURCE_ARTICLES.map((item) => (
+          <li key={item.url}>
+            <a href={item.url} target="_blank" rel="noopener noreferrer">
+              {item.title}
+            </a>{' '}
+            <span className="resources-source">({item.source})</span>
+          </li>
+        ))}
+      </ul>
+      <h3 className="resources-subheading">Videos to watch</h3>
+      <ul className="resources-list">
+        {RESOURCE_VIDEOS.map((item) => (
+          <li key={item.url}>
+            <a href={item.url} target="_blank" rel="noopener noreferrer">
+              {item.title}
+            </a>{' '}
+            <span className="resources-source">({item.source})</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 function ContactSection() {
   const [name, setName] = useState('');
