@@ -25,6 +25,7 @@ type Destination =
   | 'Discover'
   | 'Outdex500'
   | 'Claim'
+  | 'Buy'
   | 'Perps'
   | 'TCapital'
   | 'Resources';
@@ -37,6 +38,7 @@ const destinations: Destination[] = [
   'Discover',
   'Outdex500',
   'Claim',
+  'Buy',
   'Perps',
   'TCapital',
   'Resources',
@@ -46,6 +48,7 @@ const currentViewLabels: Record<Destination, string> = {
   Discover: 'Discover the mission',
   Outdex500: 'The outsider dex',
   Claim: 'Your Claim portal',
+  Buy: 'Buy crypto',
   Perps: 'PvP Perps',
   TCapital: 'Thesis capital',
   Resources: 'Contacts and resources',
@@ -55,6 +58,7 @@ const pageAccents: Record<Destination, string> = {
   Discover: '#047857',
   Outdex500: '#1D4ED8',
   Claim: '#BE123C',
+  Buy: '#EA580C',
   Perps: '#7C3AED',
   TCapital: '#B45309',
   Resources: '#0F766E',
@@ -64,12 +68,18 @@ const pageButtonLabels: Record<Destination, string> = {
   Discover: 'Read the Thesis',
   Outdex500: 'View the Outdex list',
   Claim: 'Recoup losses',
+  Buy: 'How to buy',
   Perps: 'New launch Perps',
   TCapital: 'Thesis capital',
   Resources: 'Find resources',
 };
 
 const tokenList: Token[] = outdexListings;
+
+// Beginner wallet-setup links shown on the Buy destination.
+const PHANTOM_GUIDE_URL =
+  'https://www.coingecko.com/learn/ultimate-guide-to-solana-phantom-wallet';
+const PHANTOM_VIDEO_URL = 'https://www.youtube.com/watch?v=xMQpQ6wa7Q8';
 
 type SubmittedClaim = {
   claimNumber: string;
@@ -488,6 +498,8 @@ function ExplorePage() {
       text = "Find promising projects early, before the wider market notices them. Watch them grow into long-term companies with substantial market capitalization. If a project we recommend on the Outdex500 page fails in a rug pull, we refund part of your losses. You must hold 500,000 $Recoupa tokens for more than 24 hours before the rug pull happens. You then qualify for a share of the fee rewards earned from $Recoupa trading activity. When you submit a claim, we review the activity on your wallet to confirm your eligibility and decide how much to send you. All filed claims and completed payout transaction hashes are public on this webapp.";
     } else if (destination === 'Claim') {
       text = "Lost money on other crypto tokens? To receive a paid claim, you must have held 500,000 $Recoupa tokens for more than 24 hours before the loss token crash, the token you lost money on must be one of the tokens on our Outdex list, and you must have held that loss token for more than 24 hours before the crash. The loss token must also have lost 95% of its value and be irredeemable. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
+    } else if (destination === 'Buy') {
+      text = "New to crypto? You need a Solana wallet before you can buy anything. Here is how to set one up in a few minutes.\n\n1. Download Phantom, the most popular Solana wallet, from phantom.com or your phone's official app store. Only use the official links — fake wallet apps steal funds.\n\n2. Open Phantom and create a new wallet. Write down your 12-word secret recovery phrase on paper and keep it somewhere private and offline. Never share it with anyone, not even Phantom support.\n\n3. Add SOL to your wallet. Buy SOL on an exchange and send it to your wallet address, or buy it directly inside Phantom.\n\n4. You are ready to buy. Find a token on the Outdex list, then swap SOL for it inside Phantom or on pump.fun using the token's contract address.";
     } else if (destination === 'Perps') {
       text = "Go long or go short on any new launch. Another finds your position and decides to counter it.";
     } else {
@@ -611,6 +623,24 @@ function ExplorePage() {
           >
             {heroExpanded ? 'Less' : 'Read more'}
           </button>
+          {destination === 'Buy' && (
+            <div className="hero-links">
+              <a
+                href={PHANTOM_GUIDE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Detailed setup guide
+              </a>
+              <a
+                href={PHANTOM_VIDEO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Watch the video
+              </a>
+            </div>
+          )}
           <div className="hero-metrics">
             <div className="hero-metric">
               <span className="hero-metric-label">CURRENT VIEW</span>
@@ -880,9 +910,12 @@ function ExplorePage() {
 
               {destination === 'Claim' && <ClaimSection />}
 
+              {destination === 'Buy' && <BuySection />}
+
               {destination !== 'Discover' &&
                 destination !== 'Outdex500' &&
-                destination !== 'Claim' && <div className="empty-card" />}
+                destination !== 'Claim' &&
+                destination !== 'Buy' && <div className="empty-card" />}
             </>
           )}
         </section>
@@ -920,6 +953,47 @@ function CopyButton({ value, label }: { value: string; label: string }) {
       {copied ? <Check size={14} /> : <Copy size={14} />}
       {copied ? 'Copied' : null}
     </button>
+  );
+}
+
+function BuySection() {
+  return (
+    <div className="buy-section">
+      <h2 className="buy-heading">Set up a Solana wallet</h2>
+      <p className="buy-intro">
+        You need a Solana wallet before you can buy anything on Recoupa. It
+        takes a few minutes, and it is free.
+      </p>
+      <ol className="buy-steps">
+        <li>
+          <strong>Download Phantom</strong> — the most popular Solana wallet —
+          from phantom.com or your phone&apos;s official app store. Only use
+          the official links. Fake wallet apps steal funds.
+        </li>
+        <li>
+          <strong>Create a new wallet.</strong> Write down your 12-word secret
+          recovery phrase on paper and keep it somewhere private and offline.
+          Never share it with anyone, not even Phantom support.
+        </li>
+        <li>
+          <strong>Add SOL to your wallet.</strong> Buy SOL on an exchange and
+          send it to your wallet address, or buy it directly inside Phantom.
+        </li>
+        <li>
+          <strong>You are ready to buy.</strong> Find a token on the Outdex
+          list, then swap SOL for it inside Phantom or on pump.fun using the
+          token&apos;s contract address.
+        </li>
+      </ol>
+      <div className="buy-links">
+        <a href={PHANTOM_GUIDE_URL} target="_blank" rel="noopener noreferrer">
+          Detailed setup guide (CoinGecko)
+        </a>
+        <a href={PHANTOM_VIDEO_URL} target="_blank" rel="noopener noreferrer">
+          Watch the video (YouTube)
+        </a>
+      </div>
+    </div>
   );
 }
 
