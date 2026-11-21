@@ -4501,6 +4501,56 @@ button.hero-metric-value {
   color: var(--mode-muted);
 }
 
+/* Resources destination: article + video link lists. */
+.resources-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.resources-heading {
+  font-size: 1.3rem;
+  margin: 0;
+  color: var(--mode-ink);
+}
+.resources-intro {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mode-muted);
+}
+.resources-subheading {
+  font-size: 1rem;
+  margin: 8px 0 0;
+  color: var(--mode-ink);
+}
+.resources-list {
+  margin: 0;
+  padding-left: 22px;
+  list-style: disc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mode-muted);
+}
+.resources-list li {
+  margin-bottom: 10px;
+}
+.resources-list li:last-child {
+  margin-bottom: 0;
+}
+.resources-list a {
+  color: var(--mode-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.resources-list a:hover {
+  color: #1D4ED8;
+  text-decoration: underline;
+}
+.resources-source {
+  font-size: 0.85rem;
+  color: var(--mode-muted);
+}
+
 /* /addy messages: the visitor's message text, line breaks kept. */
 .message-body {
   margin: 4px 0 0;
