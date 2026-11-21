@@ -4624,3 +4624,51 @@ button.hero-metric-value {
   font-size: 0.85rem;
   color: var(--mode-muted);
 }
+
+/* Message card header badges (admin Messages tab). */
+.claim-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+/* Message status badges: one color per status. */
+.claim-status-badge.is-unread {
+  background: color-mix(in srgb, #1D4ED8 15%, transparent);
+  color: #1D4ED8;
+}
+.claim-status-badge.is-read {
+  background: color-mix(in srgb, var(--mode-muted) 18%, transparent);
+  color: var(--mode-muted);
+}
+.claim-status-badge.is-responded {
+  background: color-mix(in srgb, #047857 15%, transparent);
+  color: #047857;
+}
+.claim-status-badge.is-archived {
+  background: color-mix(in srgb, var(--mode-muted) 12%, transparent);
+  color: var(--mode-muted);
+  opacity: 0.75;
+}
+
+/* Message status picker on each admin message card. */
+.message-status-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.message-status-select {
+  padding: 8px 12px;
+  border: 1px solid var(--mode-line);
+  border-radius: 999px;
+  background: var(--mode-bg);
+  color: var(--mode-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.message-status-select:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
