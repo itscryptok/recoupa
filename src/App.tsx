@@ -792,16 +792,8 @@ function ExplorePage() {
                   {tokenList.map((token, i) => (
                     <article
                       key={token.symbol}
-                      role="button"
-                      tabIndex={0}
                       className="outdex-card"
-                      onClick={() => selectToken(token)}
-                      onKeyDown={(event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
-                          selectToken(token);
-                        }
-                      }}
+                      data-token={token.symbol}
                     >
                       <div className="outdex-card-top">
                         <span className="outdex-rank font-mono">{(i + 1).toString().padStart(2, '0')}</span>
