@@ -8,10 +8,12 @@ import {
   adminFetchClaims,
   adminFetchMessages,
   adminUpdateClaim,
+  adminUpdateMessage,
   type Claim,
   type ClaimStatus,
   type ContactMessage,
   type ContactTopic,
+  type MessageStatus,
   type TxChain,
 } from '../api';
 
@@ -310,12 +312,53 @@ const TOPIC_LABELS: Record<ContactTopic, string> = {
   feedback: 'Feedback',
 };
 
-function AdminMessageCard({ message }: { message: ContactMessage }) {
+const STATUS_LABELS: Record<MessageStatus, string> = {
+  unread: 'Unread',
+  read: 'Read',
+  responded: 'Responded',
+  archived: 'Archived',
+};
+
+function AdminMessageCard({
+  message,
+  token,
+  onUpdated,
+  onError,
+}: {
+  message: ContactMessage;
+  token: string;
+  onUpdated: () => void;
+  onError: (message: string) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+
+  const changeStatus = async (next: MessageStatus) => {
+    if (next === message.status) return;
+    setBusy(true);
+    try {
+      await adminUpdateMessage(token, message.id, next);
+      onUpdated();
+    } catch (err) {
+      onError(
+        err instanceof Error ? err.message : 'Could not update the message.',
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <li className="claim-card">
       <div className="claim-card-head">
         <span className="claim-number">{message.name}</span>
-        <span className="claim-status-badge">{TOPIC_LABELS[message.topic]}</span>
+        <span className="claim-badges">
+          <span className="claim-status-badge">
+            {TOPIC_LABELS[message.topic]}
+          </span>
+          <span className={`claim-status-badge is-${message.status}`}>
+            {STATUS_LABELS[message.status]}
+          </span>
+        </span>
       </div>
       <div className="claim-row">
         <span className="micro-label">EMAIL</span>
@@ -338,6 +381,26 @@ function AdminMessageCard({ message }: { message: ContactMessage }) {
         </span>
       </div>
       <p className="message-body">{message.message}</p>
+      <div className="addy-actions">
+        <label className="message-status-field">
+          <span className="micro-label">STATUS</span>
+          <select
+            className="message-status-select"
+            value={message.status}
+            disabled={busy}
+            onChange={(event) =>
+              changeStatus(event.target.value as MessageStatus)
+            }
+            aria-label="Message status"
+          >
+            {(Object.keys(STATUS_LABELS) as MessageStatus[]).map((value) => (
+              <option key={value} value={value}>
+                {STATUS_LABELS[value]}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
     </li>
   );
 }
@@ -704,7 +767,13 @@ export default function AddyPage() {
             ) : (
               <ul className="claims-list">
                 {messages.map((message) => (
-                  <AdminMessageCard key={message.id} message={message} />
+                  <AdminMessageCard
+                    key={message.id}
+                    message={message}
+                    token={token}
+                    onUpdated={() => loadMessages(token)}
+                    onError={setMessagesError}
+                  />
                 ))}
               </ul>
             )}
