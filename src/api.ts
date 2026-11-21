@@ -18,8 +18,11 @@ export type ContactMessage = {
   topic: ContactTopic;
   project: string | null;
   message: string;
+  status: MessageStatus;
   created_at: string;
 };
+
+export type MessageStatus = 'unread' | 'read' | 'responded' | 'archived';
 
 export type ContactFormData = {
   name: string;
@@ -129,6 +132,18 @@ export async function adminFetchMessages(
 ): Promise<ContactMessage[]> {
   return request<ContactMessage[]>('/api/admin/messages', {
     headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export async function adminUpdateMessage(
+  token: string,
+  id: number,
+  status: MessageStatus,
+): Promise<ContactMessage> {
+  return request<ContactMessage>(`/api/admin/messages/${id}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ status }),
   });
 }
 
