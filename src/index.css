@@ -4237,3 +4237,80 @@ button.hero-metric-value {
   flex-direction: column;
   gap: 6px;
 }
+
+/* Buy destination: hero links (dark hero card) + overlay section. */
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.hero-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  color: var(--aubergine-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.hero-links a:hover {
+  border-color: var(--aubergine-accent);
+  color: var(--aubergine-accent);
+}
+.buy-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.buy-heading {
+  font-size: 1.3rem;
+  margin: 0;
+  color: var(--mode-ink);
+}
+.buy-intro {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mode-muted);
+}
+.buy-steps {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mode-muted);
+}
+.buy-steps li::marker {
+  font-weight: 700;
+  color: var(--mode-ink);
+}
+.buy-steps strong {
+  color: var(--mode-ink);
+}
+.buy-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+.buy-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border: 1px solid var(--mode-line);
+  border-radius: 999px;
+  background: var(--mode-surface);
+  color: var(--mode-ink);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.buy-links a:hover {
+  border-color: #1D4ED8;
+  color: #1D4ED8;
+}
