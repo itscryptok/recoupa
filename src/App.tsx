@@ -1,5 +1,5 @@
 import { type CSSProperties, type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, Menu, Search, SunMoon, X, Flame, Copy, Check, Home } from 'lucide-react';
+import { ArrowLeft, ChevronDown, Menu, Search, SunMoon, X, Flame, Copy, Check, Home } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
 import { outdexListings, LISTING_UPDATED, type OutdexListing } from './outdex-listings';
@@ -613,6 +613,17 @@ function ExplorePage() {
           </button>
         </div>
         <div className="hero-card">
+          <button
+            type="button"
+            className={`hero-toggle-button${heroExpanded ? ' is-expanded' : ''}`}
+            aria-expanded={heroExpanded}
+            aria-controls="hero-description"
+            aria-label={heroExpanded ? 'Collapse hero text' : 'Expand hero text'}
+            onClick={() => setHeroExpanded((expanded) => !expanded)}
+            data-testid="button-toggle-hero-description"
+          >
+            <ChevronDown size={18} />
+          </button>
           <div
             id="hero-description"
             className={`hero-text ${heroExpanded ? 'is-expanded' : ''}`}
@@ -625,16 +636,6 @@ function ExplorePage() {
                 </p>
               ))}
           </div>
-          <button
-            type="button"
-            className="hero-description-toggle"
-            aria-expanded={heroExpanded}
-            aria-controls="hero-description"
-            onClick={() => setHeroExpanded((expanded) => !expanded)}
-            data-testid="button-toggle-hero-description"
-          >
-            {heroExpanded ? 'Less' : 'Read more'}
-          </button>
           {destination === 'Buy' && (
             <div className="hero-links">
               <a
