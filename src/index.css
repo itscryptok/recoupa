@@ -4516,3 +4516,111 @@ button.hero-metric-value {
   background: color-mix(in srgb, var(--mode-muted) 18%, transparent);
   color: var(--mode-muted);
 }
+
+/* Claims filed + claim form accordions (Claim destination). Both sections
+   are collapsed by default; Claims filed sits above the form. */
+.claims-block {
+  border: 1px solid var(--mode-line);
+  border-radius: 16px;
+  background: var(--mode-surface);
+  padding: 24px;
+}
+.claim-form-card h2.claims-accordion-heading,
+.claims-block h2.claims-accordion-heading {
+  margin: 0;
+}
+.claims-accordion-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--mode-ink);
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+}
+.claims-accordion-chevron {
+  flex-shrink: 0;
+  color: var(--mode-muted);
+  transition: transform 0.2s ease;
+}
+.claims-accordion-chevron.is-open {
+  transform: rotate(180deg);
+}
+.claims-accordion-body {
+  margin-top: 16px;
+}
+
+/* Claims filed search: wallet, token CA, claim number, or filed date. */
+.claims-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1.5px solid color-mix(in srgb, var(--mode-ink) 35%, transparent);
+  border-radius: 10px;
+  background: var(--mode-bg);
+  color: var(--mode-muted);
+}
+.claims-search:focus-within {
+  border-color: var(--page-accent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--page-accent) 25%, transparent);
+}
+.claims-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--mode-ink);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  outline: none;
+}
+.claims-search input::placeholder {
+  color: var(--mode-muted);
+  opacity: 1;
+}
+.claims-result-note {
+  margin: 0 0 16px;
+  font-size: 0.85rem;
+  color: var(--mode-muted);
+}
+
+/* Claims filed pagination: 10 claims per page. */
+.claims-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+.claims-pagination button {
+  padding: 8px 16px;
+  border: 1px solid var(--mode-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mode-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.claims-pagination button:hover:not(:disabled) {
+  background: var(--mode-surface-hover);
+}
+.claims-pagination button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.claims-pagination span {
+  font-size: 0.85rem;
+  color: var(--mode-muted);
+}
