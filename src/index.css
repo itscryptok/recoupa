@@ -3850,16 +3850,22 @@ button.hero-metric-value {
 .claim-field input {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--mode-line);
+  border: 1.5px solid color-mix(in srgb, var(--mode-ink) 35%, transparent);
   border-radius: 10px;
   background: var(--mode-bg);
   color: var(--mode-ink);
   font-family: var(--font-mono);
   font-size: 0.9rem;
 }
+.claim-field input::placeholder {
+  color: var(--mode-muted);
+  opacity: 1;
+}
 .claim-field input:focus {
-  outline: 2px solid var(--page-accent);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--page-accent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--page-accent) 25%, transparent);
 }
 .claim-checks {
   display: flex;
@@ -4003,7 +4009,7 @@ button.hero-metric-value {
 .claim-field select {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--mode-line);
+  border: 1.5px solid color-mix(in srgb, var(--mode-ink) 35%, transparent);
   border-radius: 10px;
   background: var(--mode-bg);
   color: var(--mode-ink);
@@ -4012,8 +4018,10 @@ button.hero-metric-value {
 }
 .claim-field textarea:focus,
 .claim-field select:focus {
-  outline: 2px solid var(--page-accent);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--page-accent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--page-accent) 25%, transparent);
 }
 
 /* Claims board tabs (New / Open / Rejected / Paid) — same pill language
