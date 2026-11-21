@@ -2874,8 +2874,8 @@ button:focus-visible, a:focus-visible {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
 }
 .hero-text.is-expanded {
   display: block;
@@ -3532,7 +3532,7 @@ button.hero-metric-value {
     border-radius: 8px;
   }
   .explore-workspace {
-    padding: 128px 16px 80px;
+    padding: 88px 16px 80px;
   }
   .hero-card {
     padding: 20px;
