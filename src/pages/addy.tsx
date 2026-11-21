@@ -6,9 +6,12 @@ import {
   adminSetup,
   adminLogin,
   adminFetchClaims,
+  adminFetchMessages,
   adminUpdateClaim,
   type Claim,
   type ClaimStatus,
+  type ContactMessage,
+  type ContactTopic,
   type TxChain,
 } from '../api';
 
@@ -117,13 +120,17 @@ function AdminClaimCard({
         <span
           className={`claim-status-badge${
             claim.status === 'paid' ? ' is-paid' : ''
-          }${claim.status === 'rejected' ? ' is-rejected' : ''}`}
+          }${claim.status === 'rejected' ? ' is-rejected' : ''}${
+            claim.status === 'hidden' ? ' is-hidden' : ''
+          }`}
         >
           {claim.status === 'paid'
             ? 'Paid'
             : claim.status === 'rejected'
               ? 'Rejected'
-              : 'Pending'}
+              : claim.status === 'hidden'
+                ? 'Hidden'
+                : 'Pending'}
         </span>
       </div>
       <div className="claim-row">
@@ -186,6 +193,14 @@ function AdminClaimCard({
               onClick={() => setMode(mode === 'paid' ? 'none' : 'paid')}
             >
               Mark paid
+            </button>
+            <button
+              type="button"
+              className="addy-action-button"
+              disabled={busy}
+              onClick={() => update({ status: 'hidden' })}
+            >
+              Hide
             </button>
           </>
         )}
@@ -288,6 +303,47 @@ function AdminClaimCard({
   );
 }
 
+const TOPIC_LABELS: Record<ContactTopic, string> = {
+  'project-listing': 'Project listing request',
+  'claim-help': 'Help with a claim',
+  general: 'General question',
+  feedback: 'Feedback',
+};
+
+function AdminMessageCard({ message }: { message: ContactMessage }) {
+  return (
+    <li className="claim-card">
+      <div className="claim-card-head">
+        <span className="claim-number">{message.name}</span>
+        <span className="claim-status-badge">{TOPIC_LABELS[message.topic]}</span>
+      </div>
+      <div className="claim-row">
+        <span className="micro-label">EMAIL</span>
+        <a className="claim-value-link" href={`mailto:${message.email}`}>
+          {message.email}
+        </a>
+        <CopyButton value={message.email} label="Copy email address" />
+      </div>
+      {message.project && (
+        <div className="claim-row">
+          <span className="micro-label">PROJECT</span>
+          <span className="claim-value">{message.project}</span>
+        </div>
+      )}
+      <div className="claim-row">
+        <span className="micro-label">SENT</span>
+        <span className="claim-value">
+          {formatDate(message.created_at.slice(0, 10))} ·{' '}
+          {formatAgeAgo(message.created_at)}
+        </span>
+      </div>
+      <p className="message-body">{message.message}</p>
+    </li>
+  );
+}
+
+type AdminSection = 'claims' | 'messages';
+
 export default function AddyPage() {
   const [stage, setStage] = useState<
     'checking' | 'setup' | 'login' | 'authed'
@@ -302,6 +358,36 @@ export default function AddyPage() {
   const [claimsLoading, setClaimsLoading] = useState(false);
   const [claimsError, setClaimsError] = useState('');
   const [filter, setFilter] = useState<AdminFilter>('all');
+  const [section, setSection] = useState<AdminSection>('claims');
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const [messagesLoading, setMessagesLoading] = useState(false);
+  const [messagesError, setMessagesError] = useState('');
+
+  const handleSessionExpired = () => {
+    sessionStorage.removeItem(TOKEN_KEY);
+    setToken(null);
+    setStage('login');
+    setStageError('Your session expired — please log in again.');
+  };
+
+  const loadMessages = async (authToken: string) => {
+    setMessagesLoading(true);
+    setMessagesError('');
+    try {
+      const data = await adminFetchMessages(authToken);
+      setMessages(data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Could not load messages.';
+      if (message.toLowerCase().includes('login required')) {
+        handleSessionExpired();
+      } else {
+        setMessagesError(message);
+      }
+    } finally {
+      setMessagesLoading(false);
+    }
+  };
 
   const loadClaims = async (authToken: string) => {
     setClaimsLoading(true);
@@ -338,6 +424,7 @@ export default function AddyPage() {
           setToken(stored);
           setStage('authed');
           await loadClaims(stored);
+          await loadMessages(stored);
         } else {
           setStage('login');
         }
@@ -391,6 +478,7 @@ export default function AddyPage() {
       setPassword('');
       setStage('authed');
       await loadClaims(newToken);
+      await loadMessages(newToken);
     } catch (err) {
       setStageError(
         err instanceof Error ? err.message : 'Login failed. Please try again.',
@@ -404,6 +492,7 @@ export default function AddyPage() {
     sessionStorage.removeItem(TOKEN_KEY);
     setToken(null);
     setClaims([]);
+    setMessages([]);
     setStage('login');
   };
 
@@ -412,6 +501,7 @@ export default function AddyPage() {
     pending: 0,
     rejected: 0,
     paid: 0,
+    hidden: 0,
   };
   for (const claim of claims) counts[claim.status] += 1;
   const visibleClaims =
@@ -425,7 +515,7 @@ export default function AddyPage() {
         <Link href="/" className="addy-home-link">
           ← Back to Recoupa home
         </Link>
-        <h1 className="addy-title">Claims admin</h1>
+        <h1 className="addy-title">Admin</h1>
 
         {stage === 'checking' && !stageError && (
           <p className="claim-empty">Loading…</p>
@@ -515,7 +605,7 @@ export default function AddyPage() {
         {stage === 'authed' && token && (
           <div className="addy-board">
             <div className="addy-board-head">
-              <h2>Claims</h2>
+              <h2>{section === 'claims' ? 'Claims' : 'Messages'}</h2>
               <button
                 type="button"
                 className="addy-action-button"
@@ -527,6 +617,32 @@ export default function AddyPage() {
             <div
               className="claims-tabs"
               role="tablist"
+              aria-label="Admin section"
+            >
+              {(
+                [
+                  ['claims', 'Claims', claims.length],
+                  ['messages', 'Messages', messages.length],
+                ] as [AdminSection, string, number][]
+              ).map(([value, label, count]) => (
+                <button
+                  key={value}
+                  type="button"
+                  role="tab"
+                  aria-selected={section === value}
+                  className={`claims-tab${section === value ? ' is-active' : ''}`}
+                  onClick={() => setSection(value)}
+                >
+                  {label}
+                  <span className="claims-tab-count">{count}</span>
+                </button>
+              ))}
+            </div>
+            {section === 'claims' ? (
+              <>
+            <div
+              className="claims-tabs"
+              role="tablist"
               aria-label="Claim status filter"
             >
               {(
@@ -535,6 +651,7 @@ export default function AddyPage() {
                   ['pending', 'Pending'],
                   ['rejected', 'Rejected'],
                   ['paid', 'Paid'],
+                  ['hidden', 'Hidden'],
                 ] as [AdminFilter, string][]
               ).map(([value, label]) => (
                 <button
@@ -572,6 +689,22 @@ export default function AddyPage() {
                     onUpdated={() => loadClaims(token)}
                     onError={setClaimsError}
                   />
+                ))}
+              </ul>
+            )}
+              </>
+            ) : messagesLoading ? (
+              <p className="claim-empty">Loading messages…</p>
+            ) : messagesError ? (
+              <p className="claim-empty" role="alert">
+                {messagesError}
+              </p>
+            ) : messages.length === 0 ? (
+              <p className="claim-empty">No messages yet.</p>
+            ) : (
+              <ul className="claims-list">
+                {messages.map((message) => (
+                  <AdminMessageCard key={message.id} message={message} />
                 ))}
               </ul>
             )}
