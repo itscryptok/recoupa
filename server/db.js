@@ -50,9 +50,16 @@ async function createTables(client) {
       topic TEXT NOT NULL,
       project TEXT,
       message TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'unread' CHECK (status IN ('unread', 'read', 'responded', 'archived')),
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
     CREATE INDEX IF NOT EXISTS idx_contact_created ON contact_messages(created_at DESC, id DESC);
+    -- Migration (Nov 2026): message status column (the table shipped
+    -- without one). Idempotent.
+    ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'unread';
+    ALTER TABLE contact_messages DROP CONSTRAINT IF EXISTS contact_messages_status_check;
+    ALTER TABLE contact_messages ADD CONSTRAINT contact_messages_status_check
+      CHECK (status IN ('unread', 'read', 'responded', 'archived'));
     CREATE TABLE IF NOT EXISTS app_settings (
       key TEXT PRIMARY KEY,
       value JSONB NOT NULL,
