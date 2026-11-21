@@ -547,7 +547,7 @@ function ExplorePage() {
     } else if (destination === 'Perps') {
       text = "Really don't like waiting patiently for gains? Instead of throwing money away to insider traders when hunting new launches, you could go head to head with another trader. All you have to do is open a position in our app (Go long or go short on any new launch), let another find your position in the open market and counter it with an opposite position. App coming soon";
     } else {
-      text = "Learn what you need to trade with more confidence.";
+      text = "Find out the thesis you need to trade with more confidence.\n\nComing soon";
     }
     return `${text} ${DISCLAIMER}`;
   };
