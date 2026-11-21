@@ -4433,3 +4433,75 @@ button.hero-metric-value {
 .chains-overview p {
   margin: 0;
 }
+
+/* Projects destination: listing pitch + how to reach us. */
+.projects-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.projects-heading {
+  font-size: 1.3rem;
+  margin: 0;
+  color: var(--mode-ink);
+}
+.projects-intro {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mode-muted);
+}
+.projects-subheading {
+  font-size: 1rem;
+  margin: 8px 0 0;
+  color: var(--mode-ink);
+}
+.projects-list {
+  margin: 0;
+  padding-left: 22px;
+  list-style: disc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mode-muted);
+}
+.projects-list li {
+  margin-bottom: 10px;
+}
+.projects-list li:last-child {
+  margin-bottom: 0;
+}
+.projects-list strong {
+  color: var(--mode-ink);
+}
+.projects-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 20px;
+  border: 1px solid var(--mode-line);
+  border-radius: 16px;
+  background: var(--mode-surface);
+}
+.projects-contact p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mode-muted);
+}
+
+/* /addy messages: the visitor's message text, line breaks kept. */
+.message-body {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--mode-ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Hidden claim status badge (admin only — hidden claims never reach the public board). */
+.claim-status-badge.is-hidden {
+  background: color-mix(in srgb, var(--mode-muted) 18%, transparent);
+  color: var(--mode-muted);
+}
