@@ -9,7 +9,9 @@ import {
   fetchClaims,
   submitClaim as submitClaimApi,
   migrateClaim,
+  submitContactMessage,
   type Claim,
+  type ContactTopic,
   type TxChain,
 } from './api';
 import referenceImage from '@assets/IMG_1197_recoupa_car_clean_local.jpeg';
@@ -26,6 +28,8 @@ type Destination =
   | 'Outdex500'
   | 'Claim'
   | 'Buy'
+  | 'Projects'
+  | 'Contact'
   | 'Perps'
   | 'TCapital'
   | 'Resources';
@@ -39,6 +43,8 @@ const destinations: Destination[] = [
   'Outdex500',
   'Claim',
   'Buy',
+  'Projects',
+  'Contact',
   'Perps',
   'TCapital',
   'Resources',
@@ -49,6 +55,8 @@ const currentViewLabels: Record<Destination, string> = {
   Outdex500: 'The outsider dex',
   Claim: 'Your Claim portal',
   Buy: 'Buy crypto',
+  Projects: 'List your project',
+  Contact: 'Contact us',
   Perps: 'PvP Perps',
   TCapital: 'Thesis capital',
   Resources: 'Contacts and resources',
@@ -59,6 +67,8 @@ const pageAccents: Record<Destination, string> = {
   Outdex500: '#1D4ED8',
   Claim: '#BE123C',
   Buy: '#EA580C',
+  Projects: '#0891B2',
+  Contact: '#DB2777',
   Perps: '#7C3AED',
   TCapital: '#B45309',
   Resources: '#0F766E',
@@ -69,6 +79,8 @@ const pageButtonLabels: Record<Destination, string> = {
   Outdex500: 'View the Outdex list',
   Claim: 'File a claim to recoup',
   Buy: 'How to buy',
+  Projects: 'List your project',
+  Contact: 'Reach us here',
   Perps: 'New launch Perps',
   TCapital: 'Thesis capital',
   Resources: 'Find resources',
@@ -80,6 +92,10 @@ const tokenList: Token[] = outdexListings;
 const PHANTOM_GUIDE_URL =
   'https://www.coingecko.com/learn/ultimate-guide-to-solana-phantom-wallet';
 const PHANTOM_VIDEO_URL = 'https://www.youtube.com/watch?v=xMQpQ6wa7Q8';
+
+// Public contact emails (Yemi's order, Nov 21, 2026).
+const SUPPORT_EMAIL = 'support@recoupafi.com';
+const CONTACT_EMAIL = 'itscryptok@gmail.com';
 
 type SubmittedClaim = {
   claimNumber: string;
@@ -500,6 +516,10 @@ function ExplorePage() {
       text = "Lost money on other crypto tokens? To receive a paid claim, you must have held 500,000 $Recoupa tokens for more than 24 hours before the loss token crash, the token you lost money on must be one of the tokens on our Outdex list, and you must have held that loss token for more than 24 hours before the crash. The loss token must also have lost 95% of its value and be irredeemable. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
     } else if (destination === 'Buy') {
       text = "New to crypto? You need a Solana wallet before you can buy anything. Here is how to set one up in a few minutes.\n\n1. Download Phantom, the most popular Solana wallet, from phantom.com or your phone's official app store. Only use the official links — fake wallet apps steal funds.\n\n2. Open Phantom and create a new wallet. Write down your 12-word secret recovery phrase on paper and keep it somewhere private and offline. Never share it with anyone, not even Phantom support.\n\n3. Add SOL to your wallet. Buy SOL on an exchange and send it to your wallet address, or buy it directly inside Phantom.\n\n4. You are ready to buy. Find a token on the Outdex list, then swap SOL for it inside Phantom or on pump.fun using the token's contract address.";
+    } else if (destination === 'Projects') {
+      text = "Building a crypto project with real utility? If your project solves a real problem and your team is committed for the long term, we want to hear from you. We vet projects for the Outdex500 — our list of promising projects our community can buy with confidence. Tell us about your project through the contact form, or email us at support@recoupafi.com or itscryptok@gmail.com.";
+    } else if (destination === 'Contact') {
+      text = "Questions about a claim, a project listing, or anything else on Recoupa? You can reach us about getting your project vetted for the Outdex500, help with a loss claim, feedback on the site, or any general question. Send a message through the form below and we will reply to your email, or write to us directly at support@recoupafi.com or itscryptok@gmail.com.";
     } else if (destination === 'Perps') {
       text = "Go long or go short on any new launch. Another finds your position and decides to counter it.";
     } else {
@@ -904,10 +924,20 @@ function ExplorePage() {
 
               {destination === 'Buy' && <BuySection />}
 
+              {destination === 'Projects' && (
+                <ProjectsSection
+                  onGoContact={() => selectDestination('Contact')}
+                />
+              )}
+
+              {destination === 'Contact' && <ContactSection />}
+
               {destination !== 'Discover' &&
                 destination !== 'Outdex500' &&
                 destination !== 'Claim' &&
-                destination !== 'Buy' && <div className="empty-card" />}
+                destination !== 'Buy' &&
+                destination !== 'Projects' &&
+                destination !== 'Contact' && <div className="empty-card" />}
             </>
           )}
         </section>
@@ -1213,6 +1243,208 @@ function BuySection() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function ProjectsSection({ onGoContact }: { onGoContact: () => void }) {
+  return (
+    <div className="projects-section">
+      <h2 className="projects-heading">Get your project listed</h2>
+      <p className="projects-intro">
+        The Outdex500 is our list of promising utility projects — the projects
+        we believe are worth our community&apos;s attention. If you are
+        building one, contact us and we will vet it for a listing.
+      </p>
+      <h3 className="projects-subheading">What we look for</h3>
+      <ul className="projects-list">
+        <li>
+          <strong>Real utility</strong> — your token does something useful.
+          Not a meme, not a quick flip.
+        </li>
+        <li>
+          <strong>Long-term prospect</strong> — a project built to last, with
+          a plan beyond launch day.
+        </li>
+        <li>
+          <strong>Committed team</strong> — a team that keeps building after
+          launch, through good markets and bad.
+        </li>
+      </ul>
+      <div className="projects-contact">
+        <h3 className="projects-subheading">How to reach us</h3>
+        <p>
+          Send us your project details through the contact form — tell us what
+          your project does, who is building it, and where we can find it. Or
+          email us directly:
+        </p>
+        <div className="buy-links">
+          <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+        </div>
+        <button
+          type="button"
+          className="claim-submit-button"
+          onClick={onGoContact}
+        >
+          Contact us about your project
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const CONTACT_TOPICS: [ContactTopic, string][] = [
+  ['project-listing', 'Project listing request'],
+  ['claim-help', 'Help with a claim'],
+  ['general', 'General question'],
+  ['feedback', 'Feedback'],
+];
+
+function ContactSection() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [topic, setTopic] = useState<ContactTopic>('general');
+  const [project, setProject] = useState('');
+  const [message, setMessage] = useState('');
+  const [sent, setSent] = useState(false);
+  const [formError, setFormError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setFormError('Please fill in your name, email address, and message.');
+      return;
+    }
+    setSubmitting(true);
+    setFormError('');
+    try {
+      await submitContactMessage({
+        name: name.trim(),
+        email: email.trim(),
+        topic,
+        project: project.trim(),
+        message: message.trim(),
+      });
+      setName('');
+      setEmail('');
+      setTopic('general');
+      setProject('');
+      setMessage('');
+      setSent(true);
+    } catch (err) {
+      setFormError(
+        err instanceof Error
+          ? err.message
+          : 'Could not send the message. Please try again.',
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="claim-section">
+      <div className="claim-form-card">
+        <h2>Send us a message</h2>
+        <p className="claim-intro">
+          Tell us what you need — a project listing, help with a claim,
+          feedback, or anything else. Your message goes straight to the
+          Recoupa team.
+        </p>
+        {sent && (
+          <p className="claim-success" role="status">
+            Message sent. We will get back to you at the email you gave us.
+          </p>
+        )}
+        <form onSubmit={submit} noValidate>
+          <label className="claim-field">
+            <span className="claim-field-label">Your name</span>
+            <input
+              type="text"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Your name"
+              autoComplete="name"
+              maxLength={100}
+              aria-label="Your name"
+            />
+          </label>
+          <label className="claim-field">
+            <span className="claim-field-label">Email address</span>
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="Where we can reply to you"
+              autoComplete="email"
+              maxLength={254}
+              aria-label="Email address"
+            />
+          </label>
+          <label className="claim-field">
+            <span className="claim-field-label">What is this about?</span>
+            <select
+              value={topic}
+              onChange={(event) =>
+                setTopic(event.target.value as ContactTopic)
+              }
+              aria-label="What is this about?"
+            >
+              {CONTACT_TOPICS.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="claim-field">
+            <span className="claim-field-label">
+              Project name or token address (optional)
+            </span>
+            <input
+              type="text"
+              value={project}
+              onChange={(event) => setProject(event.target.value)}
+              placeholder="If your message is about a project, name it here"
+              autoComplete="off"
+              spellCheck={false}
+              maxLength={200}
+              aria-label="Project name or token address"
+            />
+          </label>
+          <label className="claim-field">
+            <span className="claim-field-label">Your message</span>
+            <textarea
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              placeholder="Write your message here"
+              rows={5}
+              maxLength={5000}
+              aria-label="Your message"
+            />
+          </label>
+          {formError && (
+            <p className="claim-error" role="alert">
+              {formError}
+            </p>
+          )}
+          <button
+            type="submit"
+            className="claim-submit-button"
+            disabled={submitting}
+          >
+            {submitting ? 'Sending…' : 'Send message'}
+          </button>
+        </form>
+        <p className="claim-note">
+          Your message is private — only the Recoupa team reads it. It never
+          appears on the public claims board. Prefer email? Write to us at{' '}
+          <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> or{' '}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        </p>
+      </div>
     </div>
   );
 }
@@ -1678,6 +1910,14 @@ function PrivacyContent() {
         claim that the form does not ask for.
       </p>
 
+      <h2>What we collect when you contact us</h2>
+      <p>
+        When you send a message through the contact form, you give us your
+        name, email address, and your message. We store it on our server so
+        we can read it and reply to you. Contact messages are private — they
+        never appear on the public claims board or anywhere else on the site.
+      </p>
+
       <h2>What stays on your device</h2>
       <p>
         When you file a claim, a copy of your own submitted claims is saved in
@@ -1688,8 +1928,9 @@ function PrivacyContent() {
 
       <h2>What we do not collect</h2>
       <p>
-        We do not ask for your name, email address, or phone number. We do
-        not run analytics or advertising trackers on this site. We never ask
+        We do not ask for your phone number. We only ask for your name and
+        email address when you contact us, so we can reply to you. We do not
+        run analytics or advertising trackers on this site. We never ask
         for your seed phrase or private keys — anyone who does is not us.
       </p>
 
