@@ -595,7 +595,7 @@ function ExplorePage() {
     } else if (destination === 'Outdex500') {
       text = "Find promising projects early, before the wider market notices them. Watch them grow into long-term companies with substantial market capitalization. If a project we recommend on the Outdex500 page fails in a rug pull, we refund part of your losses. You must hold 500,000 $Recoupa tokens for more than 24 hours before the rug pull happens. You then qualify for a share of the fee rewards earned from $Recoupa trading activity. When you submit a claim, we review the activity on your wallet to confirm your eligibility and decide how much to send you. All filed claims and completed payout transaction hashes are public on this webapp.";
     } else if (destination === 'Claim') {
-      text = "Have you been rugged by any crypto project that we recommended on our Outdex500? You can file a claim with us. A project is only considered a rug pull scam if it dumped by 95% of its value in less than 3 days and never recovered within the 3 days following that. To receive a paid claim, you must have held 500,000 $Recoupa tokens for more than 24 hours before the loss token crash, the token you lost money on must be one of the tokens on our Outdex list, and you must have held that loss token for more than 24 hours before the crash. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
+      text = "Have you been rugged by any crypto project that we recommended on our Outdex500? You can file a claim with us. A project is only considered a rug pull scam if it dumped by 95% of its value within 3 days and never recovered within the 3 days following that. To receive a paid claim, you must have held 500,000 $Recoupa tokens for more than 24 hours before the loss token crash, the token you lost money on must be one of the tokens on our Outdex list, and you must have held that loss token for more than 24 hours before the crash. Payouts come from the fees accumulated from trading $Recoupa. Your share depends on the value of the loss token you hold as a percentage of all claims filed for that same token, and on the fees available for payout after 40% is set aside for marketing and development. File a claim below.";
     } else if (destination === 'Buy') {
       text = "New to crypto? You need a Solana wallet before you can buy anything. Here is how to set one up in a few minutes.\n\n1. Download Phantom, the most popular Solana wallet, from phantom.com or your phone's official app store. Only use the official links — fake wallet apps steal funds.\n\n2. Open Phantom and create a new wallet. Write down your 12-word secret recovery phrase on paper and keep it somewhere private and offline. Never share it with anyone, not even Phantom support.\n\n3. Add SOL to your wallet. Buy SOL on an exchange and send it to your wallet address, or buy it directly inside Phantom.\n\n4. You are ready to buy. Find a token on the Outdex list, then swap SOL for it inside Phantom or on pump.fun using the token's contract address.";
     } else if (destination === 'Projects') {
@@ -2261,8 +2261,8 @@ function TermsContent() {
           You held that loss token for more than 24 hours before the crash.
         </li>
         <li>
-          The loss token dumped by 95% or more of its value in less than 3
-          days and never recovered within the 3 days following that.
+          The loss token dumped by 95% or more of its value within 3 days
+          and never recovered within the 3 days following that.
         </li>
       </ul>
       <p>
