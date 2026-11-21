@@ -78,16 +78,60 @@ function publicClaim(row) {
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
-// Public claims board: every claim, newest first.
+// Public claims board: every claim except hidden ones, newest first.
 app.get('/api/claims', async (req, res) => {
   try {
     const { rows } = await pool.query(
-      'SELECT * FROM claims ORDER BY created_at DESC, id DESC'
+      "SELECT * FROM claims WHERE status <> 'hidden' ORDER BY created_at DESC, id DESC"
     );
     res.json(rows.map(publicClaim));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Could not load claims.' });
+  }
+});
+
+// Public contact form. Messages are private — they never appear on the
+// public claims board or anywhere else on the site; only the admin reads
+// them (GET /api/admin/messages).
+const CONTACT_TOPICS = ['project-listing', 'claim-help', 'general', 'feedback'];
+
+function isValidEmail(value) {
+  return typeof value === 'string' && value.length <= 254 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, topic, project, message } = req.body || {};
+    const cleanName = typeof name === 'string' ? name.trim() : '';
+    const cleanEmail = typeof email === 'string' ? email.trim() : '';
+    const cleanProject = typeof project === 'string' ? project.trim() : '';
+    const cleanMessage = typeof message === 'string' ? message.trim() : '';
+    if (!cleanName || cleanName.length > 100) {
+      return res.status(400).json({ error: 'Please enter your name (100 characters or fewer).' });
+    }
+    if (!isValidEmail(cleanEmail)) {
+      return res.status(400).json({ error: 'Please enter a valid email address.' });
+    }
+    if (!CONTACT_TOPICS.includes(topic)) {
+      return res.status(400).json({ error: 'Please choose what your message is about.' });
+    }
+    if (cleanProject.length > 200) {
+      return res.status(400).json({ error: 'The project name or token address must be 200 characters or fewer.' });
+    }
+    if (!cleanMessage || cleanMessage.length > 5000) {
+      return res.status(400).json({ error: 'Please write a message (5000 characters or fewer).' });
+    }
+    await pool.query(
+      `INSERT INTO contact_messages (name, email, topic, project, message)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [cleanName, cleanEmail, topic, cleanProject || null, cleanMessage]
+    );
+    res.status(201).json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Could not send the message. Please try again.' });
   }
 });
 
@@ -224,8 +268,8 @@ app.patch('/api/admin/claims/:id', async (req, res) => {
   if (!adminAuthed(req)) return res.status(401).json({ error: 'Admin login required.' });
   try {
     const { status, rejectionReason, txHash, txChain } = req.body || {};
-    if (!['rejected', 'paid', 'pending'].includes(status)) {
-      return res.status(400).json({ error: 'Status must be rejected, paid, or pending.' });
+    if (!['rejected', 'paid', 'pending', 'hidden'].includes(status)) {
+      return res.status(400).json({ error: 'Status must be rejected, paid, pending, or hidden.' });
     }
     let reason = null;
     let hash = null;
@@ -257,6 +301,27 @@ app.patch('/api/admin/claims/:id', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Could not update the claim.' });
+  }
+});
+
+app.get('/api/admin/messages', async (req, res) => {
+  if (!adminAuthed(req)) return res.status(401).json({ error: 'Admin login required.' });
+  try {
+    const { rows } = await pool.query(
+      'SELECT * FROM contact_messages ORDER BY created_at DESC, id DESC'
+    );
+    res.json(rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      topic: row.topic,
+      project: row.project,
+      message: row.message,
+      created_at: row.created_at,
+    })));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Could not load messages.' });
   }
 });
 
