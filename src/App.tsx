@@ -1752,7 +1752,7 @@ function ClaimSection() {
             aria-expanded={boardOpen}
             onClick={() => setBoardOpen((open) => !open)}
           >
-            <span>Claims filed</span>
+            <span>Claims filed (listing)</span>
             <ChevronDown
               size={20}
               className={`claims-accordion-chevron${boardOpen ? ' is-open' : ''}`}
