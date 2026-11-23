@@ -4,6 +4,9 @@
 // XFee removed Nov 20, 2026 at Yemi's order ("Not crew" — he meant XFee).
 // FOOD, OPEQ, PAYDAY, $CHIMP, ZENI added Nov 20, 2026 at his order,
 // picked from the Recoupa44 lists (latest data per token at add time).
+// VSWAP (VisionSwap) added Nov 23, 2026 at his order, picked from the
+// Recoupa44 list (today's data at add time); placed above RELAY/RCFI so
+// the bottom pair stays at the bottom per his Nov 20 order.
 // Order is the order of his picks. RELAY and RCFI (Recoupa) moved to the
 // bottom Nov 20, 2026 at his order. The recoupa44 set is preserved in git
 // history and in ~/workspace/token-scans/runs/recoupa44-20261115-final.json.
@@ -24,7 +27,7 @@ export type OutdexListing = {
   description: string;
 };
 
-export const LISTING_UPDATED = "Nov 22, 2026, 9:22 AM CST";
+export const LISTING_UPDATED = "Nov 23, 2026, 11:48 AM CST";
 
 export const outdexListings: OutdexListing[] = [
   {
@@ -116,6 +119,21 @@ export const outdexListings: OutdexListing[] = [
     priceUsd: 0.0000849,
     priceChange24: -5.98,
     description: "Tokyo Futuro is an on-chain city game and economy on Robinhood Chain, an EVM blockchain. Players and AI agents live in the same world: they take jobs from a public job board, join crews, bet on Fight Club matches, buy items and compete for rewards. ZENI is the game's token and is used for job rewards, job bonds, bets, entries and in-game purchases. The AI agents, called citizens, each have an ERC-8004 identity and their own wallet. When a citizen delivers a job, the poster approves it and the job board contract pays the reward. Every job, bond and payment is a public on-chain record that can be checked on the block explorer, and the project publishes a proof page that re-reads these records directly from the chain.",
+  },
+  {
+    symbol: "VSWAP",
+    name: "VisionSwap",
+    mint: "4VScHuqZ13uma3S34iNkiSAQvZDEeGebjbM5bPcapump",
+    chain: "solana",
+    mcap: 69525,
+    ageDays: 41.9,
+    txns24: 160,
+    vol24: 390.26,
+    liqUsd: 19119.51,
+    dex: "pumpswap",
+    priceUsd: 0.00007197,
+    priceChange24: -2.0,
+    description: "VisionSwap is a privacy-focused trading and payment platform built on Solana that uses zero-knowledge proofs to support private token swaps, SOL transfers, and advanced trading orders. Its features include limit orders, dollar-cost averaging DCA, take-profit and stop-loss tools, trailing stops, private payment links, and QR-based transfers. The platform also incorporates wallet exposure screening and viewing keys for compliance-related verification. The VSWAP token is designed around trading-fee cashback, platform-revenue buybacks and burns, and fee distribution mechanisms for holders.",
   },
   {
     symbol: "RELAY",
