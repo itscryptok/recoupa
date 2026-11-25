@@ -30,7 +30,7 @@ export type OutdexListing = {
   description: string;
 };
 
-export const LISTING_UPDATED = "Nov 24, 2026, 9:22 AM CST";
+export const LISTING_UPDATED = "Nov 25, 2026, 9:22 AM CST";
 
 export const outdexListings: OutdexListing[] = [
   {
@@ -38,14 +38,14 @@ export const outdexListings: OutdexListing[] = [
     name: "Shade",
     mint: "12bTtDLSegj1rw2oxXWYm63Rxw5QxkVSXDHCEvRShaDe",
     chain: "solana",
-    mcap: 27311,
-    ageDays: 11.8,
-    txns24: 1725,
-    vol24: 83464.85,
-    liqUsd: 11773.35,
+    mcap: 26965,
+    ageDays: 12.8,
+    txns24: 566,
+    vol24: 25466.08,
+    liqUsd: 11559.85,
     dex: "meteora",
-    priceUsd: 0.00002734,
-    priceChange24: -66.65,
+    priceUsd: 0.000027,
+    priceChange24: -2,
     description: "The official token of Shade, the private token launchpad on Solana. Launch from a stealth deployer no wallet ever funded. Built on Helius Privacy Rings.",
   },
   {
@@ -53,14 +53,14 @@ export const outdexListings: OutdexListing[] = [
     name: "Foodcoin",
     mint: "FTu55MyigXns96jz4nTCDDiTCjYJjyrHSceCgG9Upump",
     chain: "solana",
-    mcap: 83183,
-    ageDays: 11.7,
-    txns24: 2719,
-    vol24: 127558.56,
-    liqUsd: 28383.03,
+    mcap: 75899,
+    ageDays: 12.7,
+    txns24: 1304,
+    vol24: 51426.6,
+    liqUsd: 26795.07,
     dex: "pumpswap",
-    priceUsd: 0.0000858,
-    priceChange24: 32.89,
+    priceUsd: 0.00007828,
+    priceChange24: -8.24,
     description: "$FOODCOIN turns trading volume into dinner. Creator rewards flow automatically to Feeding America, and every $1 becomes 20 meals.",
   },
   {
@@ -68,14 +68,14 @@ export const outdexListings: OutdexListing[] = [
     name: "Recoupa",
     mint: "BthQ6kzzeLRJqKfLy5TKvYkEQ6enujxFwZANk6Ajpump",
     chain: "solana",
-    mcap: 2092,
-    ageDays: 21.4,
-    txns24: 0,
-    vol24: 0,
+    mcap: 1974.33,
+    ageDays: 22.4,
+    txns24: 13,
+    vol24: 211.54,
     liqUsd: 0,
     dex: "pumpfun",
-    priceUsd: 0.000002092002,
-    priceChange24: 0,
+    priceUsd: 0.000001974,
+    priceChange24: -1.25,
     description: "The Recoupa token. Hold 500,000 $Recoupa for more than 24 hours before a rug pull to qualify for a share of fee rewards when you file a claim.",
   },
 ];
