@@ -4585,26 +4585,30 @@ button.hero-metric-value {
   justify-content: space-between;
   gap: 12px;
   width: 100%;
-  padding: 16px 20px;
+  padding: 2px 2px 14px;
   border: none;
-  border-radius: 12px;
-  background: var(--page-accent);
-  color: #ffffff;
+  border-bottom: 1px solid var(--mode-line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--mode-ink);
   font-family: inherit;
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.01em;
   text-align: left;
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+  box-shadow: none;
 }
 .claims-accordion-button:hover {
-  filter: brightness(1.1);
+  filter: none;
+}
+.claims-accordion-button:hover .claims-accordion-chevron {
+  color: var(--mode-ink);
 }
 .claims-accordion-chevron {
   flex-shrink: 0;
-  color: #ffffff;
-  transition: transform 0.2s ease;
+  color: var(--mode-muted);
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 .claims-accordion-chevron.is-open {
   transform: rotate(180deg);
