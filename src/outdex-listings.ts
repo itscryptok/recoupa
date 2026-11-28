@@ -13,6 +13,8 @@
 // Nov 26, 2026 at his order: $CHIMP, OPEQ, CTRL and UPOCH added back /
 // added from the Recoupa44 lists (latest DexScreener data at add time),
 // placed above RCFI so the Recoupa token stays last on the list.
+// Nov 27, 2026 at his order: CTRL and UPOCH removed from this file.
+// The removed entries are preserved in git history.
 // Order is the order of his picks. RELAY and RCFI (Recoupa) moved to the
 // bottom Nov 20, 2026 at his order. The recoupa44 set is preserved in git
 // history and in ~/workspace/token-scans/runs/recoupa44-20261115-final.json.
@@ -95,36 +97,6 @@ export const outdexListings: OutdexListing[] = [
     priceUsd: 0.00003776,
     priceChange24: -6.59,
     description: "OPEQ is a quantum-resistant smart wallet for the Solana blockchain. Funds sit at a program-derived address with no Ed25519 key, authorized by one-time hash-based signatures.",
-  },
-  {
-    symbol: "CTRL",
-    name: "Control",
-    mint: "0xe8a61c11d418daccbcf12466e052d2ac5f7387a9",
-    chain: "robinhood",
-    mcap: 125544,
-    ageDays: 35,
-    txns24: 30,
-    vol24: 5775.71,
-    liqUsd: 34564.74,
-    dex: "uniswap",
-    priceUsd: 0.0001446,
-    priceChange24: 11.95,
-    description: "Control is a platform for token communities that uses Uniswap v4 hooks to connect social and onchain conditions with behavior inside a token market. Its live products on Robinhood Chain are community campaigns and the original arcade.",
-  },
-  {
-    symbol: "UPOCH",
-    name: "Upochtech",
-    mint: "0xdafaa1ed0b9f5746a0cfa2be80371cf06a986977",
-    chain: "robinhood",
-    mcap: 240241,
-    ageDays: 22.9,
-    txns24: 455,
-    vol24: 40252.4,
-    liqUsd: 37403.14,
-    dex: "uniswap",
-    priceUsd: 0.0002459,
-    priceChange24: 32.71,
-    description: "Upoch is checkpointing and recovery infrastructure for autonomous AI agents on Robinhood Chain. Agents save encrypted checkpoints of their state, verified on-chain, so they can roll back to the last good state instead of starting over.",
   },
   {
     symbol: "RCFI",
